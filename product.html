@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Produit — 7EBR</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <style>
+    .product-page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .product-page { grid-template-columns: 1fr; gap: 32px; padding: 32px 16px 80px; }
+    }
+
+    /* IMAGE */
+    .product-gallery { position: sticky; top: calc(var(--nav-h) + 24px); }
+    .product-main-img {
+      aspect-ratio: 3/4;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .product-main-img img { width: 100%; height: 100%; object-fit: cover; }
+    .product-main-img .placeholder-svg { width: 60%; height: 60%; opacity: 0.3; }
+    .product-badge-big {
+      position: absolute;
+      top: 16px; left: 16px;
+      background: var(--ink);
+      color: var(--bg);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+    }
+
+    /* INFO */
+    .product-info { padding-top: 8px; }
+
+    .product-category {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 12px;
+      font-family: 'Cairo', sans-serif;
+    }
+    .product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .product-prices {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .product-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      color: var(--ink);
+    }
+    .product-old-price {
+      font-size: 18px;
+      color: var(--text-faint);
+      text-decoration: line-through;
+    }
+    .product-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 24px 0;
+    }
+    .product-desc {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+    }
+
+    /* SIZE SELECTOR */
+    .size-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      font-family: 'Cairo', sans-serif;
+    }
+    .size-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .size-btn {
+      width: 48px; height: 48px;
+      border: 1px solid var(--border);
+      background: none;
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .size-btn:hover { border-color: var(--ink); color: var(--ink); }
+    .size-btn.selected { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+    /* ACTION BUTTONS */
+    .action-buttons { display: flex; flex-direction: column; gap: 12px; }
+    .btn-primary {
+      width: 100%;
+      background: var(--ink);
+      color: var(--bg);
+      border: none;
+      padding: 16px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-primary:hover { background: var(--ink-light); }
+    .btn-primary svg { width: 18px; height: 18px; }
+
+    .btn-secondary {
+      width: 100%;
+      background: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 16px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
+    .btn-secondary svg { width: 18px; height: 18px; }
+
+    .btn-whatsapp {
+      border-color: rgba(37, 211, 102, 0.4);
+      color: #25d366;
+    }
+    .btn-whatsapp:hover { border-color: #25d366; background: rgba(37,211,102,0.05); }
+
+    /* PRODUCT META */
+    .product-meta {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .meta-row svg { width: 16px; height: 16px; color: var(--ink-dim); flex-shrink: 0; }
+
+    /* QUICK ORDER MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 480px;
+      padding: 40px;
+      position: relative;
+      transform: translateY(24px);
+      transition: transform var(--transition);
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--ink), transparent);
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: none; border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 4px;
+    }
+    .modal-close svg { width: 20px; height: 20px; }
+    .modal h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .modal-subtitle {
+      font-size: 13px;
+      color: var(--ink);
+      margin-bottom: 28px;
+      letter-spacing: 1px;
+    }
+    .modal-status {
+      padding: 12px;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 12px;
+      display: none;
+      border-radius: var(--radius);
+    }
+    .modal-status.success { background: rgba(39,174,96,0.1); border: 1px solid rgba(39,174,96,0.3); color: #2ecc71; display: block; }
+    .modal-status.error { background: rgba(192,57,43,0.1); border: 1px solid rgba(192,57,43,0.3); color: #e74c3c; display: block; }
+
+    /* BACK LINK */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 1px;
+      margin-bottom: 40px;
+      transition: color var(--transition);
+      font-family: 'Cairo', sans-serif;
+    }
+    .back-link:hover { color: var(--ink); }
+    .back-link svg { width: 16px; height: 16px; }
+
+    /* OUT OF STOCK */
+    .out-of-stock-banner {
+      background: rgba(192,57,43,0.08);
+      border: 1px solid rgba(192,57,43,0.2);
+      color: #e74c3c;
+      padding: 12px 16px;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-align: center;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      font-family: 'Cairo', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+
+  <!-- QUICK ORDER MODAL -->
+  <div class="modal-overlay" id="quick-order-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h3>Commande Rapide</h3>
+      <p class="modal-subtitle" id="modal-product-name">—</p>
+
+      <div class="form-group">
+        <label class="form-label">Nom complet</label>
+        <input type="text" class="form-input" id="order-name" placeholder="Votre nom"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Téléphone</label>
+        <input type="tel" class="form-input" id="order-phone" placeholder="+216 XX XXX XXX"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" id="order-email" placeholder="votre@email.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Taille</label>
+        <select class="form-input" id="order-size">
+          <option value="">Choisir une taille</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message (optionnel)</label>
+        <input type="text" class="form-input" id="order-message" placeholder="Adresse de livraison, remarques..."/>
+      </div>
+
+      <button class="btn-primary" onclick="sendQuickOrder()" id="send-order-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Envoyer la commande
+      </button>
+      <div class="modal-status" id="modal-status"></div>
+    </div>
+  </div>
+
+  <main class="page">
+    <div style="max-width:1100px; margin:0 auto; padding:40px 24px 0;">
+      <a href="/index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+        Retour à la collection
+      </a>
+    </div>
+
+    <div class="product-page" id="product-content">
+      <div class="loading" style="grid-column:1/-1;">
+        <div class="spinner"></div>Chargement...
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-bottom" style="max-width:1100px; margin:0 auto; padding:24px;">
+        <span>© 2025 7EBR. Tous droits réservés.</span>
+      </div>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    emailjs.init('YOUR_EMAILJS_PUBLIC_KEY'); // ← Replace with your EmailJS public key
+  </script>
+  <script src="/js/supabase.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/products.js"></script>
+  <script src="/js/nav.js"></script>
+  <script>
+    let currentProduct = null;
+    let selectedSize = '';
+
+    const WHATSAPP_NUMBER = '21600000000'; // ← Replace with real WhatsApp number
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      renderNav();
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      if (!id) { window.location.href = '/index.html'; return; }
+
+      try {
+        currentProduct = await fetchProductById(id);
+        renderProduct(currentProduct);
+        document.title = `${currentProduct.title} — 7EBR`;
+      } catch (e) {
+        document.getElementById('product-content').innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1">
+            <p>Produit introuvable.</p>
+          </div>`;
+      }
+    });
+
+    function renderProduct(p) {
+      const container = document.getElementById('product-content');
+
+      const outOfStock = !p.in_stock ? `<div class="out-of-stock-banner">Rupture de stock</div>` : '';
+      const badge = p.badge ? `<div class="product-badge-big">${p.badge}</div>` : '';
+      const oldPrice = p.old_price ? `<span class="product-old-price">${p.old_price} TND</span>` : '';
+
+      container.innerHTML = `
+        <!-- GALLERY -->
+        <div class="product-gallery">
+          <div class="product-main-img">
+            ${badge}
+            <svg class="placeholder-svg" viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="120" height="160" fill="#1a1a1a"/>
+              <path d="M30 120 L60 40 L90 120 Z" stroke="#C4A882" stroke-width="1" fill="none" opacity="0.4"/>
+              <circle cx="60" cy="36" r="6" fill="none" stroke="#C4A882" stroke-width="1" opacity="0.4"/>
+              <text x="60" y="148" font-family="serif" font-size="10" fill="#C4A882" text-anchor="middle" opacity="0.3">7EBR</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- INFO -->
+        <div class="product-info">
+          <div class="product-category">${p.category || 'Collection'}</div>
+          <h1 class="product-name">${p.title}</h1>
+          <div class="product-prices">
+            ${oldPrice}
+            <span class="product-price">${p.price} TND</span>
+          </div>
+
+          ${outOfStock}
+
+          <div class="product-divider"></div>
+          <p class="product-desc">
+            ${p.description || `Pièce exclusive de la collection 7EBR, inspirée de la calligraphie islamique traditionnelle. Chaque vêtement est une œuvre d'art portée avec fierté. Coupe moderne, tissu premium, finition soignée.`}
+          </p>
+
+          <!-- SIZES -->
+          <div class="size-label">Choisir une taille</div>
+          <div class="size-grid">
+            ${['XS','S','M','L','XL','XXL'].map(s => `
+              <button class="size-btn" data-size="${s}" onclick="selectSize('${s}')">${s}</button>
+            `).join('')}
+          </div>
+
+          <!-- ACTIONS -->
+          ${p.in_stock ? `
+          <div class="action-buttons">
+            <button class="btn-primary" onclick="handleAddToCart()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              Ajouter au panier
+            </button>
+            <button class="btn-secondary" onclick="openQuickOrder()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Commande rapide (Email)
+            </button>
+            <a class="btn-secondary btn-whatsapp" href="${buildWhatsApp(p)}" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.167L2 22l4.985-1.399A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.962 7.962 0 0 1-4.064-1.112l-.292-.173-3.017.847.857-2.94-.191-.302A7.947 7.947 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.588 8-8 8z"/>
+              </svg>
+              Commander sur WhatsApp
+            </a>
+          </div>
+          ` : `<div class="out-of-stock-banner">Ce produit est actuellement épuisé</div>`}
+
+          <!-- META -->
+          <div class="product-meta">
+            <div class="meta-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              Livraison dans toute la Tunisie
+            </div>
+            <div class="meta-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Paiement sécurisé à la livraison
+            </div>
+            <div class="meta-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              Échange facile sous 7 jours
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function selectSize(s) {
+      selectedSize = s;
+      document.querySelectorAll('.size-btn').forEach(b => {
+        b.classList.toggle('selected', b.dataset.size === s);
+      });
+    }
+
+    function handleAddToCart() {
+      if (!selectedSize) {
+        alert('Veuillez choisir une taille.');
+        return;
+      }
+      addToCart(currentProduct, selectedSize);
+      openCart();
+    }
+
+    function buildWhatsApp(p) {
+      const msg = encodeURIComponent(`Bonjour, je voudrais commander:\n*${p.title}*\nPrix: ${p.price} TND\n\nTaille: \nNom: \nAdresse: `);
+      return `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+    }
+
+    function openQuickOrder() {
+      document.getElementById('modal-product-name').textContent = currentProduct?.title || '';
+      document.getElementById('quick-order-modal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('quick-order-modal').classList.remove('open');
+    }
+
+    async function sendQuickOrder() {
+      const name = document.getElementById('order-name').value.trim();
+      const phone = document.getElementById('order-phone').value.trim();
+      const email = document.getElementById('order-email').value.trim();
+      const size = document.getElementById('order-size').value;
+      const message = document.getElementById('order-message').value.trim();
+      const statusEl = document.getElementById('modal-status');
+
+      if (!name || !phone || !email || !size) {
+        statusEl.className = 'modal-status error';
+        statusEl.textContent = 'Veuillez remplir tous les champs obligatoires.';
+        return;
+      }
+
+      const btn = document.getElementById('send-order-btn');
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours...';
+      statusEl.className = 'modal-status';
+
+      try {
+        await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+          customer_name: name,
+          customer_phone: phone,
+          customer_email: email,
+          product_name: currentProduct?.title || '',
+          product_price: currentProduct?.price + ' TND' || '',
+          size: size,
+          message: message || 'Aucun message',
+          to_email: 'admin@7ebr.com'
+        });
+
+        statusEl.className = 'modal-status success';
+        statusEl.textContent = 'Commande envoyée! Nous vous contacterons bientôt.';
+        document.getElementById('order-name').value = '';
+        document.getElementById('order-phone').value = '';
+        document.getElementById('order-email').value = '';
+        document.getElementById('order-size').value = '';
+        document.getElementById('order-message').value = '';
+      } catch (err) {
+        statusEl.className = 'modal-status error';
+        statusEl.textContent = 'Erreur d\'envoi. Contactez-nous sur WhatsApp.';
+        console.error(err);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Envoyer la commande`;
+      }
+    }
+
+    document.getElementById('quick-order-modal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('quick-order-modal')) closeModal();
+    });
+  </script>
+</body>
+</html>

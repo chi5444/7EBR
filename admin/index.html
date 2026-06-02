@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — 7EBR</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <style>
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: calc(100vh - var(--nav-h));
+    }
+    @media (max-width: 768px) { .admin-layout { grid-template-columns: 1fr; } }
+
+    /* SIDEBAR */
+    .admin-sidebar {
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      padding: 32px 0;
+      position: sticky;
+      top: var(--nav-h);
+      height: calc(100vh - var(--nav-h));
+      overflow-y: auto;
+    }
+    .sidebar-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      padding: 0 20px;
+      margin-bottom: 8px;
+      font-family: 'Cairo', sans-serif;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all var(--transition);
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      border-left: 2px solid transparent;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .sidebar-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .sidebar-link:hover { color: var(--text); background: rgba(196,168,130,0.05); }
+    .sidebar-link.active { color: var(--ink); border-left-color: var(--ink); background: rgba(196,168,130,0.05); }
+    .sidebar-sep { height: 1px; background: var(--border); margin: 16px 20px; }
+
+    /* MAIN */
+    .admin-main { padding: 40px 32px; }
+    @media (max-width: 768px) { .admin-main { padding: 24px 16px; } }
+
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .admin-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 400;
+    }
+    .admin-header h1 em { color: var(--ink); font-style: italic; }
+
+    /* STATS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--ink), transparent);
+    }
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    /* TABLE */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      border-bottom: 1px solid var(--border);
+      font-family: 'Cairo', sans-serif;
+      white-space: nowrap;
+    }
+    tbody td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: middle;
+    }
+    tbody tr:hover td { background: rgba(196,168,130,0.03); }
+
+    .status-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'Cairo', sans-serif;
+      border-radius: 2px;
+    }
+    .status-pending { background: rgba(196,168,130,0.15); color: var(--ink); }
+    .status-confirmed { background: rgba(39,174,96,0.15); color: #2ecc71; }
+    .status-shipped { background: rgba(52,152,219,0.15); color: #3498db; }
+    .status-delivered { background: rgba(39,174,96,0.2); color: #27ae60; }
+    .status-cancelled { background: rgba(192,57,43,0.15); color: #e74c3c; }
+
+    /* PRODUCT FORM */
+    .product-form {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .product-form::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--ink), transparent);
+    }
+    .product-form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+    @media (max-width: 640px) { .form-grid-3 { grid-template-columns: 1fr 1fr; } }
+
+    .form-actions { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+    .btn-save {
+      background: var(--ink);
+      color: var(--bg);
+      border: none;
+      padding: 12px 28px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .btn-save:hover { background: var(--ink-light); }
+    .btn-cancel {
+      background: none;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 12px 28px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .btn-cancel:hover { border-color: var(--ink); color: var(--ink); }
+
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      transition: color var(--transition);
+      color: var(--text-dim);
+    }
+    .action-btn.edit:hover { color: var(--ink); }
+    .action-btn.delete:hover { color: var(--danger); }
+    .action-btn svg { width: 16px; height: 16px; display: block; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* Order status select */
+    .status-select {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: var(--radius);
+    }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+  <div class="page">
+    <div class="admin-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="admin-sidebar">
+        <div class="sidebar-label">Tableau de bord</div>
+        <button class="sidebar-link active" onclick="showPanel('stats', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Aperçu
+        </button>
+        <div class="sidebar-sep"></div>
+        <div class="sidebar-label">Catalogue</div>
+        <button class="sidebar-link" onclick="showPanel('products', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 3H8v4h8V3z"/></svg>
+          Produits
+        </button>
+        <div class="sidebar-sep"></div>
+        <div class="sidebar-label">Ventes</div>
+        <button class="sidebar-link" onclick="showPanel('orders', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Commandes
+        </button>
+        <div class="sidebar-sep"></div>
+        <button class="sidebar-link" onclick="logout()" style="color:var(--danger)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Déconnexion
+        </button>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="admin-main">
+
+        <!-- STATS PANEL -->
+        <div class="panel active" id="panel-stats">
+          <div class="admin-header">
+            <h1>Tableau de <em>bord</em></h1>
+          </div>
+          <div class="stats-grid" id="stats-grid">
+            <div class="stat-card"><div class="stat-value" id="stat-products">—</div><div class="stat-label">Produits</div></div>
+            <div class="stat-card"><div class="stat-value" id="stat-orders">—</div><div class="stat-label">Commandes</div></div>
+            <div class="stat-card"><div class="stat-value" id="stat-pending">—</div><div class="stat-label">En attente</div></div>
+            <div class="stat-card"><div class="stat-value" id="stat-revenue">—</div><div class="stat-label">Revenu (TND)</div></div>
+          </div>
+          <div style="color:var(--text-dim); font-size:14px; text-align:center; padding:20px 0; font-family:'Cormorant Garamond',serif; letter-spacing:1px;">
+            — Bienvenue dans le panel d'administration 7EBR —
+          </div>
+        </div>
+
+        <!-- PRODUCTS PANEL -->
+        <div class="panel" id="panel-products">
+          <div class="admin-header">
+            <h1><em>Produits</em></h1>
+            <button class="btn-save" onclick="showProductForm()">
+              + Ajouter un produit
+            </button>
+          </div>
+
+          <!-- PRODUCT FORM (hidden by default) -->
+          <div class="product-form" id="product-form" style="display:none;">
+            <h2 class="product-form-title" id="form-title">Nouveau produit</h2>
+            <input type="hidden" id="edit-product-id"/>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Titre *</label>
+                <input type="text" class="form-input" id="p-title" placeholder="Nom du produit"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Catégorie *</label>
+                <select class="form-input" id="p-category">
+                  <option value="">Choisir...</option>
+                  <option value="t-shirt">T-Shirt</option>
+                  <option value="sweatshirt">Sweatshirt</option>
+                  <option value="hoodie">Hoodie</option>
+                  <option value="pantalon">Pantalon</option>
+                  <option value="accessoire">Accessoire</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Prix (TND) *</label>
+                <input type="number" class="form-input" id="p-price" placeholder="65.000" step="0.001"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Ancien prix (TND)</label>
+                <input type="number" class="form-input" id="p-old-price" placeholder="Optionnel" step="0.001"/>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top:16px;">
+              <label class="form-label">Description</label>
+              <textarea class="form-input" id="p-description" rows="3" placeholder="Description du produit..." style="resize:vertical;"></textarea>
+            </div>
+            <div class="form-grid form-grid-3" style="margin-top:16px;">
+              <div class="form-group">
+                <label class="form-label">Badge</label>
+                <input type="text" class="form-input" id="p-badge" placeholder="Nouveau, Promo..."/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Region</label>
+                <input type="text" class="form-input" id="p-region" placeholder="Tunisie"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">En stock</label>
+                <select class="form-input" id="p-stock">
+                  <option value="true">Oui</option>
+                  <option value="false">Non</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-save" onclick="saveProduct()">Enregistrer</button>
+              <button class="btn-cancel" onclick="cancelProductForm()">Annuler</button>
+            </div>
+            <div class="form-error" id="product-form-error" style="margin-top:12px;"></div>
+            <div class="form-success" id="product-form-success" style="margin-top:12px;"></div>
+          </div>
+
+          <!-- PRODUCTS TABLE -->
+          <div class="table-wrap">
+            <table id="products-table">
+              <thead>
+                <tr>
+                  <th>Titre</th>
+                  <th>Catégorie</th>
+                  <th>Prix</th>
+                  <th>Stock</th>
+                  <th>Badge</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-tbody">
+                <tr><td colspan="6" class="loading"><div class="spinner"></div>Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ORDERS PANEL -->
+        <div class="panel" id="panel-orders">
+          <div class="admin-header">
+            <h1><em>Commandes</em></h1>
+          </div>
+          <div class="table-wrap">
+            <table id="orders-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Client</th>
+                  <th>Produit</th>
+                  <th>Montant</th>
+                  <th>Paiement</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-tbody">
+                <tr><td colspan="7" class="loading"><div class="spinner"></div>Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="/js/supabase.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/products.js"></script>
+  <script src="/js/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      renderNav();
+      const admin = await isAdmin();
+      if (!admin) { window.location.href = '/login.html?redirect=/admin/index.html'; return; }
+      loadStats();
+    });
+
+    function showPanel(name, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      document.getElementById('panel-' + name).classList.add('active');
+      btn.classList.add('active');
+      if (name === 'products') loadAdminProducts();
+      if (name === 'orders') loadAdminOrders();
+    }
+
+    async function loadStats() {
+      try {
+        const [{ count: pCount }, { count: oCount }, { data: orders }] = await Promise.all([
+          sb.from('products').select('*', { count: 'exact', head: true }),
+          sb.from('orders').select('*', { count: 'exact', head: true }),
+          sb.from('orders').select('amount, status')
+        ]);
+        document.getElementById('stat-products').textContent = pCount || 0;
+        document.getElementById('stat-orders').textContent = oCount || 0;
+        document.getElementById('stat-pending').textContent = orders?.filter(o => o.status === 'pending').length || 0;
+        const revenue = orders?.reduce((s, o) => s + (o.amount || 0), 0) || 0;
+        document.getElementById('stat-revenue').textContent = revenue.toFixed(0);
+      } catch (e) { console.error(e); }
+    }
+
+    async function loadAdminProducts() {
+      const tbody = document.getElementById('products-tbody');
+      tbody.innerHTML = '<tr><td colspan="6" class="loading"><div class="spinner"></div>Chargement...</td></tr>';
+      try {
+        const products = await fetchAllProducts();
+        if (!products.length) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-dim);padding:32px;">Aucun produit</td></tr>';
+          return;
+        }
+        tbody.innerHTML = products.map(p => `
+          <tr>
+            <td style="max-width:200px;">${p.title}</td>
+            <td>${p.category || '—'}</td>
+            <td style="color:var(--ink)">${p.price} TND</td>
+            <td>
+              <span class="status-badge ${p.in_stock ? 'status-confirmed' : 'status-cancelled'}">
+                ${p.in_stock ? 'Oui' : 'Non'}
+              </span>
+            </td>
+            <td>${p.badge || '—'}</td>
+            <td style="display:flex; gap:4px;">
+              <button class="action-btn edit" onclick="editProduct(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+              <button class="action-btn delete" onclick="confirmDelete(${p.id})">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="6" style="color:var(--danger);text-align:center;padding:20px;">Erreur de chargement</td></tr>';
+      }
+    }
+
+    async function loadAdminOrders() {
+      const tbody = document.getElementById('orders-tbody');
+      tbody.innerHTML = '<tr><td colspan="7" class="loading"><div class="spinner"></div>Chargement...</td></tr>';
+      try {
+        const { data: orders, error } = await sb.from('orders').select('*').order('id', { ascending: false });
+        if (error) throw error;
+        if (!orders?.length) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);padding:32px;">Aucune commande</td></tr>';
+          return;
+        }
+        tbody.innerHTML = orders.map(o => `
+          <tr>
+            <td style="color:var(--ink-dim); font-size:12px;">#${o.id}</td>
+            <td>
+              <div style="font-size:14px;">${o.customer_name || 'Client'}</div>
+              <div style="font-size:11px;color:var(--text-dim);">${o.customer_phone || ''}</div>
+            </td>
+            <td style="max-width:160px; font-size:13px;">${o.product_title}</td>
+            <td style="color:var(--ink)">${o.amount?.toFixed(3)} TND</td>
+            <td style="font-size:12px;color:var(--text-dim);">${o.payment_method || 'cod'}</td>
+            <td>
+              <select class="status-select" onchange="updateOrderStatus(${o.id}, this.value)">
+                <option value="pending" ${o.status==='pending'?'selected':''}>En attente</option>
+                <option value="confirmed" ${o.status==='confirmed'?'selected':''}>Confirmée</option>
+                <option value="shipped" ${o.status==='shipped'?'selected':''}>Expédiée</option>
+                <option value="delivered" ${o.status==='delivered'?'selected':''}>Livrée</option>
+                <option value="cancelled" ${o.status==='cancelled'?'selected':''}>Annulée</option>
+              </select>
+            </td>
+            <td>
+              <button class="action-btn delete" onclick="deleteOrder(${o.id})">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="7" style="color:var(--danger);text-align:center;padding:20px;">Erreur</td></tr>';
+      }
+    }
+
+    function showProductForm(title = 'Nouveau produit') {
+      document.getElementById('form-title').textContent = title;
+      document.getElementById('product-form').style.display = 'block';
+      document.getElementById('product-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function cancelProductForm() {
+      document.getElementById('product-form').style.display = 'none';
+      document.getElementById('edit-product-id').value = '';
+      ['p-title','p-category','p-price','p-old-price','p-badge','p-region','p-description'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('p-stock').value = 'true';
+    }
+
+    function editProduct(p) {
+      document.getElementById('edit-product-id').value = p.id;
+      document.getElementById('p-title').value = p.title || '';
+      document.getElementById('p-category').value = p.category || '';
+      document.getElementById('p-price').value = p.price || '';
+      document.getElementById('p-old-price').value = p.old_price || '';
+      document.getElementById('p-badge').value = p.badge || '';
+      document.getElementById('p-region').value = p.region || '';
+      document.getElementById('p-stock').value = p.in_stock ? 'true' : 'false';
+      document.getElementById('p-description').value = p.description || '';
+      showProductForm('Modifier le produit');
+    }
+
+    async function saveProduct() {
+      const id = document.getElementById('edit-product-id').value;
+      const title = document.getElementById('p-title').value.trim();
+      const category = document.getElementById('p-category').value;
+      const price = parseFloat(document.getElementById('p-price').value);
+      const old_price = parseFloat(document.getElementById('p-old-price').value) || null;
+      const badge = document.getElementById('p-badge').value.trim() || null;
+      const region = document.getElementById('p-region').value.trim() || null;
+      const in_stock = document.getElementById('p-stock').value === 'true';
+      const description = document.getElementById('p-description').value.trim() || null;
+      const errEl = document.getElementById('product-form-error');
+      const sucEl = document.getElementById('product-form-success');
+
+      errEl.classList.remove('show'); sucEl.classList.remove('show');
+
+      if (!title || !category || isNaN(price)) {
+        errEl.textContent = 'Titre, catégorie et prix sont obligatoires.';
+        errEl.classList.add('show'); return;
+      }
+
+      const data = { title, category, price, old_price, badge, region, in_stock, description };
+
+      try {
+        if (id) {
+          await updateProduct(parseInt(id), data);
+          sucEl.textContent = 'Produit modifié avec succès.';
+        } else {
+          await createProduct(data);
+          sucEl.textContent = 'Produit créé avec succès.';
+        }
+        sucEl.classList.add('show');
+        setTimeout(() => { cancelProductForm(); loadAdminProducts(); loadStats(); }, 1000);
+      } catch (e) {
+        errEl.textContent = 'Erreur: ' + (e.message || 'Réessayez.');
+        errEl.classList.add('show');
+      }
+    }
+
+    async function confirmDelete(id) {
+      if (!confirm('Supprimer ce produit définitivement?')) return;
+      try {
+        await deleteProduct(id);
+        loadAdminProducts();
+        loadStats();
+      } catch (e) { alert('Erreur lors de la suppression.'); }
+    }
+
+    async function updateOrderStatus(id, status) {
+      try {
+        await sb.from('orders').update({ status }).eq('id', id);
+        loadStats();
+      } catch (e) { alert('Erreur de mise à jour.'); }
+    }
+
+    async function deleteOrder(id) {
+      if (!confirm('Supprimer cette commande?')) return;
+      try {
+        await sb.from('orders').delete().eq('id', id);
+        loadAdminOrders();
+        loadStats();
+      } catch (e) { alert('Erreur.'); }
+    }
+  </script>
+</body>
+</html>

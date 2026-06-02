@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Commander — 7EBR</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <style>
+    .checkout-page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .checkout-page { grid-template-columns: 1fr; gap: 32px; padding: 32px 16px 80px; }
+      .order-summary { order: -1; }
+    }
+
+    .checkout-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 32px;
+    }
+    .checkout-title em { color: var(--ink); font-style: italic; }
+
+    .checkout-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .checkout-section::before { display: none; }
+    .checkout-section-title {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 20px;
+      font-family: 'Cairo', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .checkout-section-title svg { width: 16px; height: 16px; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+    /* PAYMENT METHODS */
+    .payment-options { display: flex; flex-direction: column; gap: 10px; }
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all var(--transition);
+      background: var(--bg3);
+    }
+    .payment-option:hover { border-color: var(--border-strong); }
+    .payment-option.selected { border-color: var(--ink); background: rgba(196,168,130,0.05); }
+    .payment-option input[type="radio"] { display: none; }
+    .payment-radio {
+      width: 18px; height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+    .payment-option.selected .payment-radio {
+      border-color: var(--ink);
+      background: var(--ink);
+    }
+    .payment-option.selected .payment-radio::after {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--bg);
+      border-radius: 50%;
+    }
+    .payment-info { flex: 1; }
+    .payment-name {
+      font-size: 14px;
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .payment-desc {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+    .payment-icon svg { width: 28px; height: 28px; color: var(--ink-dim); }
+
+    /* BOOKING */
+    .booking-section { margin-top: 20px; }
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 480px) { .booking-grid { grid-template-columns: 1fr; } }
+
+    /* ORDER SUMMARY */
+    .order-summary {
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+    }
+    .summary-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 28px;
+    }
+    .summary-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+    .summary-items { margin-bottom: 24px; }
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+    .summary-item-name { font-size: 14px; color: var(--text); flex: 1; }
+    .summary-item-size { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+    .summary-item-qty { font-size: 12px; color: var(--ink-dim); }
+    .summary-item-price { font-size: 14px; color: var(--ink); white-space: nowrap; }
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      margin-top: 8px;
+    }
+    .summary-total-label { font-family: 'Playfair Display', serif; font-size: 16px; }
+    .summary-total-price { font-size: 24px; color: var(--ink); font-family: 'Cormorant Garamond', serif; }
+
+    .place-order-btn {
+      width: 100%;
+      background: var(--ink);
+      color: var(--bg);
+      border: none;
+      padding: 18px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all var(--transition);
+    }
+    .place-order-btn:hover { background: var(--ink-light); }
+    .place-order-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .order-success {
+      text-align: center;
+      padding: 60px 24px;
+    }
+    .order-success svg { width: 64px; height: 64px; color: var(--success); margin-bottom: 24px; }
+    .order-success h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .order-success p { color: var(--text-dim); font-size: 15px; margin-bottom: 24px; }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+  <main class="page">
+    <div id="checkout-content">
+      <div class="checkout-page">
+        <!-- FORM SIDE -->
+        <div class="checkout-form">
+          <h1 class="checkout-title">Finaliser la <em>commande</em></h1>
+
+          <div class="form-error" id="checkout-error"></div>
+
+          <!-- LIVRAISON -->
+          <div class="checkout-section">
+            <div class="checkout-section-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              Informations de livraison
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Prénom</label>
+                <input type="text" class="form-input" id="first-name" placeholder="Prénom"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nom</label>
+                <input type="text" class="form-input" id="last-name" placeholder="Nom de famille"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" id="checkout-email" placeholder="votre@email.com"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Téléphone</label>
+              <input type="tel" class="form-input" id="checkout-phone" placeholder="+216 XX XXX XXX"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Adresse</label>
+              <input type="text" class="form-input" id="checkout-address" placeholder="Rue, numéro..."/>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Ville</label>
+                <input type="text" class="form-input" id="checkout-city" placeholder="Tunis"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Gouvernorat</label>
+                <select class="form-input" id="checkout-gov">
+                  <option value="">Choisir...</option>
+                  <option>Tunis</option><option>Ariana</option><option>Ben Arous</option>
+                  <option>Manouba</option><option>Nabeul</option><option>Zaghouan</option>
+                  <option>Bizerte</option><option>Béja</option><option>Jendouba</option>
+                  <option>Kef</option><option>Siliana</option><option>Sousse</option>
+                  <option>Monastir</option><option>Mahdia</option><option>Sfax</option>
+                  <option>Kairouan</option><option>Kasserine</option><option>Sidi Bouzid</option>
+                  <option>Gabès</option><option>Médenine</option><option>Tataouine</option>
+                  <option>Gafsa</option><option>Tozeur</option><option>Kébili</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOOKING -->
+          <div class="checkout-section booking-section">
+            <div class="checkout-section-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Réservation (optionnel)
+            </div>
+            <p style="font-size:13px; color:var(--text-dim); margin-bottom:16px;">Réservez un créneau pour venir retirer en boutique.</p>
+            <div class="booking-grid">
+              <div class="form-group">
+                <label class="form-label">Date</label>
+                <input type="date" class="form-input" id="booking-date"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Heure</label>
+                <select class="form-input" id="booking-time">
+                  <option value="">Choisir...</option>
+                  <option>10:00</option><option>10:30</option><option>11:00</option>
+                  <option>11:30</option><option>12:00</option><option>14:00</option>
+                  <option>14:30</option><option>15:00</option><option>15:30</option>
+                  <option>16:00</option><option>16:30</option><option>17:00</option>
+                  <option>17:30</option><option>18:00</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAYMENT -->
+          <div class="checkout-section">
+            <div class="checkout-section-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              Mode de paiement
+            </div>
+            <div class="payment-options" id="payment-options">
+
+              <label class="payment-option selected" data-value="cod">
+                <input type="radio" name="payment" value="cod" checked/>
+                <div class="payment-radio"></div>
+                <div class="payment-info">
+                  <div class="payment-name">Paiement à la livraison</div>
+                  <div class="payment-desc">Payez en espèces à la réception</div>
+                </div>
+                <div class="payment-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+              </label>
+
+              <label class="payment-option" data-value="bank">
+                <input type="radio" name="payment" value="bank"/>
+                <div class="payment-radio"></div>
+                <div class="payment-info">
+                  <div class="payment-name">Virement bancaire</div>
+                  <div class="payment-desc">Détails envoyés par email après confirmation</div>
+                </div>
+                <div class="payment-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                </div>
+              </label>
+
+              <label class="payment-option" data-value="instalment">
+                <input type="radio" name="payment" value="instalment"/>
+                <div class="payment-radio"></div>
+                <div class="payment-info">
+                  <div class="payment-name">Paiement en tranches</div>
+                  <div class="payment-desc">Contactez-nous pour arrangemment</div>
+                </div>
+                <div class="payment-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+              </label>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ORDER SUMMARY -->
+        <div class="order-summary">
+          <div class="summary-card">
+            <h2 class="summary-title">Résumé</h2>
+            <div class="summary-items" id="summary-items"></div>
+            <div class="summary-line">
+              <span>Sous-total</span>
+              <span id="subtotal-display">0 TND</span>
+            </div>
+            <div class="summary-line">
+              <span>Livraison</span>
+              <span style="color:var(--success)">Gratuite</span>
+            </div>
+            <div class="summary-total">
+              <span class="summary-total-label">Total</span>
+              <span class="summary-total-price" id="total-display">0 TND</span>
+            </div>
+            <button class="place-order-btn" id="place-order-btn" onclick="placeOrder()">
+              Confirmer la commande
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-bottom" style="max-width:1000px; margin:0 auto; padding:24px;">
+        <span>© 2025 7EBR. Paiement sécurisé.</span>
+      </div>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="/js/supabase.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/nav.js"></script>
+  <script>
+    let selectedPayment = 'cod';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      renderNav();
+
+      const cart = getCart();
+      if (cart.length === 0) {
+        window.location.href = '/index.html';
+        return;
+      }
+
+      renderSummary();
+
+      // Pre-fill if logged in
+      const user = await getUser();
+      if (user) {
+        document.getElementById('checkout-email').value = user.email;
+      }
+
+      // Set min date for booking
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('booking-date').min = today;
+
+      // Payment options
+      document.querySelectorAll('.payment-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          selectedPayment = opt.dataset.value;
+          opt.querySelector('input[type="radio"]').checked = true;
+        });
+      });
+    });
+
+    function renderSummary() {
+      const cart = getCart();
+      const itemsEl = document.getElementById('summary-items');
+      const total = cartTotal();
+
+      itemsEl.innerHTML = cart.map(item => `
+        <div class="summary-item">
+          <div>
+            <div class="summary-item-name">${item.title}</div>
+            ${item.size ? `<div class="summary-item-size">Taille: ${item.size}</div>` : ''}
+            <div class="summary-item-qty">× ${item.qty}</div>
+          </div>
+          <div class="summary-item-price">${(item.price * item.qty).toFixed(3)} TND</div>
+        </div>
+      `).join('');
+
+      document.getElementById('subtotal-display').textContent = total.toFixed(3) + ' TND';
+      document.getElementById('total-display').textContent = total.toFixed(3) + ' TND';
+    }
+
+    async function placeOrder() {
+      const firstName = document.getElementById('first-name').value.trim();
+      const lastName = document.getElementById('last-name').value.trim();
+      const email = document.getElementById('checkout-email').value.trim();
+      const phone = document.getElementById('checkout-phone').value.trim();
+      const address = document.getElementById('checkout-address').value.trim();
+      const city = document.getElementById('checkout-city').value.trim();
+      const gov = document.getElementById('checkout-gov').value;
+      const bookingDate = document.getElementById('booking-date').value;
+      const bookingTime = document.getElementById('booking-time').value;
+      const errEl = document.getElementById('checkout-error');
+
+      errEl.classList.remove('show');
+
+      if (!firstName || !lastName || !email || !phone || !address || !city || !gov) {
+        errEl.textContent = 'Veuillez remplir tous les champs de livraison.';
+        errEl.classList.add('show');
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      const btn = document.getElementById('place-order-btn');
+      btn.disabled = true;
+      btn.textContent = 'Traitement en cours...';
+
+      try {
+        const user = await getUser();
+        const cart = getCart();
+
+        // Save orders to Supabase
+        const orders = cart.map(item => ({
+          user_id: user?.id || null,
+          product_id: item.id,
+          product_title: item.title,
+          amount: item.price * item.qty,
+          status: 'pending',
+          customer_name: firstName + ' ' + lastName,
+          customer_email: email,
+          customer_phone: phone,
+          address: `${address}, ${city}, ${gov}`,
+          payment_method: selectedPayment,
+          booking_date: bookingDate || null,
+          booking_time: bookingTime || null
+        }));
+
+        const { error } = await sb.from('orders').insert(orders);
+        if (error) throw error;
+
+        clearCart();
+        showSuccess(firstName);
+      } catch (err) {
+        console.error(err);
+        errEl.textContent = 'Erreur lors de la commande. Réessayez ou contactez-nous.';
+        errEl.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'Confirmer la commande';
+      }
+    }
+
+    function showSuccess(name) {
+      document.getElementById('checkout-content').innerHTML = `
+        <div class="order-success" style="grid-column:1/-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <h2>Commande confirmée, ${name}!</h2>
+          <p>Nous vous contacterons bientôt pour confirmer la livraison.<br>Merci de votre confiance en 7EBR.</p>
+          <a href="/index.html" style="display:inline-block; margin-top:8px; border:1px solid var(--ink); color:var(--ink); padding:14px 36px; font-family:'Cormorant Garamond',serif; font-size:14px; letter-spacing:3px; text-transform:uppercase; text-decoration:none; transition:all 0.25s ease;">
+            Continuer les achats
+          </a>
+        </div>`;
+    }
+  </script>
+</body>
+</html>
