@@ -54,19 +54,20 @@
     }
     @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
 
-    /* LIVRAISON INFO BANNER */
-    .livraison-banner {
+    /* PAYMENT METHOD - COD ONLY */
+    .cod-banner {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
-      background: rgba(196,168,130,0.08);
+      gap: 16px;
+      padding: 16px;
+      background: rgba(196,168,130,0.05);
       border: 1px solid var(--border-strong);
-      margin-bottom: 24px;
+      border-radius: var(--radius);
     }
-    .livraison-banner svg { width: 20px; height: 20px; color: var(--ink); flex-shrink: 0; }
-    .livraison-banner-text { font-size: 13px; color: var(--text-dim); }
-    .livraison-banner-text strong { color: var(--ink); }
+    .cod-icon { color: var(--ink); flex-shrink: 0; }
+    .cod-icon svg { width: 28px; height: 28px; }
+    .cod-text-main { font-size: 15px; font-family: 'Cormorant Garamond', serif; }
+    .cod-text-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; letter-spacing: 0.5px; }
 
     /* ORDER SUMMARY */
     .order-summary {
@@ -84,7 +85,7 @@
       font-weight: 400;
       margin-bottom: 24px;
     }
-    .summary-items { margin-bottom: 24px; }
+    .summary-items { margin-bottom: 20px; }
     .summary-item {
       display: flex;
       justify-content: space-between;
@@ -133,7 +134,9 @@
 
     .order-success {
       text-align: center;
-      padding: 60px 24px;
+      padding: 80px 24px;
+      max-width: 600px;
+      margin: 0 auto;
     }
     .order-success svg { width: 64px; height: 64px; color: var(--success); margin-bottom: 24px; }
     .order-success h2 {
@@ -142,7 +145,7 @@
       font-weight: 400;
       margin-bottom: 12px;
     }
-    .order-success p { color: var(--text-dim); font-size: 15px; margin-bottom: 24px; }
+    .order-success p { color: var(--text-dim); font-size: 15px; margin-bottom: 24px; line-height: 1.7; }
   </style>
 </head>
 <body>
@@ -156,84 +159,69 @@
 
           <div class="form-error" id="checkout-error"></div>
 
-          <!-- LIVRAISON INFO -->
-          <div class="livraison-banner">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            <div class="livraison-banner-text">
-              Livraison dans toute la Tunisie — <strong>8 DT</strong> · Paiement à la réception uniquement
-            </div>
-          </div>
-
-          <!-- INFORMATIONS DE LIVRAISON -->
+          <!-- LIVRAISON -->
           <div class="checkout-section">
             <div class="checkout-section-title">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              Informations personnelles
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              Informations de livraison
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label">Prénom</label>
+                <label class="form-label">Prénom *</label>
                 <input type="text" class="form-input" id="first-name" placeholder="Prénom"/>
               </div>
               <div class="form-group">
-                <label class="form-label">Nom</label>
+                <label class="form-label">Nom *</label>
                 <input type="text" class="form-input" id="last-name" placeholder="Nom"/>
               </div>
             </div>
             <div class="form-group">
-              <label class="form-label">Email</label>
-              <input type="email" class="form-input" id="checkout-email" placeholder="votre@email.com" autocomplete="email"/>
+              <label class="form-label">Email *</label>
+              <input type="email" class="form-input" id="checkout-email" placeholder="votre@email.com"/>
             </div>
             <div class="form-group">
-              <label class="form-label">Téléphone</label>
+              <label class="form-label">Téléphone *</label>
               <input type="tel" class="form-input" id="checkout-phone" placeholder="+216 XX XXX XXX"/>
             </div>
-          </div>
-
-          <div class="checkout-section">
-            <div class="checkout-section-title">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Adresse de livraison
-            </div>
             <div class="form-group">
-              <label class="form-label">Adresse</label>
+              <label class="form-label">Adresse *</label>
               <input type="text" class="form-input" id="checkout-address" placeholder="Rue, numéro..."/>
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label">Ville</label>
-                <input type="text" class="form-input" id="checkout-city" placeholder="Ville"/>
+                <label class="form-label">Ville *</label>
+                <input type="text" class="form-input" id="checkout-city" placeholder="Sfax"/>
               </div>
               <div class="form-group">
-                <label class="form-label">Gouvernorat</label>
+                <label class="form-label">Gouvernorat *</label>
                 <select class="form-input" id="checkout-gov">
                   <option value="">Choisir...</option>
-                  <option>Tunis</option><option>Sfax</option><option>Sousse</option>
-                  <option>Bizerte</option><option>Gabès</option><option>Ariana</option>
-                  <option>Gafsa</option><option>Monastir</option><option>Nabeul</option>
-                  <option>Kairouan</option><option>Ben Arous</option><option>Kasserine</option>
-                  <option>Médenine</option><option>Jendouba</option><option>Mahdia</option>
-                  <option>Sidi Bouzid</option><option>Kef</option><option>Tataouine</option>
-                  <option>Béja</option><option>Kébili</option><option>Siliana</option>
-                  <option>Tozeur</option><option>Zaghouan</option><option>Manouba</option>
+                  <option>Tunis</option><option>Ariana</option><option>Ben Arous</option>
+                  <option>Manouba</option><option>Nabeul</option><option>Zaghouan</option>
+                  <option>Bizerte</option><option>Béja</option><option>Jendouba</option>
+                  <option>Kef</option><option>Siliana</option><option>Sousse</option>
+                  <option>Monastir</option><option>Mahdia</option><option selected>Sfax</option>
+                  <option>Kairouan</option><option>Kasserine</option><option>Sidi Bouzid</option>
+                  <option>Gabès</option><option>Médenine</option><option>Tataouine</option>
+                  <option>Gafsa</option><option>Tozeur</option><option>Kébili</option>
                 </select>
               </div>
             </div>
           </div>
 
-          <!-- PAYMENT — LIVRAISON ONLY -->
+          <!-- PAYMENT — COD ONLY -->
           <div class="checkout-section">
             <div class="checkout-section-title">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
               Mode de paiement
             </div>
-            <div style="display:flex;align-items:center;gap:14px;padding:16px;background:rgba(196,168,130,0.06);border:1px solid var(--border-strong);">
-              <div style="width:18px;height:18px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <div style="width:6px;height:6px;background:var(--bg);border-radius:50%;"></div>
+            <div class="cod-banner">
+              <div class="cod-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
               </div>
               <div>
-                <div style="font-size:15px;font-family:'Cormorant Garamond',serif;">Paiement à la livraison</div>
-                <div style="font-size:11px;color:var(--text-dim);margin-top:2px;">Payez en espèces à la réception de votre commande</div>
+                <div class="cod-text-main">Paiement à la livraison</div>
+                <div class="cod-text-sub">Payez en espèces à la réception de votre commande</div>
               </div>
             </div>
           </div>
@@ -250,7 +238,7 @@
             </div>
             <div class="summary-line">
               <span>Livraison</span>
-              <span style="color:var(--ink)">8.000 TND</span>
+              <span style="color:var(--ink)">8 TND</span>
             </div>
             <div class="summary-total">
               <span class="summary-total-label">Total</span>
@@ -272,12 +260,16 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    emailjs.init('wmDB05phl0j3DmALP');
+  </script>
   <script src="/js/supabase.js"></script>
   <script src="/js/auth.js"></script>
   <script src="/js/cart.js"></script>
   <script src="/js/nav.js"></script>
   <script>
-    const SHIPPING_COST = 8;
+    const DELIVERY_FEE = 8;
 
     document.addEventListener('DOMContentLoaded', async () => {
       renderNav();
@@ -300,7 +292,7 @@
       const cart = getCart();
       const itemsEl = document.getElementById('summary-items');
       const subtotal = cartTotal();
-      const total = subtotal + SHIPPING_COST;
+      const total = subtotal + DELIVERY_FEE;
 
       itemsEl.innerHTML = cart.map(item => `
         <div class="summary-item">
@@ -344,59 +336,65 @@
         const user = await getUser();
         const cart = getCart();
         const subtotal = cartTotal();
+        const total = subtotal + DELIVERY_FEE;
 
+        // Save to Supabase
         const orders = cart.map(item => ({
           user_id: user?.id || null,
           product_id: item.id,
           product_title: item.title,
-          amount: item.price * item.qty,
+          amount: item.price * item.qty + DELIVERY_FEE / cart.length,
           status: 'pending',
           customer_name: firstName + ' ' + lastName,
           customer_email: email,
           customer_phone: phone,
           address: `${address}, ${city}, ${gov}`,
-          payment_method: 'cod',
-          shipping_cost: SHIPPING_COST
+          payment_method: 'cod'
         }));
 
         const { error } = await sb.from('orders').insert(orders);
         if (error) throw error;
 
+        // Send confirmation email via EmailJS
+        const cartSummary = cart.map(i => `${i.title} (${i.size || 'Sans taille'}) × ${i.qty} = ${(i.price * i.qty).toFixed(3)} TND`).join('\n');
+        try {
+          await emailjs.send('service_lixuoem', 'template_y0aocqa', {
+            customer_name: firstName + ' ' + lastName,
+            customer_phone: phone,
+            customer_email: email,
+            customer_address: `${address}, ${city}`,
+            customer_gov: gov,
+            product_name: cart.map(i => i.title).join(', '),
+            product_price: total.toFixed(3) + ' TND',
+            product_size: cart.map(i => i.size || '—').join(', '),
+            product_color: 'Voir commande',
+            to_email: 'admin@7ebr.com'
+          });
+        } catch(e) { /* email optional */ }
+
         clearCart();
-        showSuccess(firstName, subtotal + SHIPPING_COST);
+        showSuccess(firstName);
       } catch (err) {
         console.error(err);
-        errEl.textContent = 'Erreur lors de la commande. Réessayez ou contactez-nous.';
+        errEl.textContent = 'Erreur lors de la commande. Réessayez ou contactez-nous sur WhatsApp.';
         errEl.classList.add('show');
         btn.disabled = false;
         btn.textContent = 'Confirmer la commande';
       }
     }
 
-    function showSuccess(name, total) {
+    function showSuccess(name) {
       document.getElementById('checkout-content').innerHTML = `
-        <div style="max-width:600px;margin:80px auto;text-align:center;padding:0 24px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="width:72px;height:72px;color:var(--success);margin-bottom:24px;">
+        <div class="order-success">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
-          <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-weight:400;margin-bottom:12px;">
-            Commande confirmée, ${name}!
-          </h2>
-          <p style="color:var(--text-dim);font-size:15px;margin-bottom:8px;">
-            Nous vous contacterons bientôt pour confirmer la livraison.
-          </p>
-          <p style="color:var(--ink);font-size:14px;letter-spacing:1px;margin-bottom:32px;">
-            Total payé à la livraison: ${total.toFixed(3)} TND
-          </p>
-          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-            <a href="/index.html" style="border:1px solid var(--ink);color:var(--ink);padding:14px 36px;font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all 0.25s ease;">
-              Continuer les achats
-            </a>
-            <a href="https://wa.me/21696672771" target="_blank" style="border:1px solid rgba(37,211,102,0.4);color:#25d366;padding:14px 36px;font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;">
-              WhatsApp
-            </a>
-          </div>
+          <h2>Commande confirmée, ${name} !</h2>
+          <p>Nous vous contacterons bientôt pour confirmer la livraison.<br>Frais de livraison: <strong style="color:var(--ink)">8 TND</strong> — Paiement à la réception.<br><br>Merci de votre confiance en 7EBR.</p>
+          <a href="/index.html" style="display:inline-block; margin-top:8px; background:var(--ink); color:var(--bg); padding:14px 36px; font-family:'Cormorant Garamond',serif; font-size:14px; letter-spacing:3px; text-transform:uppercase; text-decoration:none; transition:all 0.25s ease;">
+            Continuer les achats
+          </a>
         </div>`;
     }
   </script>
