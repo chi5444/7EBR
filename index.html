@@ -3,137 +3,56 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>7EBR — Vêtements Islamiques</title>
-  <meta name="description" content="7EBR — نكتب الأثر، نلبس المعنى. Collection de vêtements à motifs islamiques."/>
+  <title>7EBR — حبر · Collection Islamique</title>
+  <meta name="description" content="7EBR حبر — نكتب الأثر، نلبس المعنى. Collection de vêtements à calligraphie islamique."/>
   <link rel="stylesheet" href="/css/style.css"/>
   <style>
-    .categories-strip {
-      display: flex;
-      gap: 0;
-      overflow-x: auto;
-      scrollbar-width: none;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg2);
-      position: sticky;
-      top: var(--nav-h);
-      z-index: 90;
-    }
-    .categories-strip::-webkit-scrollbar { display: none; }
-    .cat-tab {
-      flex-shrink: 0;
-      padding: 14px 24px;
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      cursor: pointer;
-      border: none;
-      background: none;
-      border-bottom: 2px solid transparent;
-      transition: all var(--transition);
-      font-family: 'Cairo', sans-serif;
-      white-space: nowrap;
-    }
-    .cat-tab:hover { color: var(--text); }
-    .cat-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
+    /* ── HERO ── */
+    .hero { background: var(--parchment); }
+    .geo-shape { position:absolute; border:1px solid rgba(26,20,16,0.055); }
+    .geo-1 { width:200px;height:200px;top:10%;left:5%;transform:rotate(45deg); }
+    .geo-2 { width:300px;height:300px;top:20%;right:8%;transform:rotate(22.5deg); }
+    .geo-3 { width:150px;height:150px;bottom:15%;left:18%;transform:rotate(30deg); }
+    .geo-4 { width:420px;height:420px;bottom:-80px;right:-80px;border-radius:50%; }
 
-    .search-row {
-      max-width: 1200px;
-      margin: 32px auto 0;
-      padding: 0 24px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-    .search-row .search-wrap { max-width: 360px; flex: 1; }
+    /* ── CATEGORIES ── */
+    .categories-strip { display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--cream-dark);background:var(--cream-card);position:sticky;top:var(--nav-h);z-index:90; }
+    .categories-strip::-webkit-scrollbar { display:none; }
+    .cat-tab { flex-shrink:0;padding:13px 22px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all var(--transition);font-family:'Cairo',sans-serif;white-space:nowrap; }
+    .cat-tab:hover { color:var(--ink-mid); }
+    .cat-tab.active { color:var(--ink);border-bottom-color:var(--ink); }
 
+    /* ── PRODUCTS SECTION ── */
     .products-section { padding-bottom: 80px; }
 
     .section-label {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 32px 24px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width:1200px; margin:0 auto;
+      padding:26px 24px 16px;
+      display:flex; align-items:center; justify-content:space-between;
     }
-    .section-label h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(22px, 4vw, 32px);
-      font-weight: 400;
-    }
-    .section-label h2 em { color: var(--ink); font-style: italic; }
-    .products-count {
-      font-size: 12px;
-      color: var(--text-faint);
-      letter-spacing: 1px;
-      font-family: 'Cairo', sans-serif;
-    }
-
-    /* Islamic geometric hero pattern */
-    .hero-pattern {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .geo-shape {
-      position: absolute;
-      border: 1px solid rgba(196,168,130,0.07);
-    }
-    .geo-1 { width: 200px; height: 200px; top: 10%; left: 5%; transform: rotate(45deg); }
-    .geo-2 { width: 300px; height: 300px; top: 20%; right: 8%; transform: rotate(22.5deg); border-radius: 0; }
-    .geo-3 { width: 150px; height: 150px; bottom: 15%; left: 15%; transform: rotate(30deg); }
-    .geo-4 { width: 400px; height: 400px; bottom: -100px; right: -100px; border-radius: 50%; }
-
-    /* Marquee */
-    .marquee-wrap {
-      overflow: hidden;
-      background: var(--bg3);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 0;
-    }
-    .marquee-inner {
-      display: flex;
-      gap: 60px;
-      animation: marquee 25s linear infinite;
-      width: max-content;
-    }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    .marquee-item {
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      white-space: nowrap;
-      font-family: 'Cairo', sans-serif;
-    }
-    .marquee-dot { width: 4px; height: 4px; background: var(--ink); border-radius: 50%; opacity: 0.5; }
+    .section-label h2 { font-family:'Playfair Display',serif; font-size:clamp(20px,3.5vw,30px); font-weight:400; color:var(--ink); }
+    .section-label h2 em { font-style:italic; color:var(--accent-deep); }
+    .products-count { font-size:12px;color:var(--ink-faint);letter-spacing:1px;font-family:'Cairo',sans-serif; }
   </style>
 </head>
 <body>
   <div id="main-nav"></div>
+
   <main class="page">
 
     <!-- HERO -->
     <section class="hero">
-      <div class="hero-pattern">
-        <div class="geo-shape geo-1"></div>
-        <div class="geo-shape geo-2"></div>
-        <div class="geo-shape geo-3"></div>
-        <div class="geo-shape geo-4"></div>
-      </div>
-      <div class="hero-bg"></div>
-      <div class="hero-ornament"></div>
-      <div class="hero-ornament"></div>
-      <div class="hero-ornament"></div>
+      <div class="geo-shape geo-1"></div>
+      <div class="geo-shape geo-2"></div>
+      <div class="geo-shape geo-3"></div>
+      <div class="geo-shape geo-4"></div>
+      <div class="hero-ornament hero-ornament-1"></div>
+      <div class="hero-ornament hero-ornament-2"></div>
+      <div class="hero-ornament hero-ornament-3"></div>
       <div class="hero-content">
-        <img src="/logo.jpeg" alt="7EBR" class="hero-logo-img" onerror="this.style.display='none';document.getElementById('hero-brand').style.display='block'">
-        <div id="hero-brand" style="display:none; font-family:'Playfair Display',serif; font-size:clamp(48px,10vw,96px); color:var(--ink); letter-spacing:12px; text-transform:uppercase; margin-bottom:16px; animation:fadeUp 1s ease forwards;">7EBR</div>
+        <img src="/logo.jpeg" alt="7EBR حبر" class="hero-logo-img"
+          onerror="this.style.display='none';document.getElementById('hero-fallback').style.display='block'">
+        <div id="hero-fallback" style="display:none;font-family:'Playfair Display',serif;font-size:clamp(48px,10vw,88px);color:var(--ink);letter-spacing:10px;text-transform:uppercase;margin-bottom:16px;animation:fadeUp 1s ease forwards;">7EBR</div>
         <p class="hero-sub">نكتب الأثر، نلبس المعنى</p>
         <a href="#collection" class="hero-cta">
           Découvrir la collection
@@ -145,21 +64,23 @@
     <!-- MARQUEE -->
     <div class="marquee-wrap">
       <div class="marquee-inner">
-        <span class="marquee-item">Nouvelle Collection <span class="marquee-dot"></span></span>
-        <span class="marquee-item">Calligraphie Islamique <span class="marquee-dot"></span></span>
-        <span class="marquee-item">Fait avec Amour <span class="marquee-dot"></span></span>
-        <span class="marquee-item">7EBR حبر <span class="marquee-dot"></span></span>
-        <span class="marquee-item">Livraison Tunisie <span class="marquee-dot"></span></span>
-        <span class="marquee-item">Nouvelle Collection <span class="marquee-dot"></span></span>
-        <span class="marquee-item">Calligraphie Islamique <span class="marquee-dot"></span></span>
-        <span class="marquee-item">Fait avec Amour <span class="marquee-dot"></span></span>
-        <span class="marquee-item">7EBR حبر <span class="marquee-dot"></span></span>
-        <span class="marquee-item">Livraison Tunisie <span class="marquee-dot"></span></span>
+        <span class="marquee-item">Nouvelle Collection<span class="marquee-dot"></span></span>
+        <span class="marquee-item">Calligraphie Islamique<span class="marquee-dot"></span></span>
+        <span class="marquee-item">Fait avec Amour<span class="marquee-dot"></span></span>
+        <span class="marquee-item">7EBR حبر<span class="marquee-dot"></span></span>
+        <span class="marquee-item">Livraison Tunisie 8 DT<span class="marquee-dot"></span></span>
+        <span class="marquee-item">Paiement à la livraison<span class="marquee-dot"></span></span>
+        <span class="marquee-item">Nouvelle Collection<span class="marquee-dot"></span></span>
+        <span class="marquee-item">Calligraphie Islamique<span class="marquee-dot"></span></span>
+        <span class="marquee-item">Fait avec Amour<span class="marquee-dot"></span></span>
+        <span class="marquee-item">7EBR حبر<span class="marquee-dot"></span></span>
+        <span class="marquee-item">Livraison Tunisie 8 DT<span class="marquee-dot"></span></span>
+        <span class="marquee-item">Paiement à la livraison<span class="marquee-dot"></span></span>
       </div>
     </div>
 
     <!-- CATEGORY TABS -->
-    <div class="categories-strip" id="categories-strip">
+    <div class="categories-strip" id="cat-strip">
       <button class="cat-tab active" data-cat="">Tout</button>
       <button class="cat-tab" data-cat="t-shirt">T-Shirts</button>
       <button class="cat-tab" data-cat="sweatshirt">Sweatshirts</button>
@@ -173,7 +94,7 @@
       <div class="search-row">
         <div class="search-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
-          <input type="text" class="search-input" id="search-input" placeholder="Rechercher..."/>
+          <input type="text" class="search-input" id="search-input" placeholder="Rechercher un produit..."/>
         </div>
       </div>
 
@@ -183,10 +104,7 @@
       </div>
 
       <div id="products-container">
-        <div class="loading">
-          <div class="spinner"></div>
-          Chargement...
-        </div>
+        <div class="loading"><div class="spinner"></div>Chargement...</div>
       </div>
     </section>
 
@@ -194,9 +112,9 @@
     <div class="ornament-divider">
       <div class="ornament-line"></div>
       <div class="ornament-icon">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
-          <polygon points="20,2 24,14 37,14 27,22 31,34 20,27 9,34 13,22 3,14 16,14" stroke="currentColor" stroke-width="1" fill="none" opacity="0.7"/>
-          <circle cx="20" cy="20" r="4" stroke="currentColor" stroke-width="0.8" fill="none"/>
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+          <polygon points="20,2 23,13 35,13 26,20 29,31 20,25 11,31 14,20 5,13 17,13" stroke="currentColor" stroke-width="1" fill="none" opacity="0.7"/>
+          <circle cx="20" cy="20" r="3.5" stroke="currentColor" stroke-width="0.8" fill="none"/>
         </svg>
       </div>
       <div class="ornament-line"></div>
@@ -207,25 +125,39 @@
       <div class="footer-inner">
         <div class="footer-brand">
           <h3>7EBR — حبر</h3>
-          <p>Une marque de vêtements inspirée par la calligraphie islamique.<br>نكتب الأثر، نلبس المعنى</p>
+          <p>Une marque de vêtements inspirée<br>par la calligraphie islamique.<br>نكتب الأثر، نلبس المعنى</p>
+          <div class="footer-social">
+            <a href="https://wa.me/96672771" target="_blank" rel="noopener" title="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.167L2 22l4.985-1.399A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.962 7.962 0 0 1-4.064-1.112l-.292-.173-3.017.847.857-2.94-.191-.302A7.947 7.947 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.588 8-8 8z"/></svg>
+            </a>
+            <a href="https://instagram.com/7ebr.store" target="_blank" rel="noopener" title="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="https://facebook.com/hebrstore" target="_blank" rel="noopener" title="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://tiktok.com/@7ebr.store" target="_blank" rel="noopener" title="TikTok">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+            </a>
+          </div>
         </div>
         <div class="footer-col">
-          <h4>Navigation</h4>
-          <a href="/index.html">Accueil</a>
+          <h4>Collection</h4>
           <a href="/index.html?cat=t-shirt">T-Shirts</a>
           <a href="/index.html?cat=sweatshirt">Sweatshirts</a>
           <a href="/index.html?cat=hoodie">Hoodies</a>
+          <a href="/index.html?cat=pantalon">Pantalons</a>
+          <a href="/index.html?cat=accessoire">Accessoires</a>
         </div>
         <div class="footer-col">
-          <h4>Réseaux Sociaux</h4>
-          <a href="https://wa.me/21696672771" target="_blank">WhatsApp</a>
-          <a href="https://instagram.com/7ebr.store" target="_blank">@7ebr.store</a>
-          <a href="https://facebook.com/hebrstore" target="_blank">Facebook</a>
-          <a href="https://tiktok.com/@7ebr.store" target="_blank">TikTok</a>
+          <h4>Compte</h4>
+          <a href="/login.html">Connexion</a>
+          <a href="/register.html">Créer un compte</a>
+          <a href="/checkout.html">Commander</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2025 7EBR. Tous droits réservés.</span>
+        <span>© 2025 7EBR حبر. Tous droits réservés.</span>
         <span>Fait avec passion en Tunisie</span>
       </div>
     </footer>
@@ -239,19 +171,18 @@
   <script src="/js/products.js"></script>
   <script src="/js/nav.js"></script>
   <script>
-    let currentCategory = '';
+    let currentCat    = '';
     let currentSearch = '';
 
     document.addEventListener('DOMContentLoaded', () => {
       renderNav('home');
 
-      // Check URL params
+      // URL param ?cat=
       const params = new URLSearchParams(window.location.search);
       if (params.get('cat')) {
-        currentCategory = params.get('cat');
-        document.querySelectorAll('.cat-tab').forEach(t => {
-          t.classList.toggle('active', t.dataset.cat === currentCategory);
-        });
+        currentCat = params.get('cat');
+        document.querySelectorAll('.cat-tab').forEach(t =>
+          t.classList.toggle('active', t.dataset.cat === currentCat));
       }
 
       loadProducts();
@@ -261,14 +192,14 @@
         btn.addEventListener('click', () => {
           document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
           btn.classList.add('active');
-          currentCategory = btn.dataset.cat;
+          currentCat = btn.dataset.cat;
           loadProducts();
-          document.getElementById('collection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          document.getElementById('collection').scrollIntoView({ behavior:'smooth', block:'start' });
         });
       });
 
       // Search
-      document.getElementById('search-input').addEventListener('input', (e) => {
+      document.getElementById('search-input').addEventListener('input', e => {
         currentSearch = e.target.value.trim();
         loadProducts();
       });
@@ -277,30 +208,33 @@
     async function loadProducts(override = {}) {
       const container = document.getElementById('products-container');
       container.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
-
       try {
         const filters = {
-          category: override.search !== undefined ? currentCategory : (override.category ?? currentCategory),
-          search: override.search ?? currentSearch
+          category: override.category ?? currentCat,
+          search:   override.search   ?? currentSearch
         };
-
         const products = await fetchProducts(filters);
-        const countEl = document.getElementById('products-count');
+        const countEl  = document.getElementById('products-count');
         if (countEl) countEl.textContent = products.length + ' article' + (products.length !== 1 ? 's' : '');
 
-        if (products.length === 0) {
+        if (!products.length) {
           container.innerHTML = `
             <div class="empty-state">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 3H8v4h8V3z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                <path d="M16 3H8v4h8V3z"/>
+              </svg>
               <h3>Aucun produit trouvé</h3>
               <p>Essayez une autre catégorie ou recherche.</p>
             </div>`;
           return;
         }
-
         container.innerHTML = `<div class="products-grid">${products.map(renderProductCard).join('')}</div>`;
-      } catch (err) {
-        container.innerHTML = `<div class="empty-state"><p style="color:var(--danger)">Erreur de chargement. Vérifiez votre connexion.</p></div>`;
+      } catch(err) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <p style="color:var(--danger)">Erreur de chargement. Vérifiez votre connexion.</p>
+          </div>`;
         console.error(err);
       }
     }

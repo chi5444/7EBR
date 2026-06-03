@@ -7,159 +7,73 @@
   <link rel="stylesheet" href="/css/style.css"/>
   <style>
     .checkout-page {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 60px 24px 100px;
+      max-width: 980px; margin: 0 auto;
+      padding: 50px 24px 100px;
       display: grid;
       grid-template-columns: 1.4fr 1fr;
-      gap: 48px;
-      align-items: start;
+      gap: 44px; align-items: start;
     }
-    @media (max-width: 768px) {
-      .checkout-page { grid-template-columns: 1fr; gap: 32px; padding: 32px 16px 80px; }
-      .order-summary { order: -1; }
+    @media(max-width:768px){
+      .checkout-page{grid-template-columns:1fr;gap:28px;padding:28px 16px 80px;}
+      .order-summary{order:-1;}
     }
+    .checkout-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;margin-bottom:28px;color:var(--ink);}
+    .checkout-title em{font-style:italic;color:var(--accent-deep);}
+    .checkout-section{background:var(--cream-card);border:1px solid var(--cream-dark);padding:26px;margin-bottom:18px;position:relative;}
+    .checkout-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+    .checkout-section-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-deep);margin-bottom:18px;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:9px;}
+    .checkout-section-title svg{width:15px;height:15px;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    @media(max-width:480px){.form-row{grid-template-columns:1fr;}}
 
-    .checkout-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 400;
-      margin-bottom: 32px;
-    }
-    .checkout-title em { color: var(--ink); font-style: italic; }
+    /* SUMMARY */
+    .order-summary{position:sticky;top:calc(var(--nav-h) + 24px);}
+    .summary-card{background:var(--cream-card);border:1px solid var(--cream-dark);padding:26px;position:relative;}
+    .summary-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+    .summary-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:400;margin-bottom:20px;color:var(--ink);}
+    .summary-item{display:flex;justify-content:space-between;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--cream-dark);gap:10px;}
+    .summary-item-info{flex:1;}
+    .summary-item-name{font-size:14px;color:var(--ink-mid);}
+    .summary-item-size{font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+    .summary-item-qty{font-size:11px;color:var(--ink-faint);margin-top:2px;}
+    .summary-item-price{font-size:14px;color:var(--accent-deep);white-space:nowrap;}
+    .summary-line{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-soft);margin-top:10px;}
+    .summary-line.delivery{color:var(--ink-mid);font-weight:500;}
+    .summary-total{display:flex;justify-content:space-between;padding-top:14px;border-top:1px solid var(--cream-dark);margin-top:10px;}
+    .summary-total-label{font-family:'Playfair Display',serif;font-size:15px;color:var(--ink);}
+    .summary-total-price{font-size:22px;color:var(--ink);font-family:'Cormorant Garamond',serif;}
+    .place-order-btn{width:100%;background:var(--ink);color:var(--cream);border:none;padding:16px;font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-top:18px;transition:all var(--transition);border-radius:4px;}
+    .place-order-btn:hover{background:var(--ink-mid);}
+    .place-order-btn:disabled{opacity:0.5;cursor:not-allowed;}
 
-    .checkout-section {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      padding: 28px;
-      margin-bottom: 20px;
-    }
-    .checkout-section-title {
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-      margin-bottom: 20px;
-      font-family: 'Cairo', sans-serif;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .checkout-section-title svg { width: 16px; height: 16px; }
+    /* SUCCESS */
+    .order-success{text-align:center;padding:80px 24px;max-width:500px;margin:0 auto;}
+    .order-success-icon{width:64px;height:64px;background:rgba(58,107,74,0.1);border:1px solid rgba(58,107,74,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;}
+    .order-success-icon svg{width:32px;height:32px;color:var(--success);}
+    .order-success h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;margin-bottom:10px;color:var(--ink);}
+    .order-success p{color:var(--ink-soft);font-size:15px;margin-bottom:28px;line-height:1.7;}
+    .continue-btn{display:inline-block;border:1px solid var(--ink);color:var(--ink);padding:13px 36px;font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all var(--transition);}
+    .continue-btn:hover{background:var(--ink);color:var(--cream);}
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
-
-    /* PAYMENT METHOD - COD ONLY */
-    .cod-banner {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px;
-      background: rgba(196,168,130,0.05);
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius);
-    }
-    .cod-icon { color: var(--ink); flex-shrink: 0; }
-    .cod-icon svg { width: 28px; height: 28px; }
-    .cod-text-main { font-size: 15px; font-family: 'Cormorant Garamond', serif; }
-    .cod-text-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; letter-spacing: 0.5px; }
-
-    /* ORDER SUMMARY */
-    .order-summary {
-      position: sticky;
-      top: calc(var(--nav-h) + 24px);
-    }
-    .summary-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      padding: 28px;
-    }
-    .summary-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 18px;
-      font-weight: 400;
-      margin-bottom: 24px;
-    }
-    .summary-items { margin-bottom: 20px; }
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-      gap: 12px;
-    }
-    .summary-item-name { font-size: 14px; color: var(--text); flex: 1; }
-    .summary-item-size { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
-    .summary-item-qty { font-size: 12px; color: var(--ink-dim); }
-    .summary-item-price { font-size: 14px; color: var(--ink); white-space: nowrap; }
-    .summary-line {
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
-      color: var(--text-dim);
-      margin-bottom: 8px;
-    }
-    .summary-total {
-      display: flex;
-      justify-content: space-between;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      margin-top: 8px;
-    }
-    .summary-total-label { font-family: 'Playfair Display', serif; font-size: 16px; }
-    .summary-total-price { font-size: 24px; color: var(--ink); font-family: 'Cormorant Garamond', serif; }
-
-    .place-order-btn {
-      width: 100%;
-      background: var(--ink);
-      color: var(--bg);
-      border: none;
-      padding: 18px;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 15px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: all var(--transition);
-    }
-    .place-order-btn:hover { background: var(--ink-light); }
-    .place-order-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    .order-success {
-      text-align: center;
-      padding: 80px 24px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .order-success svg { width: 64px; height: 64px; color: var(--success); margin-bottom: 24px; }
-    .order-success h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 400;
-      margin-bottom: 12px;
-    }
-    .order-success p { color: var(--text-dim); font-size: 15px; margin-bottom: 24px; line-height: 1.7; }
+    /* COD BOX */
+    .cod-box{display:flex;align-items:center;gap:14px;padding:16px;background:var(--parchment);border:1px solid var(--cream-dark);border-radius:4px;}
+    .cod-icon{width:42px;height:42px;background:var(--cream-deep);border:1px solid var(--cream-dark);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .cod-icon svg{width:20px;height:20px;color:var(--accent-deep);}
+    .cod-label{font-size:14px;color:var(--ink);font-family:'Cormorant Garamond',serif;}
+    .cod-desc{font-size:11px;color:var(--ink-faint);margin-top:2px;font-family:'Cairo',sans-serif;}
   </style>
 </head>
 <body>
   <div id="main-nav"></div>
   <main class="page">
-    <div id="checkout-content">
+    <div id="checkout-root">
       <div class="checkout-page">
-        <!-- FORM SIDE -->
+        <!-- FORM -->
         <div class="checkout-form">
           <h1 class="checkout-title">Finaliser la <em>commande</em></h1>
-
           <div class="form-error" id="checkout-error"></div>
 
-          <!-- LIVRAISON -->
+          <!-- LIVRAISON INFO -->
           <div class="checkout-section">
             <div class="checkout-section-title">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
@@ -185,43 +99,37 @@
             </div>
             <div class="form-group">
               <label class="form-label">Adresse *</label>
-              <input type="text" class="form-input" id="checkout-address" placeholder="Rue, numéro..."/>
+              <input type="text" class="form-input" id="checkout-address" placeholder="Rue, numéro, ville..."/>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Ville *</label>
-                <input type="text" class="form-input" id="checkout-city" placeholder="Sfax"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Gouvernorat *</label>
-                <select class="form-input" id="checkout-gov">
-                  <option value="">Choisir...</option>
-                  <option>Tunis</option><option>Ariana</option><option>Ben Arous</option>
-                  <option>Manouba</option><option>Nabeul</option><option>Zaghouan</option>
-                  <option>Bizerte</option><option>Béja</option><option>Jendouba</option>
-                  <option>Kef</option><option>Siliana</option><option>Sousse</option>
-                  <option>Monastir</option><option>Mahdia</option><option selected>Sfax</option>
-                  <option>Kairouan</option><option>Kasserine</option><option>Sidi Bouzid</option>
-                  <option>Gabès</option><option>Médenine</option><option>Tataouine</option>
-                  <option>Gafsa</option><option>Tozeur</option><option>Kébili</option>
-                </select>
-              </div>
+            <div class="form-group">
+              <label class="form-label">Gouvernorat *</label>
+              <select class="form-input" id="checkout-gov">
+                <option value="">Choisir votre gouvernorat...</option>
+                <option>Tunis</option><option>Ariana</option><option>Ben Arous</option>
+                <option>Manouba</option><option>Nabeul</option><option>Zaghouan</option>
+                <option>Bizerte</option><option>Béja</option><option>Jendouba</option>
+                <option>Kef</option><option>Siliana</option><option>Sousse</option>
+                <option>Monastir</option><option>Mahdia</option><option>Sfax</option>
+                <option>Kairouan</option><option>Kasserine</option><option>Sidi Bouzid</option>
+                <option>Gabès</option><option>Médenine</option><option>Tataouine</option>
+                <option>Gafsa</option><option>Tozeur</option><option>Kébili</option>
+              </select>
             </div>
           </div>
 
-          <!-- PAYMENT — COD ONLY -->
+          <!-- PAYMENT -->
           <div class="checkout-section">
             <div class="checkout-section-title">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
               Mode de paiement
             </div>
-            <div class="cod-banner">
+            <div class="cod-box">
               <div class="cod-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
               </div>
               <div>
-                <div class="cod-text-main">Paiement à la livraison</div>
-                <div class="cod-text-sub">Payez en espèces à la réception de votre commande</div>
+                <div class="cod-label">Paiement à la livraison</div>
+                <div class="cod-desc">Payez en espèces à la réception de votre colis</div>
               </div>
             </div>
           </div>
@@ -230,19 +138,19 @@
         <!-- ORDER SUMMARY -->
         <div class="order-summary">
           <div class="summary-card">
-            <h2 class="summary-title">Résumé</h2>
-            <div class="summary-items" id="summary-items"></div>
+            <div class="summary-title">Résumé de commande</div>
+            <div id="summary-items"></div>
             <div class="summary-line">
               <span>Sous-total</span>
-              <span id="subtotal-display">0 TND</span>
+              <span id="subtotal-val">0 TND</span>
             </div>
-            <div class="summary-line">
+            <div class="summary-line delivery">
               <span>Livraison</span>
-              <span style="color:var(--ink)">8 TND</span>
+              <span>8,000 TND</span>
             </div>
             <div class="summary-total">
               <span class="summary-total-label">Total</span>
-              <span class="summary-total-price" id="total-display">0 TND</span>
+              <span class="summary-total-price" id="total-val">0 TND</span>
             </div>
             <button class="place-order-btn" id="place-order-btn" onclick="placeOrder()">
               Confirmer la commande
@@ -253,148 +161,104 @@
     </div>
 
     <footer class="footer">
-      <div class="footer-bottom" style="max-width:1000px; margin:0 auto; padding:24px;">
-        <span>© 2025 7EBR. Paiement à la livraison.</span>
+      <div class="footer-bottom" style="max-width:980px;margin:0 auto;padding:22px 24px;">
+        <span>© 2025 7EBR. Paiement sécurisé à la livraison.</span>
       </div>
     </footer>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
-    emailjs.init('wmDB05phl0j3DmALP');
-  </script>
   <script src="/js/supabase.js"></script>
   <script src="/js/auth.js"></script>
   <script src="/js/cart.js"></script>
   <script src="/js/nav.js"></script>
   <script>
-    const DELIVERY_FEE = 8;
+    const DELIVERY = 8;
 
     document.addEventListener('DOMContentLoaded', async () => {
       renderNav();
-
       const cart = getCart();
-      if (cart.length === 0) {
-        window.location.href = '/index.html';
-        return;
-      }
-
+      if (!cart.length) { window.location.href='/index.html'; return; }
       renderSummary();
-
       const user = await getUser();
-      if (user) {
-        document.getElementById('checkout-email').value = user.email;
-      }
+      if (user) document.getElementById('checkout-email').value = user.email;
     });
 
     function renderSummary() {
       const cart = getCart();
-      const itemsEl = document.getElementById('summary-items');
-      const subtotal = cartTotal();
-      const total = subtotal + DELIVERY_FEE;
-
-      itemsEl.innerHTML = cart.map(item => `
+      const sub = cartTotal();
+      document.getElementById('summary-items').innerHTML = cart.map(item => `
         <div class="summary-item">
-          <div>
+          <div class="summary-item-info">
             <div class="summary-item-name">${item.title}</div>
             ${item.size ? `<div class="summary-item-size">Taille: ${item.size}</div>` : ''}
             <div class="summary-item-qty">× ${item.qty}</div>
           </div>
-          <div class="summary-item-price">${(item.price * item.qty).toFixed(3)} TND</div>
-        </div>
-      `).join('');
-
-      document.getElementById('subtotal-display').textContent = subtotal.toFixed(3) + ' TND';
-      document.getElementById('total-display').textContent = total.toFixed(3) + ' TND';
+          <div class="summary-item-price">${(item.price*item.qty).toFixed(3)} TND</div>
+        </div>`).join('');
+      document.getElementById('subtotal-val').textContent = sub.toFixed(3) + ' TND';
+      document.getElementById('total-val').textContent = (sub + DELIVERY).toFixed(3) + ' TND';
     }
 
     async function placeOrder() {
-      const firstName = document.getElementById('first-name').value.trim();
-      const lastName = document.getElementById('last-name').value.trim();
-      const email = document.getElementById('checkout-email').value.trim();
-      const phone = document.getElementById('checkout-phone').value.trim();
-      const address = document.getElementById('checkout-address').value.trim();
-      const city = document.getElementById('checkout-city').value.trim();
-      const gov = document.getElementById('checkout-gov').value;
-      const errEl = document.getElementById('checkout-error');
+      const fn  = document.getElementById('first-name').value.trim();
+      const ln  = document.getElementById('last-name').value.trim();
+      const em  = document.getElementById('checkout-email').value.trim();
+      const ph  = document.getElementById('checkout-phone').value.trim();
+      const ad  = document.getElementById('checkout-address').value.trim();
+      const gv  = document.getElementById('checkout-gov').value;
+      const err = document.getElementById('checkout-error');
+      err.classList.remove('show');
 
-      errEl.classList.remove('show');
-
-      if (!firstName || !lastName || !email || !phone || !address || !city || !gov) {
-        errEl.textContent = 'Veuillez remplir tous les champs de livraison.';
-        errEl.classList.add('show');
-        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (!fn||!ln||!em||!ph||!ad||!gv) {
+        err.textContent = 'Veuillez remplir tous les champs obligatoires.';
+        err.classList.add('show');
+        err.scrollIntoView({behavior:'smooth',block:'center'});
         return;
       }
 
       const btn = document.getElementById('place-order-btn');
-      btn.disabled = true;
-      btn.textContent = 'Traitement en cours...';
+      btn.disabled = true; btn.textContent = 'Traitement...';
 
       try {
         const user = await getUser();
         const cart = getCart();
-        const subtotal = cartTotal();
-        const total = subtotal + DELIVERY_FEE;
-
-        // Save to Supabase
         const orders = cart.map(item => ({
           user_id: user?.id || null,
           product_id: item.id,
           product_title: item.title,
-          amount: item.price * item.qty + DELIVERY_FEE / cart.length,
+          amount: item.price * item.qty,
           status: 'pending',
-          customer_name: firstName + ' ' + lastName,
-          customer_email: email,
-          customer_phone: phone,
-          address: `${address}, ${city}, ${gov}`,
+          customer_name: fn + ' ' + ln,
+          customer_email: em,
+          customer_phone: ph,
+          address: ad + ', ' + gv,
           payment_method: 'cod'
         }));
-
         const { error } = await sb.from('orders').insert(orders);
         if (error) throw error;
-
-        // Send confirmation email via EmailJS
-        const cartSummary = cart.map(i => `${i.title} (${i.size || 'Sans taille'}) × ${i.qty} = ${(i.price * i.qty).toFixed(3)} TND`).join('\n');
-        try {
-          await emailjs.send('service_lixuoem', 'template_y0aocqa', {
-            customer_name: firstName + ' ' + lastName,
-            customer_phone: phone,
-            customer_email: email,
-            customer_address: `${address}, ${city}`,
-            customer_gov: gov,
-            product_name: cart.map(i => i.title).join(', '),
-            product_price: total.toFixed(3) + ' TND',
-            product_size: cart.map(i => i.size || '—').join(', '),
-            product_color: 'Voir commande',
-            to_email: 'admin@7ebr.com'
-          });
-        } catch(e) { /* email optional */ }
-
         clearCart();
-        showSuccess(firstName);
-      } catch (err) {
-        console.error(err);
-        errEl.textContent = 'Erreur lors de la commande. Réessayez ou contactez-nous sur WhatsApp.';
-        errEl.classList.add('show');
-        btn.disabled = false;
-        btn.textContent = 'Confirmer la commande';
+        showSuccess(fn);
+      } catch(e) {
+        console.error(e);
+        err.textContent = 'Erreur lors de la commande. Réessayez ou contactez-nous.';
+        err.classList.add('show');
+        btn.disabled = false; btn.textContent = 'Confirmer la commande';
       }
     }
 
     function showSuccess(name) {
-      document.getElementById('checkout-content').innerHTML = `
+      document.getElementById('checkout-root').innerHTML = `
         <div class="order-success">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-            <polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
-          <h2>Commande confirmée, ${name} !</h2>
-          <p>Nous vous contacterons bientôt pour confirmer la livraison.<br>Frais de livraison: <strong style="color:var(--ink)">8 TND</strong> — Paiement à la réception.<br><br>Merci de votre confiance en 7EBR.</p>
-          <a href="/index.html" style="display:inline-block; margin-top:8px; background:var(--ink); color:var(--bg); padding:14px 36px; font-family:'Cormorant Garamond',serif; font-size:14px; letter-spacing:3px; text-transform:uppercase; text-decoration:none; transition:all 0.25s ease;">
-            Continuer les achats
-          </a>
+          <div class="order-success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h2>Merci ${name} !</h2>
+          <p>Votre commande a bien été enregistrée.<br>Nous vous contacterons bientôt pour confirmer la livraison.<br><br>Frais de livraison: <strong>8 DT</strong></p>
+          <a href="/index.html" class="continue-btn">Continuer les achats</a>
         </div>`;
     }
   </script>

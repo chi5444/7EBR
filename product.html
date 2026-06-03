@@ -6,448 +6,367 @@
   <title>Produit — 7EBR</title>
   <link rel="stylesheet" href="/css/style.css"/>
   <style>
+    /* ── PAGE LAYOUT ── */
     .product-page {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 60px 24px 100px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: start;
-    }
-    @media (max-width: 768px) {
-      .product-page { grid-template-columns: 1fr; gap: 0; padding: 0 0 80px; }
+      padding: 0 0 100px;
     }
 
-    /* GALLERY */
-    .product-gallery {
-      position: sticky;
-      top: calc(var(--nav-h) + 24px);
-    }
-    @media (max-width: 768px) { .product-gallery { position: static; } }
-
-    .product-main-img {
-      aspect-ratio: 3/4;
-      background: var(--bg2);
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .product-main-img img {
+    /* ── IMAGE HERO (full-width like Pull Up) ── */
+    .product-hero-img {
       width: 100%;
-      height: 100%;
+      aspect-ratio: 1/1;
+      background: var(--cream-deep);
+      position: relative;
+      overflow: hidden;
+    }
+    .product-hero-img img {
+      width: 100%; height: 100%;
       object-fit: cover;
       display: block;
     }
-    .product-main-img .placeholder-svg { width: 60%; height: 60%; opacity: 0.3; }
-    .product-badge-big {
-      position: absolute;
-      top: 16px; left: 16px;
-      background: var(--ink);
-      color: var(--bg);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 6px 12px;
-      font-family: 'Cairo', sans-serif;
-      font-weight: 700;
-      z-index: 2;
+    .product-hero-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--cream-deep);
+    }
+    .product-hero-placeholder svg { width: 80px; height: 80px; opacity: 0.2; color: var(--ink); }
+
+    .product-badge-hero {
+      position: absolute; top: 14px; left: 14px;
+      background: var(--ink); color: var(--cream);
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; padding: 5px 11px;
+      font-family: 'Cairo', sans-serif; font-weight: 600;
     }
 
-    /* INFO */
-    .product-info {
-      padding: 24px 24px 0;
+    /* ── BACK BUTTON ── */
+    .back-bar {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--cream-dark);
+      background: var(--cream-card);
     }
-    @media (min-width: 769px) { .product-info { padding: 8px 0 0; } }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--ink-soft); text-decoration: none;
+      font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+      transition: color var(--transition); font-family: 'Cairo', sans-serif;
+    }
+    .back-link:hover { color: var(--ink); }
+    .back-link svg { width: 15px; height: 15px; }
 
-    .product-category {
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-      margin-bottom: 12px;
-      font-family: 'Cairo', sans-serif;
+    /* ── PRODUCT DETAILS SECTION ── */
+    .product-details {
+      padding: 24px 20px 0;
+      background: var(--parchment);
     }
-    .product-name {
+
+    .product-category-tag {
+      font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--ink-faint);
+      font-family: 'Cairo', sans-serif; margin-bottom: 10px;
+    }
+
+    .product-name-big {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(24px, 4vw, 36px);
-      font-weight: 400;
-      line-height: 1.2;
+      font-size: clamp(22px, 5vw, 34px);
+      font-weight: 400; color: var(--ink);
+      line-height: 1.2; margin-bottom: 14px;
+    }
+
+    .product-price-row {
+      display: flex; align-items: baseline; gap: 12px;
       margin-bottom: 20px;
     }
-    .product-prices {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-    .product-price {
+    .product-price-big {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
-      color: var(--ink);
+      font-size: 28px; font-weight: 500; color: var(--ink);
     }
     .product-old-price {
-      font-size: 18px;
-      color: var(--text-faint);
+      font-size: 16px; color: var(--ink-ghost);
       text-decoration: line-through;
+      font-family: 'Cormorant Garamond', serif;
     }
 
-    .product-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 24px 0;
-    }
+    .divider { height: 1px; background: var(--cream-dark); margin: 20px 0; }
 
-    .product-desc {
-      font-size: 15px;
-      line-height: 1.8;
-      color: var(--text-dim);
-      margin-bottom: 28px;
-    }
-
-    /* SIZE SELECTOR — like reference image */
-    .size-label {
-      font-size: 13px;
-      color: var(--text);
-      margin-bottom: 12px;
-      font-family: 'Cairo', sans-serif;
-      letter-spacing: 1px;
+    /* ── SIZE SELECTOR — Pull Up style ── */
+    .size-section-label {
+      font-size: 13px; color: var(--ink-soft);
+      margin-bottom: 12px; letter-spacing: 0.5px;
+      font-family: 'Cormorant Garamond', serif;
     }
     .size-grid {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+      display: flex; gap: 10px; flex-wrap: wrap;
       margin-bottom: 24px;
     }
     .size-btn {
-      min-width: 52px;
-      height: 52px;
-      padding: 0 12px;
-      border: 1.5px solid var(--border);
-      background: var(--bg3);
-      color: var(--text);
-      font-family: 'Cairo', sans-serif;
-      font-size: 13px;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
+      min-width: 52px; height: 52px;
+      border: 1px solid var(--cream-dark);
+      background: var(--cream-card);
+      color: var(--ink-mid);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px; letter-spacing: 1px;
+      cursor: pointer; transition: all var(--transition);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 14px;
+      border-radius: 6px;
     }
     .size-btn:hover { border-color: var(--ink); color: var(--ink); }
     .size-btn.selected {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
+      background: var(--ink); color: var(--cream);
+      border-color: var(--ink);
     }
 
-    /* QTY ROW */
-    .qty-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
+    /* ── QTY + ADD TO CART — Pull Up style ── */
+    .add-to-cart-row {
+      display: flex; gap: 10px; margin-bottom: 12px;
     }
     .qty-control {
-      display: flex;
-      align-items: center;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
+      display: flex; align-items: center;
+      border: 1px solid var(--cream-dark);
+      border-radius: 8px;
       overflow: hidden;
+      background: var(--cream-card);
     }
-    .qty-ctrl-btn {
-      background: none;
-      border: none;
-      color: var(--text);
-      width: 44px; height: 44px;
-      cursor: pointer;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color var(--transition);
+    .qty-control button {
+      background: none; border: none;
+      width: 42px; height: 52px;
+      cursor: pointer; color: var(--ink-soft);
+      font-size: 18px; transition: color var(--transition);
+      display: flex; align-items: center; justify-content: center;
     }
-    .qty-ctrl-btn:hover { color: var(--ink); }
-    .qty-display {
-      min-width: 40px;
-      text-align: center;
+    .qty-control button:hover { color: var(--ink); }
+    .qty-control span {
+      font-size: 16px; min-width: 36px;
+      text-align: center; color: var(--ink);
       font-family: 'Cormorant Garamond', serif;
-      font-size: 16px;
-      color: var(--text);
     }
-
-    /* ACTION BUTTONS */
-    .action-buttons { display: flex; flex-direction: column; gap: 10px; }
-    .btn-primary {
-      width: 100%;
-      background: var(--text);
-      color: var(--bg);
-      border: none;
-      padding: 16px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 14px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
+    .add-cart-btn {
+      flex: 1;
+      background: var(--ink); color: var(--cream);
+      border: none; border-radius: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer;
       transition: all var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      border-radius: 10px;
+      display: flex; align-items: center;
+      justify-content: center; gap: 8px;
+      height: 52px;
     }
-    .btn-primary:hover { background: var(--ink); color: var(--bg); }
-    .btn-primary svg { width: 18px; height: 18px; }
+    .add-cart-btn:hover { background: var(--ink-mid); }
+    .add-cart-btn svg { width: 17px; height: 17px; }
 
-    .btn-secondary {
+    .buy-now-btn {
       width: 100%;
-      background: none;
-      color: var(--text);
-      border: 1.5px solid var(--border);
-      padding: 16px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 14px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
+      background: var(--ink); color: var(--cream);
+      border: none; border-radius: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer;
       transition: all var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      text-decoration: none;
-      border-radius: 10px;
+      height: 52px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; text-decoration: none;
+      margin-bottom: 12px;
     }
-    .btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
-    .btn-secondary svg { width: 18px; height: 18px; }
-    .btn-whatsapp { border-color: rgba(37,211,102,0.4); color: #25d366; }
-    .btn-whatsapp:hover { border-color: #25d366; background: rgba(37,211,102,0.05); }
+    .buy-now-btn:hover { background: var(--ink-mid); }
 
-    /* PRODUCT META */
-    .product-meta {
-      margin-top: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
+    .quick-order-btn {
+      width: 100%;
+      background: none; color: var(--ink);
+      border: 1px solid var(--cream-dark);
+      border-radius: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer;
+      transition: all var(--transition);
+      height: 52px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; margin-bottom: 12px;
+    }
+    .quick-order-btn:hover { border-color: var(--ink); background: rgba(26,20,16,0.03); }
+
+    .whatsapp-btn {
+      width: 100%;
+      background: none; color: #2E7D45;
+      border: 1px solid rgba(46,125,69,0.3);
+      border-radius: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer;
+      transition: all var(--transition);
+      height: 52px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; text-decoration: none; margin-bottom: 12px;
+    }
+    .whatsapp-btn:hover { border-color: #2E7D45; background: rgba(46,125,69,0.04); }
+    .whatsapp-btn svg { width: 18px; height: 18px; }
+
+    /* ── DESCRIPTION ── */
+    .product-desc-section {
+      padding: 0 20px 24px;
+      background: var(--parchment);
+    }
+    .product-desc-text {
+      font-size: 15px; line-height: 1.8;
+      color: var(--ink-soft);
+    }
+
+    /* ── META INFO ── */
+    .product-meta-section {
+      padding: 20px;
+      background: var(--cream-card);
+      border-top: 1px solid var(--cream-dark);
     }
     .meta-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-      color: var(--text-dim);
+      display: flex; align-items: center;
+      gap: 10px; font-size: 13px;
+      color: var(--ink-soft); padding: 8px 0;
+      border-bottom: 1px solid var(--cream-dark);
     }
-    .meta-row svg { width: 16px; height: 16px; color: var(--ink-dim); flex-shrink: 0; }
+    .meta-row:last-child { border-bottom: none; }
+    .meta-row svg { width: 16px; height: 16px; color: var(--accent-deep); flex-shrink: 0; }
 
-    /* QUICK ORDER MODAL */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      z-index: 2000;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding: 0;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity var(--transition);
-    }
-    @media (min-width: 640px) {
-      .modal-overlay { align-items: center; padding: 24px; }
-    }
-    .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-bottom: none;
-      width: 100%;
-      max-width: 480px;
-      padding: 32px 28px 40px;
-      position: relative;
-      transform: translateY(40px);
-      transition: transform var(--transition);
-      border-radius: 16px 16px 0 0;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    @media (min-width: 640px) {
-      .modal { border-bottom: 1px solid var(--border); border-radius: 0; transform: translateY(24px); max-height: none; }
-    }
-    .modal-overlay.open .modal { transform: translateY(0); }
-    .modal::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--ink), transparent);
-      border-radius: 16px 16px 0 0;
-    }
-    .modal-close {
-      position: absolute;
-      top: 16px; right: 16px;
-      background: none; border: none;
-      color: var(--text-dim);
-      cursor: pointer; padding: 4px;
-    }
-    .modal-close svg { width: 20px; height: 20px; }
-    .modal h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      font-weight: 400;
-      margin-bottom: 6px;
-    }
-    .modal-subtitle { font-size: 13px; color: var(--ink); margin-bottom: 24px; letter-spacing: 1px; }
-    .modal-status {
-      padding: 12px;
-      font-size: 13px;
-      text-align: center;
-      margin-top: 12px;
-      display: none;
-      border-radius: var(--radius);
-    }
-    .modal-status.success { background: rgba(39,174,96,0.1); border: 1px solid rgba(39,174,96,0.3); color: #2ecc71; display: block; }
-    .modal-status.error { background: rgba(192,57,43,0.1); border: 1px solid rgba(192,57,43,0.3); color: #e74c3c; display: block; }
-
-    /* BACK LINK */
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 13px;
-      letter-spacing: 1px;
-      margin-bottom: 32px;
-      transition: color var(--transition);
-      font-family: 'Cairo', sans-serif;
-    }
-    .back-link:hover { color: var(--ink); }
-    .back-link svg { width: 16px; height: 16px; }
-
-    /* YOU MAY ALSO LIKE */
-    .related-section {
-      max-width: 1100px;
-      margin: 60px auto 0;
-      padding: 0 24px 80px;
-    }
+    /* ── YOU MAY ALSO LIKE ── */
+    .related-section { padding: 40px 20px; }
     .related-title {
       font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: 400;
-      margin-bottom: 28px;
+      font-size: 22px; font-weight: 400;
+      color: var(--ink); margin-bottom: 20px;
     }
-    .related-title em { color: var(--ink); font-style: italic; }
     .related-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 2px;
     }
+    @media(min-width:600px) { .related-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    /* ── OUT OF STOCK ── */
+    .out-stock-bar {
+      background: rgba(139,58,42,0.07);
+      border: 1px solid rgba(139,58,42,0.18);
+      color: var(--danger);
+      padding: 11px 16px;
+      font-size: 12px; letter-spacing: 1.5px;
+      text-align: center; text-transform: uppercase;
+      font-family: 'Cairo', sans-serif;
+      margin-bottom: 16px; border-radius: var(--radius);
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(26,20,16,0.65);
+      z-index: 3000;
+      display: flex; align-items: flex-end;
+      opacity: 0; pointer-events: none;
+      transition: opacity var(--transition);
+    }
+    @media(min-width:600px){ .modal-overlay { align-items: center; justify-content: center; } }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--parchment);
+      width: 100%; max-width: 520px;
+      padding: 32px 24px 40px;
+      position: relative;
+      border-top: 3px solid var(--accent);
+      max-height: 90vh; overflow-y: auto;
+      transform: translateY(30px);
+      transition: transform var(--transition);
+    }
+    @media(min-width:600px){ .modal { border-radius: 4px; border-top: none; border-top: 3px solid var(--accent); } }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-close { position: absolute; top: 14px; right: 14px; background: none; border: none; color: var(--ink-soft); cursor: pointer; padding: 6px; }
+    .modal-close svg { width: 20px; height: 20px; }
+    .modal-header { margin-bottom: 6px; }
+    .modal-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 400; color: var(--ink); }
+    .modal-product { font-size: 13px; color: var(--accent-deep); margin-bottom: 22px; letter-spacing: 0.5px; }
+    .modal-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media(max-width:460px){ .modal-form-grid { grid-template-columns: 1fr; } }
+    .modal-status { padding: 11px; font-size: 13px; text-align: center; margin-top: 12px; display: none; border-radius: var(--radius); }
+    .modal-status.success { background: rgba(58,107,74,0.08); border: 1px solid rgba(58,107,74,0.25); color: var(--success); display: block; }
+    .modal-status.error { background: rgba(139,58,42,0.08); border: 1px solid rgba(139,58,42,0.25); color: var(--danger); display: block; }
   </style>
 </head>
 <body>
   <div id="main-nav"></div>
 
   <!-- QUICK ORDER MODAL -->
-  <div class="modal-overlay" id="quick-order-modal">
+  <div class="modal-overlay" id="quick-modal">
     <div class="modal">
       <button class="modal-close" onclick="closeModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
-      <h3>Commander</h3>
-      <p class="modal-subtitle" id="modal-product-name">—</p>
-
-      <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div class="modal-header">
+        <div class="modal-title">Commande Rapide</div>
+        <div class="modal-product" id="modal-prod-name"></div>
+      </div>
+      <div class="modal-form-grid">
         <div class="form-group">
-          <label class="form-label">Prénom *</label>
-          <input type="text" class="form-input" id="order-firstname" placeholder="Prénom"/>
+          <label class="form-label">Prénom</label>
+          <input type="text" class="form-input" id="o-first" placeholder="Prénom"/>
         </div>
         <div class="form-group">
-          <label class="form-label">Nom *</label>
-          <input type="text" class="form-input" id="order-lastname" placeholder="Nom"/>
+          <label class="form-label">Nom</label>
+          <input type="text" class="form-input" id="o-last" placeholder="Nom"/>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Téléphone *</label>
-        <input type="tel" class="form-input" id="order-phone" placeholder="+216 XX XXX XXX"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email *</label>
-        <input type="email" class="form-input" id="order-email" placeholder="votre@email.com"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Adresse *</label>
-        <input type="text" class="form-input" id="order-address" placeholder="Rue, numéro..."/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Gouvernorat *</label>
-        <select class="form-input" id="order-gov">
-          <option value="">Choisir...</option>
-          <option>Tunis</option><option>Ariana</option><option>Ben Arous</option>
-          <option>Manouba</option><option>Nabeul</option><option>Zaghouan</option>
-          <option>Bizerte</option><option>Béja</option><option>Jendouba</option>
-          <option>Kef</option><option>Siliana</option><option>Sousse</option>
-          <option>Monastir</option><option>Mahdia</option><option>Sfax</option>
-          <option>Kairouan</option><option>Kasserine</option><option>Sidi Bouzid</option>
-          <option>Gabès</option><option>Médenine</option><option>Tataouine</option>
-          <option>Gafsa</option><option>Tozeur</option><option>Kébili</option>
-        </select>
-      </div>
-      <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
         <div class="form-group">
-          <label class="form-label">Taille *</label>
-          <select class="form-input" id="order-size">
-            <option value="">Taille</option>
+          <label class="form-label">Téléphone</label>
+          <input type="tel" class="form-input" id="o-phone" placeholder="+216 XX XXX XXX"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="o-email" placeholder="email@exemple.com"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gouvernorat</label>
+          <select class="form-input" id="o-gov">
+            <option value="">Choisir...</option>
+            <option>Tunis</option><option>Ariana</option><option>Ben Arous</option><option>Manouba</option>
+            <option>Nabeul</option><option>Zaghouan</option><option>Bizerte</option><option>Béja</option>
+            <option>Jendouba</option><option>Kef</option><option>Siliana</option><option>Sousse</option>
+            <option>Monastir</option><option>Mahdia</option><option>Sfax</option><option>Kairouan</option>
+            <option>Kasserine</option><option>Sidi Bouzid</option><option>Gabès</option><option>Médenine</option>
+            <option>Tataouine</option><option>Gafsa</option><option>Tozeur</option><option>Kébili</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Adresse</label>
+          <input type="text" class="form-input" id="o-address" placeholder="Rue, ville..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Taille</label>
+          <select class="form-input" id="o-size">
+            <option value="">Choisir...</option>
             <option>XS</option><option>S</option><option>M</option>
             <option>L</option><option>XL</option><option>XXL</option>
           </select>
         </div>
         <div class="form-group">
           <label class="form-label">Couleur</label>
-          <input type="text" class="form-input" id="order-color" placeholder="ex: Noir"/>
+          <input type="text" class="form-input" id="o-color" placeholder="Noir, Blanc..."/>
         </div>
       </div>
-
-      <button class="btn-primary" onclick="sendQuickOrder()" id="send-order-btn" style="border-radius:10px; background:var(--ink); color:var(--bg); margin-top:4px;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        Confirmer la commande
+      <button class="form-btn" id="send-order-btn" onclick="sendOrder()" style="margin-top:16px;">
+        Envoyer la commande
       </button>
       <div class="modal-status" id="modal-status"></div>
     </div>
   </div>
 
   <main class="page">
-    <div style="max-width:1100px; margin:0 auto; padding:32px 24px 0;">
-      <a href="/index.html" class="back-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
-        Retour
-      </a>
-    </div>
-
-    <div class="product-page" id="product-content">
-      <div class="loading" style="grid-column:1/-1;">
+    <div class="product-page" id="product-page">
+      <div class="loading" style="padding:120px 24px;">
         <div class="spinner"></div>Chargement...
       </div>
-    </div>
-
-    <!-- YOU MAY ALSO LIKE -->
-    <div class="related-section" id="related-section" style="display:none;">
-      <h2 class="related-title">Vous aimerez <em>aussi</em></h2>
-      <div class="related-grid" id="related-grid"></div>
     </div>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
-    emailjs.init('wmDB05phl0j3DmALP');
-  </script>
+  <script>emailjs.init('wmDB05phl0j3DmALP');</script>
   <script src="/js/supabase.js"></script>
   <script src="/js/auth.js"></script>
   <script src="/js/cart.js"></script>
@@ -457,118 +376,192 @@
     let currentProduct = null;
     let selectedSize = '';
     let qty = 1;
-    const WHATSAPP_NUMBER = '21696672771';
+    const WHATSAPP = '96672771';
 
     document.addEventListener('DOMContentLoaded', async () => {
       renderNav();
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get('id');
+      const id = new URLSearchParams(window.location.search).get('id');
       if (!id) { window.location.href = '/index.html'; return; }
-
       try {
         currentProduct = await fetchProductById(id);
+        document.title = currentProduct.title + ' — 7EBR';
         renderProduct(currentProduct);
-        document.title = `${currentProduct.title} — 7EBR`;
         loadRelated(currentProduct.category, currentProduct.id);
-      } catch (e) {
-        document.getElementById('product-content').innerHTML = `
-          <div class="empty-state" style="grid-column:1/-1">
-            <p>Produit introuvable.</p>
-          </div>`;
+      } catch(e) {
+        document.getElementById('product-page').innerHTML = `<div class="empty-state"><p>Produit introuvable.</p></div>`;
       }
     });
 
     function renderProduct(p) {
-      const container = document.getElementById('product-content');
-      const badge = p.badge ? `<div class="product-badge-big">${p.badge}</div>` : '';
+      const page = document.getElementById('product-page');
+      const badge = p.badge ? `<div class="product-badge-hero">${p.badge}</div>` : '';
       const oldPrice = p.old_price ? `<span class="product-old-price">${p.old_price} TND</span>` : '';
-      
-      // Image or placeholder
-      const imgContent = p.image_url 
-        ? `<img src="${p.image_url}" alt="${p.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/><div class="placeholder-svg" style="display:none; width:100%; height:100%; align-items:center; justify-content:center;"><svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="160" fill="#1a1a1a"/><path d="M30 120 L60 40 L90 120 Z" stroke="#C4A882" stroke-width="1" fill="none" opacity="0.4"/><circle cx="60" cy="36" r="6" fill="none" stroke="#C4A882" stroke-width="1" opacity="0.4"/><text x="60" y="148" font-family="serif" font-size="10" fill="#C4A882" text-anchor="middle" opacity="0.3">7EBR</text></svg></div>`
-        : `<svg class="placeholder-svg" viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="160" fill="#1a1a1a"/><path d="M30 120 L60 40 L90 120 Z" stroke="#C4A882" stroke-width="1" fill="none" opacity="0.4"/><circle cx="60" cy="36" r="6" fill="none" stroke="#C4A882" stroke-width="1" opacity="0.4"/><text x="60" y="148" font-family="serif" font-size="10" fill="#C4A882" text-anchor="middle" opacity="0.3">7EBR</text></svg>`;
+      const outStock = !p.in_stock ? `<div class="out-stock-bar">Rupture de stock</div>` : '';
 
-      container.innerHTML = `
-        <!-- GALLERY -->
-        <div class="product-gallery">
-          <div class="product-main-img">
-            ${badge}
-            ${imgContent}
+      page.innerHTML = `
+        <!-- BACK -->
+        <div class="back-bar">
+          <a href="/index.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+            Retour
+          </a>
+        </div>
+
+        <!-- HERO IMAGE -->
+        <div class="product-hero-img">
+          ${badge}
+          <div class="product-hero-placeholder">
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 60 L40 20 L60 60 Z" stroke="currentColor" stroke-width="1" fill="none"/>
+              <circle cx="40" cy="17" r="4" fill="none" stroke="currentColor" stroke-width="1"/>
+            </svg>
           </div>
         </div>
 
-        <!-- INFO -->
-        <div class="product-info">
-          <div class="product-category">${p.category || 'Collection'}</div>
-          <h1 class="product-name">${p.title}</h1>
-          <div class="product-prices">
+        <!-- DETAILS -->
+        <div class="product-details">
+          <div class="product-category-tag">${p.category || 'Collection'}</div>
+          <h1 class="product-name-big">${p.title}</h1>
+          <div class="product-price-row">
             ${oldPrice}
-            <span class="product-price">${p.price} TND</span>
+            <span class="product-price-big">${p.price} TND</span>
           </div>
 
-          <p class="product-desc">
-            ${p.description || `Pièce exclusive de la collection 7EBR, inspirée de la calligraphie islamique traditionnelle. Coupe moderne, tissu premium, finition soignée.`}
-          </p>
+          ${outStock}
 
-          <!-- SIZES -->
-          <div class="size-label">Taille</div>
-          <div class="size-grid">
-            ${['XS','S','M','L','XL','XXL'].map(s => `
+          ${p.in_stock ? `
+          <!-- SIZE -->
+          <div class="size-section-label">Taille</div>
+          <div class="size-grid" id="size-grid">
+            ${['XS','S','M','L','XL','XXL'].map(s=>`
               <button class="size-btn" data-size="${s}" onclick="selectSize('${s}')">${s}</button>
             `).join('')}
           </div>
 
-          ${p.in_stock ? `
-          <!-- QTY -->
-          <div class="qty-row">
+          <!-- ADD TO CART ROW -->
+          <div class="add-to-cart-row">
             <div class="qty-control">
-              <button class="qty-ctrl-btn" onclick="changeQty(-1)">−</button>
-              <span class="qty-display" id="qty-display">1</span>
-              <button class="qty-ctrl-btn" onclick="changeQty(1)">+</button>
+              <button onclick="changeQty(-1)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <span id="qty-display">1</span>
+              <button onclick="changeQty(1)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
             </div>
-          </div>
-
-          <!-- ACTIONS -->
-          <div class="action-buttons">
-            <button class="btn-primary" onclick="handleAddToCart()">
+            <button class="add-cart-btn" onclick="handleAddToCart()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
               Ajouter au panier
             </button>
-            <button class="btn-secondary" onclick="openQuickOrder()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-              Commander maintenant
-            </button>
-            <a class="btn-secondary btn-whatsapp" href="${buildWhatsApp(p)}" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.167L2 22l4.985-1.399A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.962 7.962 0 0 1-4.064-1.112l-.292-.173-3.017.847.857-2.94-.191-.302A7.947 7.947 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.588 8-8 8z"/></svg>
-              Commander sur WhatsApp
-            </a>
           </div>
-          ` : `<div style="background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.2);color:#e74c3c;padding:12px 16px;font-size:13px;letter-spacing:1px;text-align:center;text-transform:uppercase;font-family:'Cairo',sans-serif;">Rupture de stock</div>`}
 
-          <!-- META -->
-          <div class="product-meta">
-            <div class="meta-row">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-              Livraison dans toute la Tunisie — 8 TND
-            </div>
-            <div class="meta-row">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              Paiement à la livraison
-            </div>
-            <div class="meta-row">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-              Échange facile sous 7 jours
-            </div>
+          <!-- BUY NOW -->
+          <button class="buy-now-btn" onclick="handleBuyNow()">Commander maintenant</button>
+
+          <!-- QUICK ORDER (emailjs) -->
+          <button class="quick-order-btn" onclick="openModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Commande rapide (Email)
+          </button>
+
+          <!-- WHATSAPP -->
+          <a class="whatsapp-btn" href="${buildWhatsApp(p)}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.167L2 22l4.985-1.399A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.962 7.962 0 0 1-4.064-1.112l-.292-.173-3.017.847.857-2.94-.191-.302A7.947 7.947 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.588 8-8 8z"/>
+            </svg>
+            Commander sur WhatsApp
+          </a>
+          ` : ''}
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="divider" style="margin:0 20px;"></div>
+        <div class="product-desc-section">
+          <p class="product-desc-text">${p.description || 'Pièce exclusive de la collection 7EBR, inspirée de la calligraphie islamique. Tissu premium, coupe moderne, finition soignée.'}</p>
+        </div>
+
+        <!-- META -->
+        <div class="product-meta-section">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            Livraison partout en Tunisie — 8 DT
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Paiement à la livraison (COD)
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Échange sous 7 jours
           </div>
         </div>
+
+        <!-- RELATED -->
+        <div class="related-section">
+          <div class="related-title">Vous aimerez aussi</div>
+          <div class="related-grid" id="related-grid">
+            <div class="loading" style="grid-column:1/-1;padding:40px;"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+          <div class="footer-inner">
+            <div class="footer-brand">
+              <h3>7EBR — حبر</h3>
+              <p>نكتب الأثر، نلبس المعنى</p>
+              <div class="footer-social" style="margin-top:16px;">
+                <a href="https://wa.me/96672771" target="_blank" title="WhatsApp">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.167L2 22l4.985-1.399A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.962 7.962 0 0 1-4.064-1.112l-.292-.173-3.017.847.857-2.94-.191-.302A7.947 7.947 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.588 8-8 8z"/></svg>
+                </a>
+                <a href="https://instagram.com/7ebr.store" target="_blank" title="Instagram">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                </a>
+                <a href="https://facebook.com/hebrstore" target="_blank" title="Facebook">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                </a>
+                <a href="https://tiktok.com/@7ebr.store" target="_blank" title="TikTok">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+                </a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>Navigation</h4>
+              <a href="/index.html">Accueil</a>
+              <a href="/index.html?cat=t-shirt">T-Shirts</a>
+              <a href="/index.html?cat=sweatshirt">Sweatshirts</a>
+              <a href="/index.html?cat=hoodie">Hoodies</a>
+            </div>
+            <div class="footer-col">
+              <h4>Compte</h4>
+              <a href="/login.html">Connexion</a>
+              <a href="/register.html">Créer un compte</a>
+              <a href="/checkout.html">Commander</a>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <span>© 2025 7EBR. Tous droits réservés.</span>
+            <span>Fait avec passion en Tunisie</span>
+          </div>
+        </footer>
       `;
+    }
+
+    async function loadRelated(category, excludeId) {
+      try {
+        const all = await fetchProducts({ category });
+        const grid = document.getElementById('related-grid');
+        if (!grid) return;
+        const related = all.filter(p => p.id != excludeId).slice(0, 4);
+        if (!related.length) { grid.innerHTML = '<p style="color:var(--ink-faint);font-size:13px;">Aucun produit similaire.</p>'; return; }
+        grid.innerHTML = related.map(renderProductCard).join('');
+      } catch(e) { console.error(e); }
     }
 
     function selectSize(s) {
       selectedSize = s;
-      document.querySelectorAll('.size-btn').forEach(b => {
-        b.classList.toggle('selected', b.dataset.size === s);
-      });
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('selected', b.dataset.size === s));
     }
 
     function changeQty(delta) {
@@ -578,110 +571,84 @@
     }
 
     function handleAddToCart() {
-      if (!selectedSize) {
-        alert('Veuillez choisir une taille.');
-        return;
-      }
+      if (!selectedSize) { alert('Veuillez choisir une taille.'); return; }
       for (let i = 0; i < qty; i++) addToCart(currentProduct, selectedSize);
       openCart();
     }
 
+    function handleBuyNow() {
+      if (!selectedSize) { alert('Veuillez choisir une taille.'); return; }
+      addToCart(currentProduct, selectedSize);
+      window.location.href = '/checkout.html';
+    }
+
     function buildWhatsApp(p) {
-      const msg = encodeURIComponent(`Bonjour 7EBR 👋\nJe voudrais commander:\n*${p.title}*\nPrix: ${p.price} TND\n\nTaille: \nNom: \nAdresse: `);
-      return `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+      const msg = encodeURIComponent(`Bonjour 7EBR,\n\nJe voudrais commander :\n*${p.title}*\nPrix : ${p.price} TND\n\nTaille : \nCouleur : \nNom : \nAdresse : `);
+      return `https://wa.me/${WHATSAPP}?text=${msg}`;
     }
 
-    function openQuickOrder() {
-      document.getElementById('modal-product-name').textContent = currentProduct?.title || '';
-      if (selectedSize) document.getElementById('order-size').value = selectedSize;
-      document.getElementById('quick-order-modal').classList.add('open');
+    function openModal() {
+      document.getElementById('modal-prod-name').textContent = currentProduct?.title || '';
+      document.getElementById('quick-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
     }
-
     function closeModal() {
-      document.getElementById('quick-order-modal').classList.remove('open');
+      document.getElementById('quick-modal').classList.remove('open');
+      document.body.style.overflow = '';
     }
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('quick-modal').addEventListener('click', e => {
+        if (e.target === document.getElementById('quick-modal')) closeModal();
+      });
+    });
 
-    async function sendQuickOrder() {
-      const firstname = document.getElementById('order-firstname').value.trim();
-      const lastname = document.getElementById('order-lastname').value.trim();
-      const phone = document.getElementById('order-phone').value.trim();
-      const email = document.getElementById('order-email').value.trim();
-      const address = document.getElementById('order-address').value.trim();
-      const gov = document.getElementById('order-gov').value;
-      const size = document.getElementById('order-size').value;
-      const color = document.getElementById('order-color').value.trim();
-      const statusEl = document.getElementById('modal-status');
+    async function sendOrder() {
+      const first   = document.getElementById('o-first').value.trim();
+      const last    = document.getElementById('o-last').value.trim();
+      const phone   = document.getElementById('o-phone').value.trim();
+      const email   = document.getElementById('o-email').value.trim();
+      const gov     = document.getElementById('o-gov').value;
+      const address = document.getElementById('o-address').value.trim();
+      const size    = document.getElementById('o-size').value;
+      const color   = document.getElementById('o-color').value.trim();
+      const status  = document.getElementById('modal-status');
 
-      if (!firstname || !lastname || !phone || !email || !address || !gov || !size) {
-        statusEl.className = 'modal-status error';
-        statusEl.textContent = 'Veuillez remplir tous les champs obligatoires.';
+      status.className = 'modal-status';
+      if (!first||!last||!phone||!email||!gov||!size) {
+        status.className = 'modal-status error';
+        status.textContent = 'Veuillez remplir tous les champs obligatoires.';
         return;
       }
 
       const btn = document.getElementById('send-order-btn');
-      btn.disabled = true;
-      btn.textContent = 'Envoi en cours...';
-      statusEl.className = 'modal-status';
+      btn.disabled = true; btn.textContent = 'Envoi en cours...';
 
       try {
         await emailjs.send('service_lixuoem', 'template_y0aocqa', {
-          customer_name: firstname + ' ' + lastname,
+          customer_name:  first + ' ' + last,
           customer_phone: phone,
           customer_email: email,
+          customer_city:  gov,
           customer_address: address,
-          customer_gov: gov,
-          product_name: currentProduct?.title || '',
-          product_price: currentProduct?.price + ' TND' || '',
-          product_size: size,
-          product_color: color || 'Non spécifié',
-          to_email: 'admin@7ebr.com'
+          product_name:   currentProduct?.title || '',
+          product_price:  currentProduct?.price + ' TND' || '',
+          product_size:   size,
+          product_color:  color || 'Non spécifié',
+          to_email:       'admin@7ebr.com'
         });
-
-        // Also save to Supabase
-        try {
-          await sb.from('orders').insert([{
-            product_id: currentProduct?.id,
-            product_title: currentProduct?.title,
-            amount: (currentProduct?.price || 0) + 8,
-            status: 'pending',
-            customer_name: firstname + ' ' + lastname,
-            customer_email: email,
-            customer_phone: phone,
-            address: `${address}, ${gov}`,
-            payment_method: 'cod'
-          }]);
-        } catch(e) {}
-
-        statusEl.className = 'modal-status success';
-        statusEl.textContent = '✓ Commande envoyée! Nous vous contacterons bientôt.';
-        ['order-firstname','order-lastname','order-phone','order-email','order-address','order-color'].forEach(id => {
-          document.getElementById(id).value = '';
+        status.className = 'modal-status success';
+        status.textContent = 'Commande envoyée avec succès! Nous vous contacterons bientôt.';
+        ['o-first','o-last','o-phone','o-email','o-gov','o-address','o-size','o-color'].forEach(id => {
+          const el = document.getElementById(id); if(el) el.value = '';
         });
-        document.getElementById('order-gov').value = '';
-        document.getElementById('order-size').value = '';
-      } catch (err) {
-        statusEl.className = 'modal-status error';
-        statusEl.textContent = 'Erreur d\'envoi. Contactez-nous sur WhatsApp.';
+      } catch(err) {
+        status.className = 'modal-status error';
+        status.textContent = 'Erreur d\'envoi. Contactez-nous sur WhatsApp.';
         console.error(err);
       } finally {
-        btn.disabled = false;
-        btn.textContent = 'Confirmer la commande';
+        btn.disabled = false; btn.textContent = 'Envoyer la commande';
       }
     }
-
-    async function loadRelated(category, excludeId) {
-      try {
-        const { data } = await sb.from('products').select('*').eq('category', category).eq('in_stock', true).neq('id', excludeId).limit(4);
-        if (data && data.length > 0) {
-          document.getElementById('related-section').style.display = 'block';
-          document.getElementById('related-grid').innerHTML = data.map(renderProductCard).join('');
-        }
-      } catch(e) {}
-    }
-
-    document.getElementById('quick-order-modal').addEventListener('click', (e) => {
-      if (e.target === document.getElementById('quick-order-modal')) closeModal();
-    });
   </script>
 </body>
 </html>

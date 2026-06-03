@@ -1,6 +1,5 @@
-/* style.css — 7EBR Brand */
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Cairo:wght@300;400;600&display=swap');
+/* style.css — 7EBR · Thème Parchemin */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cairo:wght@300;400;600;700&display=swap');
 
 :root {
   --cream:        #EDE5D8;

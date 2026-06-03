@@ -1,10 +1,17 @@
-// nav.js — Navigation partagée 7EBR
+// nav.js — Navigation 7EBR
 
-function renderNav(activePage = '') {
+const SOCIAL = {
+  whatsapp: 'https://wa.me/96672771',
+  instagram: 'https://instagram.com/7ebr.store',
+  facebook: 'https://facebook.com/hebrstore',
+  tiktok: 'https://tiktok.com/@7ebr.store'
+};
+
+function renderNav(activePage) {
   const nav = document.getElementById('main-nav');
   if (!nav) return;
   nav.innerHTML = `
-    <div class="announce-bar">Livraison 8 DT partout en Tunisie &nbsp;·&nbsp; Nouvelle collection disponible</div>
+    <div class="announce-bar">Livraison partout en Tunisie · 8 DT</div>
     <nav class="nav">
       <div class="nav-left">
         <button class="nav-btn" id="menu-toggle" aria-label="Menu">
@@ -37,17 +44,27 @@ function renderNav(activePage = '') {
         </button>
         <a href="/admin/index.html" class="nav-btn" id="nav-admin" style="display:none" aria-label="Admin">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
           </svg>
         </a>
         <button class="nav-btn" id="cart-toggle" aria-label="Panier" style="position:relative">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
           </svg>
           <span class="cart-count">0</span>
         </button>
       </div>
     </nav>
+
+    <!-- Search bar -->
+    <div id="search-bar" style="display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--cream-card);border-bottom:1px solid var(--cream-dark);padding:14px 24px;z-index:999;box-shadow:var(--shadow-sm);">
+      <div class="search-wrap" style="max-width:500px;margin:0 auto;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+        <input type="text" class="search-input" id="global-search" placeholder="Rechercher un produit...">
+      </div>
+    </div>
 
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobile-menu">
@@ -62,21 +79,10 @@ function renderNav(activePage = '') {
       <a href="/index.html?cat=hoodie">Hoodies</a>
       <a href="/index.html?cat=pantalon">Pantalons</a>
       <a href="/index.html?cat=accessoire">Accessoires</a>
-      <div style="display:flex;gap:16px;padding:20px 32px;border-top:1px solid var(--border);margin-top:auto;">
-        <a href="https://wa.me/21696672771" target="_blank" style="color:var(--text-dim);text-decoration:none;font-size:13px;font-family:'Cairo',sans-serif;">WhatsApp</a>
-        <a href="https://instagram.com/7ebr.store" target="_blank" style="color:var(--text-dim);text-decoration:none;font-size:13px;font-family:'Cairo',sans-serif;">Instagram</a>
-        <a href="https://facebook.com/hebrstore" target="_blank" style="color:var(--text-dim);text-decoration:none;font-size:13px;font-family:'Cairo',sans-serif;">Facebook</a>
-        <a href="https://tiktok.com/@7ebr.store" target="_blank" style="color:var(--text-dim);text-decoration:none;font-size:13px;font-family:'Cairo',sans-serif;">TikTok</a>
-      </div>
       <div class="mobile-menu-footer">حبر — نكتب الأثر، نلبس المعنى</div>
     </div>
 
-    <!-- Search Bar -->
-    <div class="search-bar-overlay" id="search-bar" style="display:none; position:fixed; top:var(--nav-h); left:0; right:0; background:var(--bg2); border-bottom:1px solid var(--border); padding:16px 24px; z-index:999;">
-      <input type="text" class="search-input" id="global-search" placeholder="Rechercher un produit..." style="max-width:100%">
-    </div>
-
-    <!-- Cart Sidebar -->
+    <!-- Cart Overlay -->
     <div class="cart-overlay" id="cart-overlay"></div>
     <div class="cart-sidebar" id="cart-sidebar">
       <div class="cart-header">
@@ -98,26 +104,19 @@ function renderNav(activePage = '') {
     </div>
   `;
 
-  // Events
   document.getElementById('menu-toggle').onclick = () => document.getElementById('mobile-menu').classList.add('open');
-  document.getElementById('menu-close').onclick = () => document.getElementById('mobile-menu').classList.remove('open');
-  document.getElementById('cart-toggle').onclick = () => openCart();
-  document.getElementById('cart-close').onclick = () => closeCart();
-  document.getElementById('cart-overlay').onclick = () => closeCart();
-  document.getElementById('nav-logout').onclick = logout;
+  document.getElementById('menu-close').onclick  = () => document.getElementById('mobile-menu').classList.remove('open');
+  document.getElementById('cart-toggle').onclick = openCart;
+  document.getElementById('cart-close').onclick  = closeCart;
+  document.getElementById('cart-overlay').onclick = closeCart;
+  document.getElementById('nav-logout').onclick  = logout;
   document.getElementById('search-toggle').onclick = () => {
     const sb = document.getElementById('search-bar');
     sb.style.display = sb.style.display === 'none' ? 'block' : 'none';
     if (sb.style.display === 'block') document.getElementById('global-search').focus();
   };
-
   const gs = document.getElementById('global-search');
-  if (gs) {
-    gs.addEventListener('input', (e) => {
-      const q = e.target.value.trim();
-      if (typeof loadProducts === 'function') loadProducts({ search: q });
-    });
-  }
+  if (gs) gs.addEventListener('input', e => { if (typeof loadProducts === 'function') loadProducts({ search: e.target.value.trim() }); });
 
   updateNavAuth();
 }
@@ -128,29 +127,21 @@ function openCart() {
   document.getElementById('cart-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-
 function closeCart() {
   document.getElementById('cart-sidebar').classList.remove('open');
   document.getElementById('cart-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-
 function renderCartSidebar() {
   const cart = getCart();
   const list = document.getElementById('cart-items-list');
   const total = document.getElementById('cart-total-display');
   if (!list) return;
-
-  if (cart.length === 0) {
-    list.innerHTML = `
-      <div class="cart-empty">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
-        <p>Votre panier est vide</p>
-      </div>`;
+  if (!cart.length) {
+    list.innerHTML = `<div class="cart-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg><p>Votre panier est vide</p></div>`;
     if (total) total.textContent = '0 TND';
     return;
   }
-
   list.innerHTML = cart.map(item => `
     <div class="cart-item">
       <div class="cart-item-thumb">
@@ -161,16 +152,14 @@ function renderCartSidebar() {
         ${item.size ? `<div class="cart-item-size">Taille: ${item.size}</div>` : ''}
         <div class="cart-item-price">${(item.price * item.qty).toFixed(3)} TND</div>
         <div class="cart-item-qty">
-          <button class="qty-btn" onclick="updateQty('${item.key}', ${item.qty - 1}); renderCartSidebar();">-</button>
+          <button class="qty-btn" onclick="updateQty('${item.key}',${item.qty-1});renderCartSidebar()">-</button>
           <span class="qty-num">${item.qty}</span>
-          <button class="qty-btn" onclick="updateQty('${item.key}', ${item.qty + 1}); renderCartSidebar();">+</button>
+          <button class="qty-btn" onclick="updateQty('${item.key}',${item.qty+1});renderCartSidebar()">+</button>
         </div>
       </div>
-      <button class="cart-item-remove" onclick="removeFromCart('${item.key}'); renderCartSidebar();">
+      <button class="cart-item-remove" onclick="removeFromCart('${item.key}');renderCartSidebar()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
       </button>
-    </div>
-  `).join('');
-
+    </div>`).join('');
   if (total) total.textContent = cartTotal().toFixed(3) + ' TND';
 }
