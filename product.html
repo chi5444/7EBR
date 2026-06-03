@@ -16,22 +16,31 @@
       align-items: start;
     }
     @media (max-width: 768px) {
-      .product-page { grid-template-columns: 1fr; gap: 32px; padding: 32px 16px 80px; }
+      .product-page { grid-template-columns: 1fr; gap: 0; padding: 0 0 80px; }
     }
 
-    /* IMAGE */
-    .product-gallery { position: sticky; top: calc(var(--nav-h) + 24px); }
+    /* GALLERY */
+    .product-gallery {
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+    }
+    @media (max-width: 768px) { .product-gallery { position: static; } }
+
     .product-main-img {
       aspect-ratio: 3/4;
       background: var(--bg2);
-      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      position: relative;
     }
-    .product-main-img img { width: 100%; height: 100%; object-fit: cover; }
+    .product-main-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
     .product-main-img .placeholder-svg { width: 60%; height: 60%; opacity: 0.3; }
     .product-badge-big {
       position: absolute;
@@ -44,10 +53,15 @@
       padding: 6px 12px;
       font-family: 'Cairo', sans-serif;
       font-weight: 700;
+      z-index: 2;
     }
 
     /* INFO */
-    .product-info { padding-top: 8px; }
+    .product-info {
+      padding: 24px 24px 0;
+    }
+    @media (min-width: 769px) { .product-info { padding: 8px 0 0; } }
+
     .product-category {
       font-size: 11px;
       letter-spacing: 3px;
@@ -58,119 +72,125 @@
     }
     .product-name {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 4vw, 42px);
+      font-size: clamp(24px, 4vw, 36px);
       font-weight: 400;
       line-height: 1.2;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
     .product-prices {
       display: flex;
       align-items: baseline;
       gap: 12px;
-      margin-bottom: 8px;
+      margin-bottom: 28px;
     }
     .product-price {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 36px;
+      font-size: 32px;
       color: var(--ink);
     }
     .product-old-price {
-      font-size: 20px;
+      font-size: 18px;
       color: var(--text-faint);
       text-decoration: line-through;
     }
+
     .product-divider {
       height: 1px;
       background: var(--border);
       margin: 24px 0;
     }
+
     .product-desc {
       font-size: 15px;
-      line-height: 1.9;
+      line-height: 1.8;
       color: var(--text-dim);
       margin-bottom: 28px;
     }
 
-    /* COLOR SELECTOR */
-    .color-label, .size-label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--text-dim);
+    /* SIZE SELECTOR — like reference image */
+    .size-label {
+      font-size: 13px;
+      color: var(--text);
       margin-bottom: 12px;
       font-family: 'Cairo', sans-serif;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      letter-spacing: 1px;
     }
-    .color-selected-name { color: var(--ink); font-weight: 600; }
-    .color-grid {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 24px;
-    }
-    .color-btn {
-      width: 34px; height: 34px;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      cursor: pointer;
-      position: relative;
-      transition: all var(--transition);
-      outline: none;
-    }
-    .color-btn:hover { transform: scale(1.1); }
-    .color-btn.selected {
-      border-color: var(--ink);
-      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink);
-    }
-    .color-btn[data-color="Noir"] { background: #111; }
-    .color-btn[data-color="Blanc"] { background: #f5f5f5; border-color: rgba(255,255,255,0.3); }
-    .color-btn[data-color="Marron"] { background: #6B3A2A; }
-    .color-btn[data-color="Beige"] { background: #C4A882; }
-    .color-btn[data-color="Kaki"] { background: #7A7A52; }
-    .color-btn[data-color="Gris"] { background: #888; }
-    .color-btn[data-color="Bleu"] { background: #2A4A7F; }
-    .color-btn[data-color="Vert"] { background: #2D5A27; }
-    .color-btn[data-color="Bordeaux"] { background: #6B1A2A; }
-    .color-btn[data-color="Camel"] { background: #C19A6B; }
-
-    /* SIZE SELECTOR */
     .size-grid {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
     .size-btn {
-      min-width: 52px; height: 52px;
-      padding: 0 14px;
-      border: 1px solid var(--border);
-      background: none;
+      min-width: 52px;
+      height: 52px;
+      padding: 0 12px;
+      border: 1.5px solid var(--border);
+      background: var(--bg3);
       color: var(--text);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 15px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 13px;
       letter-spacing: 1px;
       cursor: pointer;
       transition: all var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
+      border-radius: 10px;
     }
     .size-btn:hover { border-color: var(--ink); color: var(--ink); }
-    .size-btn.selected { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .size-btn.selected {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    /* QTY ROW */
+    .qty-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .qty-control {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .qty-ctrl-btn {
+      background: none;
+      border: none;
+      color: var(--text);
+      width: 44px; height: 44px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color var(--transition);
+    }
+    .qty-ctrl-btn:hover { color: var(--ink); }
+    .qty-display {
+      min-width: 40px;
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      color: var(--text);
+    }
 
     /* ACTION BUTTONS */
-    .action-buttons { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+    .action-buttons { display: flex; flex-direction: column; gap: 10px; }
     .btn-primary {
       width: 100%;
-      background: var(--ink);
+      background: var(--text);
       color: var(--bg);
       border: none;
-      padding: 18px;
-      font-family: 'Cormorant Garamond', serif;
+      padding: 16px;
+      font-family: 'Cairo', sans-serif;
       font-size: 14px;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
       transition: all var(--transition);
@@ -178,19 +198,20 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      border-radius: 10px;
     }
-    .btn-primary:hover { background: var(--ink-light); }
+    .btn-primary:hover { background: var(--ink); color: var(--bg); }
     .btn-primary svg { width: 18px; height: 18px; }
 
     .btn-secondary {
       width: 100%;
       background: none;
       color: var(--text);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       padding: 16px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Cairo', sans-serif;
       font-size: 14px;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
       transition: all var(--transition);
@@ -199,22 +220,20 @@
       justify-content: center;
       gap: 10px;
       text-decoration: none;
+      border-radius: 10px;
     }
     .btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
     .btn-secondary svg { width: 18px; height: 18px; }
-
-    .btn-whatsapp {
-      border-color: rgba(37, 211, 102, 0.4);
-      color: #25d366;
-    }
+    .btn-whatsapp { border-color: rgba(37,211,102,0.4); color: #25d366; }
     .btn-whatsapp:hover { border-color: #25d366; background: rgba(37,211,102,0.05); }
 
     /* PRODUCT META */
     .product-meta {
+      margin-top: 28px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      padding: 20px 0;
+      padding-top: 20px;
       border-top: 1px solid var(--border);
     }
     .meta-row {
@@ -230,218 +249,198 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0,0,0,0.8);
       z-index: 2000;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
-      padding: 24px;
+      padding: 0;
       opacity: 0;
       pointer-events: none;
       transition: opacity var(--transition);
+    }
+    @media (min-width: 640px) {
+      .modal-overlay { align-items: center; padding: 24px; }
     }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
     .modal {
       background: var(--bg2);
       border: 1px solid var(--border);
+      border-bottom: none;
       width: 100%;
-      max-width: 460px;
+      max-width: 480px;
+      padding: 32px 28px 40px;
+      position: relative;
+      transform: translateY(40px);
+      transition: transform var(--transition);
+      border-radius: 16px 16px 0 0;
       max-height: 90vh;
       overflow-y: auto;
-      position: relative;
     }
+    @media (min-width: 640px) {
+      .modal { border-bottom: 1px solid var(--border); border-radius: 0; transform: translateY(24px); max-height: none; }
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
     .modal::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 2px;
       background: linear-gradient(90deg, transparent, var(--ink), transparent);
-    }
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 24px 28px 0;
-      margin-bottom: 20px;
-    }
-    .modal-header h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 18px;
-      font-weight: 400;
+      border-radius: 16px 16px 0 0;
     }
     .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
       background: none; border: none;
-      cursor: pointer;
       color: var(--text-dim);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px; height: 32px;
-      transition: color var(--transition);
+      cursor: pointer; padding: 4px;
     }
-    .modal-close:hover { color: var(--text); }
     .modal-close svg { width: 20px; height: 20px; }
-    .modal-product-ref {
-      margin: 0 28px 20px;
-      padding: 12px 16px;
-      background: var(--bg3);
-      border-left: 2px solid var(--ink);
-      font-size: 13px;
-      color: var(--ink-dim);
+    .modal h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 6px;
     }
-    .modal-body { padding: 0 28px 28px; }
-    .modal-body .form-group { margin-bottom: 14px; }
-
+    .modal-subtitle { font-size: 13px; color: var(--ink); margin-bottom: 24px; letter-spacing: 1px; }
     .modal-status {
-      padding: 10px 14px;
+      padding: 12px;
       font-size: 13px;
-      margin-bottom: 14px;
+      text-align: center;
+      margin-top: 12px;
       display: none;
       border-radius: var(--radius);
     }
-    .modal-status.success {
-      display: block;
-      background: rgba(39,174,96,0.1);
-      border: 1px solid rgba(39,174,96,0.3);
-      color: #2ecc71;
-    }
-    .modal-status.error {
-      display: block;
-      background: rgba(192,57,43,0.1);
-      border: 1px solid rgba(192,57,43,0.3);
-      color: #e74c3c;
-    }
+    .modal-status.success { background: rgba(39,174,96,0.1); border: 1px solid rgba(39,174,96,0.3); color: #2ecc71; display: block; }
+    .modal-status.error { background: rgba(192,57,43,0.1); border: 1px solid rgba(192,57,43,0.3); color: #e74c3c; display: block; }
 
-    /* SOCIAL LINKS */
-    .social-links {
-      display: flex;
-      gap: 12px;
-      margin-top: 16px;
-      flex-wrap: wrap;
-    }
-    .social-link {
-      display: flex;
+    /* BACK LINK */
+    .back-link {
+      display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 16px;
-      border: 1px solid var(--border);
       color: var(--text-dim);
       text-decoration: none;
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 1px;
+      margin-bottom: 32px;
+      transition: color var(--transition);
       font-family: 'Cairo', sans-serif;
-      transition: all var(--transition);
     }
-    .social-link:hover { border-color: var(--ink); color: var(--ink); }
-    .social-link svg { width: 14px; height: 14px; }
+    .back-link:hover { color: var(--ink); }
+    .back-link svg { width: 16px; height: 16px; }
 
-    .out-of-stock-banner {
-      background: rgba(192,57,43,0.1);
-      border: 1px solid rgba(192,57,43,0.3);
-      color: #e74c3c;
-      padding: 10px 14px;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-align: center;
-      font-family: 'Cairo', sans-serif;
-      margin-bottom: 16px;
+    /* YOU MAY ALSO LIKE */
+    .related-section {
+      max-width: 1100px;
+      margin: 60px auto 0;
+      padding: 0 24px 80px;
+    }
+    .related-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 28px;
+    }
+    .related-title em { color: var(--ink); font-style: italic; }
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 2px;
     }
   </style>
 </head>
 <body>
   <div id="main-nav"></div>
+
+  <!-- QUICK ORDER MODAL -->
+  <div class="modal-overlay" id="quick-order-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h3>Commander</h3>
+      <p class="modal-subtitle" id="modal-product-name">—</p>
+
+      <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label class="form-label">Prénom *</label>
+          <input type="text" class="form-input" id="order-firstname" placeholder="Prénom"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nom *</label>
+          <input type="text" class="form-input" id="order-lastname" placeholder="Nom"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Téléphone *</label>
+        <input type="tel" class="form-input" id="order-phone" placeholder="+216 XX XXX XXX"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email *</label>
+        <input type="email" class="form-input" id="order-email" placeholder="votre@email.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Adresse *</label>
+        <input type="text" class="form-input" id="order-address" placeholder="Rue, numéro..."/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Gouvernorat *</label>
+        <select class="form-input" id="order-gov">
+          <option value="">Choisir...</option>
+          <option>Tunis</option><option>Ariana</option><option>Ben Arous</option>
+          <option>Manouba</option><option>Nabeul</option><option>Zaghouan</option>
+          <option>Bizerte</option><option>Béja</option><option>Jendouba</option>
+          <option>Kef</option><option>Siliana</option><option>Sousse</option>
+          <option>Monastir</option><option>Mahdia</option><option>Sfax</option>
+          <option>Kairouan</option><option>Kasserine</option><option>Sidi Bouzid</option>
+          <option>Gabès</option><option>Médenine</option><option>Tataouine</option>
+          <option>Gafsa</option><option>Tozeur</option><option>Kébili</option>
+        </select>
+      </div>
+      <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label class="form-label">Taille *</label>
+          <select class="form-input" id="order-size">
+            <option value="">Taille</option>
+            <option>XS</option><option>S</option><option>M</option>
+            <option>L</option><option>XL</option><option>XXL</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Couleur</label>
+          <input type="text" class="form-input" id="order-color" placeholder="ex: Noir"/>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="sendQuickOrder()" id="send-order-btn" style="border-radius:10px; background:var(--ink); color:var(--bg); margin-top:4px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Confirmer la commande
+      </button>
+      <div class="modal-status" id="modal-status"></div>
+    </div>
+  </div>
+
   <main class="page">
-    <div id="product-content">
-      <div class="loading" style="padding:120px 24px;">
-        <div class="spinner"></div>
-        Chargement...
+    <div style="max-width:1100px; margin:0 auto; padding:32px 24px 0;">
+      <a href="/index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+        Retour
+      </a>
+    </div>
+
+    <div class="product-page" id="product-content">
+      <div class="loading" style="grid-column:1/-1;">
+        <div class="spinner"></div>Chargement...
       </div>
     </div>
 
-    <!-- QUICK ORDER MODAL -->
-    <div class="modal-overlay" id="quick-order-modal">
-      <div class="modal">
-        <div class="modal-header">
-          <h3>Commander — <em style="color:var(--ink); font-style:italic" id="modal-product-name"></em></h3>
-          <button class="modal-close" onclick="closeModal()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-        </div>
-        <div class="modal-product-ref" id="modal-product-ref">—</div>
-        <div class="modal-body">
-          <div id="modal-status" class="modal-status"></div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Prénom *</label>
-              <input type="text" class="form-input" id="order-firstname" placeholder="Prénom"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Nom *</label>
-              <input type="text" class="form-input" id="order-lastname" placeholder="Nom"/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Téléphone *</label>
-            <input type="tel" class="form-input" id="order-phone" placeholder="+216 XX XXX XXX"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Email *</label>
-            <input type="email" class="form-input" id="order-email" placeholder="votre@email.com"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Adresse *</label>
-            <input type="text" class="form-input" id="order-address" placeholder="Rue, numéro..."/>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Ville *</label>
-              <input type="text" class="form-input" id="order-city" placeholder="Ville"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Gouvernorat *</label>
-              <select class="form-input" id="order-gov">
-                <option value="">Choisir...</option>
-                <option>Tunis</option><option>Sfax</option><option>Sousse</option>
-                <option>Bizerte</option><option>Gabès</option><option>Ariana</option>
-                <option>Gafsa</option><option>Monastir</option><option>Nabeul</option>
-                <option>Kairouan</option><option>Ben Arous</option><option>Kasserine</option>
-                <option>Médenine</option><option>Jendouba</option><option>Mahdia</option>
-                <option>Sidi Bouzid</option><option>Kef</option><option>Tataouine</option>
-                <option>Béja</option><option>Kébili</option><option>Siliana</option>
-                <option>Tozeur</option><option>Zaghouan</option><option>Manouba</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Taille *</label>
-              <select class="form-input" id="order-size">
-                <option value="">Choisir...</option>
-                <option>XS</option><option>S</option><option>M</option>
-                <option>L</option><option>XL</option><option>XXL</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Couleur</label>
-              <input type="text" class="form-input" id="order-color" placeholder="Ex: Noir, Blanc..."/>
-            </div>
-          </div>
-          <button class="form-btn" id="send-order-btn" onclick="sendQuickOrder()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:16px;height:16px;vertical-align:middle;margin-right:8px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            Envoyer la commande
-          </button>
-        </div>
-      </div>
+    <!-- YOU MAY ALSO LIKE -->
+    <div class="related-section" id="related-section" style="display:none;">
+      <h2 class="related-title">Vous aimerez <em>aussi</em></h2>
+      <div class="related-grid" id="related-grid"></div>
     </div>
-
-    <footer class="footer" style="margin-top:0">
-      <div class="footer-bottom" style="max-width:1100px; margin:0 auto; padding:24px;">
-        <span>© 2025 7EBR. Tous droits réservés.</span>
-        <span>Fait avec passion en Tunisie</span>
-      </div>
-    </footer>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -457,10 +456,8 @@
   <script>
     let currentProduct = null;
     let selectedSize = '';
-    let selectedColor = '';
-
+    let qty = 1;
     const WHATSAPP_NUMBER = '21696672771';
-    const AVAILABLE_COLORS = ['Noir','Blanc','Marron','Beige','Kaki','Gris','Bleu','Vert','Bordeaux','Camel'];
 
     document.addEventListener('DOMContentLoaded', async () => {
       renderNav();
@@ -472,9 +469,10 @@
         currentProduct = await fetchProductById(id);
         renderProduct(currentProduct);
         document.title = `${currentProduct.title} — 7EBR`;
+        loadRelated(currentProduct.category, currentProduct.id);
       } catch (e) {
         document.getElementById('product-content').innerHTML = `
-          <div class="empty-state" style="padding:120px 24px">
+          <div class="empty-state" style="grid-column:1/-1">
             <p>Produit introuvable.</p>
           </div>`;
       }
@@ -484,116 +482,82 @@
       const container = document.getElementById('product-content');
       const badge = p.badge ? `<div class="product-badge-big">${p.badge}</div>` : '';
       const oldPrice = p.old_price ? `<span class="product-old-price">${p.old_price} TND</span>` : '';
-
-      // Build colors from product or default
-      const colors = p.colors ? p.colors : AVAILABLE_COLORS;
-      const colorBtns = colors.map(c => `<button class="color-btn" data-color="${c}" title="${c}" onclick="selectColor('${c}')"></button>`).join('');
+      
+      // Image or placeholder
+      const imgContent = p.image_url 
+        ? `<img src="${p.image_url}" alt="${p.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/><div class="placeholder-svg" style="display:none; width:100%; height:100%; align-items:center; justify-content:center;"><svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="160" fill="#1a1a1a"/><path d="M30 120 L60 40 L90 120 Z" stroke="#C4A882" stroke-width="1" fill="none" opacity="0.4"/><circle cx="60" cy="36" r="6" fill="none" stroke="#C4A882" stroke-width="1" opacity="0.4"/><text x="60" y="148" font-family="serif" font-size="10" fill="#C4A882" text-anchor="middle" opacity="0.3">7EBR</text></svg></div>`
+        : `<svg class="placeholder-svg" viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="160" fill="#1a1a1a"/><path d="M30 120 L60 40 L90 120 Z" stroke="#C4A882" stroke-width="1" fill="none" opacity="0.4"/><circle cx="60" cy="36" r="6" fill="none" stroke="#C4A882" stroke-width="1" opacity="0.4"/><text x="60" y="148" font-family="serif" font-size="10" fill="#C4A882" text-anchor="middle" opacity="0.3">7EBR</text></svg>`;
 
       container.innerHTML = `
-        <div class="product-page">
-          <!-- GALLERY -->
-          <div class="product-gallery">
-            <div class="product-main-img">
-              ${badge}
-              ${p.image_url
-                ? `<img src="${p.image_url}" alt="${p.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-                : ''}
-              <svg class="placeholder-svg" style="${p.image_url ? 'display:none' : ''}" viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="120" height="160" fill="#1a1a1a"/>
-                <path d="M30 120 L60 40 L90 120 Z" stroke="#C4A882" stroke-width="1" fill="none" opacity="0.4"/>
-                <circle cx="60" cy="36" r="6" fill="none" stroke="#C4A882" stroke-width="1" opacity="0.4"/>
-                <text x="60" y="148" font-family="serif" font-size="10" fill="#C4A882" text-anchor="middle" opacity="0.3">7EBR</text>
-              </svg>
+        <!-- GALLERY -->
+        <div class="product-gallery">
+          <div class="product-main-img">
+            ${badge}
+            ${imgContent}
+          </div>
+        </div>
+
+        <!-- INFO -->
+        <div class="product-info">
+          <div class="product-category">${p.category || 'Collection'}</div>
+          <h1 class="product-name">${p.title}</h1>
+          <div class="product-prices">
+            ${oldPrice}
+            <span class="product-price">${p.price} TND</span>
+          </div>
+
+          <p class="product-desc">
+            ${p.description || `Pièce exclusive de la collection 7EBR, inspirée de la calligraphie islamique traditionnelle. Coupe moderne, tissu premium, finition soignée.`}
+          </p>
+
+          <!-- SIZES -->
+          <div class="size-label">Taille</div>
+          <div class="size-grid">
+            ${['XS','S','M','L','XL','XXL'].map(s => `
+              <button class="size-btn" data-size="${s}" onclick="selectSize('${s}')">${s}</button>
+            `).join('')}
+          </div>
+
+          ${p.in_stock ? `
+          <!-- QTY -->
+          <div class="qty-row">
+            <div class="qty-control">
+              <button class="qty-ctrl-btn" onclick="changeQty(-1)">−</button>
+              <span class="qty-display" id="qty-display">1</span>
+              <button class="qty-ctrl-btn" onclick="changeQty(1)">+</button>
             </div>
           </div>
 
-          <!-- INFO -->
-          <div class="product-info">
-            <div class="product-category">${p.category || 'Collection'}</div>
-            <h1 class="product-name">${p.title}</h1>
-            <div class="product-prices">
-              ${oldPrice}
-              <span class="product-price">${p.price} TND</span>
-            </div>
-            <div class="meta-row" style="margin-bottom:20px;font-size:12px;">
+          <!-- ACTIONS -->
+          <div class="action-buttons">
+            <button class="btn-primary" onclick="handleAddToCart()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              Ajouter au panier
+            </button>
+            <button class="btn-secondary" onclick="openQuickOrder()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Commander maintenant
+            </button>
+            <a class="btn-secondary btn-whatsapp" href="${buildWhatsApp(p)}" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.167L2 22l4.985-1.399A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.962 7.962 0 0 1-4.064-1.112l-.292-.173-3.017.847.857-2.94-.191-.302A7.947 7.947 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.588 8-8 8z"/></svg>
+              Commander sur WhatsApp
+            </a>
+          </div>
+          ` : `<div style="background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.2);color:#e74c3c;padding:12px 16px;font-size:13px;letter-spacing:1px;text-align:center;text-transform:uppercase;font-family:'Cairo',sans-serif;">Rupture de stock</div>`}
+
+          <!-- META -->
+          <div class="product-meta">
+            <div class="meta-row">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-              Livraison 8 DT dans toute la Tunisie
+              Livraison dans toute la Tunisie — 8 TND
             </div>
-
-            ${!p.in_stock ? `<div class="out-of-stock-banner">Rupture de stock</div>` : ''}
-
-            <div class="product-divider"></div>
-            <p class="product-desc">
-              ${p.description || `Pièce exclusive de la collection 7EBR, inspirée de la calligraphie islamique traditionnelle. Chaque vêtement est une œuvre d'art portée avec fierté. Coupe moderne, tissu premium, finition soignée.`}
-            </p>
-
-            <!-- COLOR SELECTOR -->
-            <div class="color-label">Couleur <span class="color-selected-name" id="color-selected-display"></span></div>
-            <div class="color-grid">${colorBtns}</div>
-
-            <!-- SIZE SELECTOR -->
-            <div class="size-label">Taille</div>
-            <div class="size-grid">
-              ${['XS','S','M','L','XL','XXL'].map(s => `
-                <button class="size-btn" data-size="${s}" onclick="selectSize('${s}')">${s}</button>
-              `).join('')}
+            <div class="meta-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Paiement à la livraison
             </div>
-
-            <!-- ACTIONS -->
-            ${p.in_stock ? `
-            <div class="action-buttons">
-              <button class="btn-primary" onclick="handleAddToCart()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                Ajouter au panier
-              </button>
-              <button class="btn-secondary" onclick="openQuickOrder()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                Commande rapide (Email)
-              </button>
-              <a class="btn-secondary btn-whatsapp" href="${buildWhatsApp(p)}" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                  <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.167L2 22l4.985-1.399A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.962 7.962 0 0 1-4.064-1.112l-.292-.173-3.017.847.857-2.94-.191-.302A7.947 7.947 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.588 8-8 8z"/>
-                </svg>
-                Commander sur WhatsApp
-              </a>
-            </div>
-            ` : `<div class="out-of-stock-banner">Ce produit est actuellement épuisé</div>`}
-
-            <!-- META -->
-            <div class="product-meta">
-              <div class="meta-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                Livraison 8 DT — partout en Tunisie
-              </div>
-              <div class="meta-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Paiement à la livraison uniquement
-              </div>
-              <div class="meta-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                Échange facile sous 7 jours
-              </div>
-            </div>
-
-            <!-- SOCIAL -->
-            <div class="social-links">
-              <a class="social-link" href="https://wa.me/21696672771" target="_blank">
-                <svg viewBox="0 0 24 24" fill="currentColor" style="color:#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.167L2 22l4.985-1.399A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.962 7.962 0 0 1-4.064-1.112l-.292-.173-3.017.847.857-2.94-.191-.302A7.947 7.947 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.588 8-8 8z"/></svg>
-                WhatsApp
-              </a>
-              <a class="social-link" href="https://instagram.com/7ebr.store" target="_blank">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                @7ebr.store
-              </a>
-              <a class="social-link" href="https://facebook.com/hebrstore" target="_blank">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                hebrstore
-              </a>
-              <a class="social-link" href="https://tiktok.com/@7ebr.store" target="_blank">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.29 6.29 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
-                @7ebr.store
-              </a>
+            <div class="meta-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              Échange facile sous 7 jours
             </div>
           </div>
         </div>
@@ -607,13 +571,10 @@
       });
     }
 
-    function selectColor(c) {
-      selectedColor = c;
-      document.querySelectorAll('.color-btn').forEach(b => {
-        b.classList.toggle('selected', b.dataset.color === c);
-      });
-      const display = document.getElementById('color-selected-display');
-      if (display) display.textContent = '— ' + c;
+    function changeQty(delta) {
+      qty = Math.max(1, qty + delta);
+      const el = document.getElementById('qty-display');
+      if (el) el.textContent = qty;
     }
 
     function handleAddToCart() {
@@ -621,25 +582,23 @@
         alert('Veuillez choisir une taille.');
         return;
       }
-      addToCart(currentProduct, selectedSize);
+      for (let i = 0; i < qty; i++) addToCart(currentProduct, selectedSize);
       openCart();
     }
 
     function buildWhatsApp(p) {
-      const msg = encodeURIComponent(`Bonjour 7EBR, je voudrais commander:\n*${p.title}*\nPrix: ${p.price} TND\nLivraison: 8 DT\n\nTaille: \nCouleur: \nNom: \nTéléphone: \nAdresse: `);
+      const msg = encodeURIComponent(`Bonjour 7EBR 👋\nJe voudrais commander:\n*${p.title}*\nPrix: ${p.price} TND\n\nTaille: \nNom: \nAdresse: `);
       return `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
     }
 
     function openQuickOrder() {
       document.getElementById('modal-product-name').textContent = currentProduct?.title || '';
-      document.getElementById('modal-product-ref').textContent = `${currentProduct?.title} — ${currentProduct?.price} TND + 8 DT livraison`;
+      if (selectedSize) document.getElementById('order-size').value = selectedSize;
       document.getElementById('quick-order-modal').classList.add('open');
-      document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
       document.getElementById('quick-order-modal').classList.remove('open');
-      document.body.style.overflow = '';
     }
 
     async function sendQuickOrder() {
@@ -648,13 +607,12 @@
       const phone = document.getElementById('order-phone').value.trim();
       const email = document.getElementById('order-email').value.trim();
       const address = document.getElementById('order-address').value.trim();
-      const city = document.getElementById('order-city').value.trim();
       const gov = document.getElementById('order-gov').value;
       const size = document.getElementById('order-size').value;
       const color = document.getElementById('order-color').value.trim();
       const statusEl = document.getElementById('modal-status');
 
-      if (!firstname || !lastname || !phone || !email || !address || !city || !gov || !size) {
+      if (!firstname || !lastname || !phone || !email || !address || !gov || !size) {
         statusEl.className = 'modal-status error';
         statusEl.textContent = 'Veuillez remplir tous les champs obligatoires.';
         return;
@@ -665,39 +623,60 @@
       btn.textContent = 'Envoi en cours...';
       statusEl.className = 'modal-status';
 
-      const totalPrice = currentProduct ? (parseFloat(currentProduct.price) + 8).toFixed(3) + ' TND (+ 8 DT livraison)' : '';
-
       try {
         await emailjs.send('service_lixuoem', 'template_y0aocqa', {
           customer_name: firstname + ' ' + lastname,
-          customer_firstname: firstname,
-          customer_lastname: lastname,
           customer_phone: phone,
           customer_email: email,
           customer_address: address,
-          customer_city: city,
           customer_gov: gov,
           product_name: currentProduct?.title || '',
           product_price: currentProduct?.price + ' TND' || '',
           product_size: size,
-          product_color: color || 'Non précisé',
-          total_price: totalPrice,
+          product_color: color || 'Non spécifié',
           to_email: 'admin@7ebr.com'
         });
 
+        // Also save to Supabase
+        try {
+          await sb.from('orders').insert([{
+            product_id: currentProduct?.id,
+            product_title: currentProduct?.title,
+            amount: (currentProduct?.price || 0) + 8,
+            status: 'pending',
+            customer_name: firstname + ' ' + lastname,
+            customer_email: email,
+            customer_phone: phone,
+            address: `${address}, ${gov}`,
+            payment_method: 'cod'
+          }]);
+        } catch(e) {}
+
         statusEl.className = 'modal-status success';
         statusEl.textContent = '✓ Commande envoyée! Nous vous contacterons bientôt.';
-        ['order-firstname','order-lastname','order-phone','order-email','order-address','order-city','order-gov','order-size','order-color'].forEach(id => {
+        ['order-firstname','order-lastname','order-phone','order-email','order-address','order-color'].forEach(id => {
           document.getElementById(id).value = '';
         });
+        document.getElementById('order-gov').value = '';
+        document.getElementById('order-size').value = '';
       } catch (err) {
         statusEl.className = 'modal-status error';
         statusEl.textContent = 'Erreur d\'envoi. Contactez-nous sur WhatsApp.';
         console.error(err);
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:16px;height:16px;vertical-align:middle;margin-right:8px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Envoyer la commande`;
+        btn.textContent = 'Confirmer la commande';
       }
+    }
+
+    async function loadRelated(category, excludeId) {
+      try {
+        const { data } = await sb.from('products').select('*').eq('category', category).eq('in_stock', true).neq('id', excludeId).limit(4);
+        if (data && data.length > 0) {
+          document.getElementById('related-section').style.display = 'block';
+          document.getElementById('related-grid').innerHTML = data.map(renderProductCard).join('');
+        }
+      } catch(e) {}
     }
 
     document.getElementById('quick-order-modal').addEventListener('click', (e) => {
