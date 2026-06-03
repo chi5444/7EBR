@@ -4,7 +4,7 @@ function renderNav(activePage = '') {
   const nav = document.getElementById('main-nav');
   if (!nav) return;
   nav.innerHTML = `
-    <div class="announce-bar">Livraison gratuite à partir de 150 TND &nbsp;·&nbsp; Nouvelle collection disponible</div>
+    <div class="announce-bar">Livraison 8 DT partout en Tunisie &nbsp;·&nbsp; Nouvelle collection disponible</div>
     <nav class="nav">
       <div class="nav-left">
         <button class="nav-btn" id="menu-toggle" aria-label="Menu">
@@ -62,6 +62,12 @@ function renderNav(activePage = '') {
       <a href="/index.html?cat=hoodie">Hoodies</a>
       <a href="/index.html?cat=pantalon">Pantalons</a>
       <a href="/index.html?cat=accessoire">Accessoires</a>
+      <div style="display:flex;gap:16px;padding:20px 32px;border-top:1px solid var(--border);margin-top:auto;">
+        <a href="https://wa.me/21696672771" target="_blank" style="color:var(--text-dim);text-decoration:none;font-size:13px;font-family:'Cairo',sans-serif;">WhatsApp</a>
+        <a href="https://instagram.com/7ebr.store" target="_blank" style="color:var(--text-dim);text-decoration:none;font-size:13px;font-family:'Cairo',sans-serif;">Instagram</a>
+        <a href="https://facebook.com/hebrstore" target="_blank" style="color:var(--text-dim);text-decoration:none;font-size:13px;font-family:'Cairo',sans-serif;">Facebook</a>
+        <a href="https://tiktok.com/@7ebr.store" target="_blank" style="color:var(--text-dim);text-decoration:none;font-size:13px;font-family:'Cairo',sans-serif;">TikTok</a>
+      </div>
       <div class="mobile-menu-footer">حبر — نكتب الأثر، نلبس المعنى</div>
     </div>
 
