@@ -13,7 +13,6 @@
     }
     @media (max-width: 768px) { .admin-layout { grid-template-columns: 1fr; } }
 
-    /* SIDEBAR */
     .admin-sidebar {
       background: var(--bg2);
       border-right: 1px solid var(--border);
@@ -54,7 +53,6 @@
     .sidebar-link.active { color: var(--ink); border-left-color: var(--ink); background: rgba(196,168,130,0.05); }
     .sidebar-sep { height: 1px; background: var(--border); margin: 16px 20px; }
 
-    /* MAIN */
     .admin-main { padding: 40px 32px; }
     @media (max-width: 768px) { .admin-main { padding: 24px 16px; } }
 
@@ -73,7 +71,6 @@
     }
     .admin-header h1 em { color: var(--ink); font-style: italic; }
 
-    /* STATS */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -108,13 +105,8 @@
       font-family: 'Cairo', sans-serif;
     }
 
-    /* TABLE */
     .table-wrap { overflow-x: auto; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
     thead th {
       text-align: left;
       padding: 10px 14px;
@@ -179,6 +171,63 @@
     .form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
     @media (max-width: 640px) { .form-grid-3 { grid-template-columns: 1fr 1fr; } }
 
+    /* IMAGE PREVIEW */
+    .img-preview {
+      width: 100%;
+      aspect-ratio: 3/2;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-top: 8px;
+      border-radius: var(--radius);
+    }
+    .img-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .img-preview-placeholder {
+      color: var(--text-faint);
+      font-size: 12px;
+      letter-spacing: 1px;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    /* COLORS SECTION */
+    .colors-input-wrap { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .color-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 4px 10px 4px 8px;
+      font-size: 12px;
+      border-radius: 20px;
+    }
+    .color-swatch {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .color-tag button {
+      background: none; border: none; color: var(--text-faint);
+      cursor: pointer; font-size: 14px; line-height: 1; padding: 0;
+      display: flex; align-items: center;
+    }
+    .color-tag button:hover { color: var(--danger); }
+    .add-color-btn {
+      background: var(--bg3);
+      border: 1px dashed var(--border);
+      color: var(--text-dim);
+      padding: 4px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 20px;
+      transition: all var(--transition);
+      font-family: 'Cairo', sans-serif;
+    }
+    .add-color-btn:hover { border-color: var(--ink); color: var(--ink); }
+
     .form-actions { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
     .btn-save {
       background: var(--ink);
@@ -222,7 +271,6 @@
     .panel { display: none; }
     .panel.active { display: block; }
 
-    /* Order status select */
     .status-select {
       background: var(--bg3);
       border: 1px solid var(--border);
@@ -233,6 +281,20 @@
       cursor: pointer;
       border-radius: var(--radius);
     }
+
+    /* Product thumb in table */
+    .prod-thumb {
+      width: 44px; height: 56px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .prod-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .prod-thumb svg { width: 20px; height: 20px; color: var(--ink-dim); opacity: 0.5; }
   </style>
 </head>
 <body>
@@ -274,7 +336,7 @@
           <div class="admin-header">
             <h1>Tableau de <em>bord</em></h1>
           </div>
-          <div class="stats-grid" id="stats-grid">
+          <div class="stats-grid">
             <div class="stat-card"><div class="stat-value" id="stat-products">—</div><div class="stat-label">Produits</div></div>
             <div class="stat-card"><div class="stat-value" id="stat-orders">—</div><div class="stat-label">Commandes</div></div>
             <div class="stat-card"><div class="stat-value" id="stat-pending">—</div><div class="stat-label">En attente</div></div>
@@ -294,10 +356,11 @@
             </button>
           </div>
 
-          <!-- PRODUCT FORM (hidden by default) -->
+          <!-- PRODUCT FORM -->
           <div class="product-form" id="product-form" style="display:none;">
             <h2 class="product-form-title" id="form-title">Nouveau produit</h2>
             <input type="hidden" id="edit-product-id"/>
+
             <div class="form-grid">
               <div class="form-group">
                 <label class="form-label">Titre *</label>
@@ -323,18 +386,41 @@
                 <input type="number" class="form-input" id="p-old-price" placeholder="Optionnel" step="0.001"/>
               </div>
             </div>
+
+            <!-- IMAGE URL -->
+            <div class="form-group" style="margin-top:16px;">
+              <label class="form-label">URL de l'image principale</label>
+              <input type="url" class="form-input" id="p-image-url" placeholder="https://..." oninput="previewImage(this.value)"/>
+              <div class="img-preview" id="img-preview">
+                <span class="img-preview-placeholder">Aperçu de l'image</span>
+              </div>
+            </div>
+
+            <!-- COLORS -->
+            <div class="form-group" style="margin-top:16px;">
+              <label class="form-label">Couleurs disponibles</label>
+              <div style="display:flex; gap:8px; margin-bottom:8px; align-items:center;">
+                <input type="text" class="form-input" id="color-name-input" placeholder="ex: Noir" style="max-width:120px;"/>
+                <input type="color" id="color-picker" value="#1a1a1a" style="width:40px; height:40px; border:1px solid var(--border); background:var(--bg3); cursor:pointer; padding:2px; border-radius:4px;"/>
+                <button type="button" class="add-color-btn" onclick="addColor()">+ Ajouter</button>
+              </div>
+              <div class="colors-input-wrap" id="colors-wrap"></div>
+              <input type="hidden" id="p-colors" value="[]"/>
+            </div>
+
             <div class="form-group" style="margin-top:16px;">
               <label class="form-label">Description</label>
               <textarea class="form-input" id="p-description" rows="3" placeholder="Description du produit..." style="resize:vertical;"></textarea>
             </div>
+
             <div class="form-grid form-grid-3" style="margin-top:16px;">
               <div class="form-group">
                 <label class="form-label">Badge</label>
                 <input type="text" class="form-input" id="p-badge" placeholder="Nouveau, Promo..."/>
               </div>
               <div class="form-group">
-                <label class="form-label">Region</label>
-                <input type="text" class="form-input" id="p-region" placeholder="Tunisie"/>
+                <label class="form-label">Classe CSS img</label>
+                <input type="text" class="form-input" id="p-img-class" placeholder="img-dark, img-color..."/>
               </div>
               <div class="form-group">
                 <label class="form-label">En stock</label>
@@ -344,6 +430,7 @@
                 </select>
               </div>
             </div>
+
             <div class="form-actions">
               <button class="btn-save" onclick="saveProduct()">Enregistrer</button>
               <button class="btn-cancel" onclick="cancelProductForm()">Annuler</button>
@@ -357,16 +444,17 @@
             <table id="products-table">
               <thead>
                 <tr>
+                  <th>Image</th>
                   <th>Titre</th>
                   <th>Catégorie</th>
                   <th>Prix</th>
+                  <th>Couleurs</th>
                   <th>Stock</th>
-                  <th>Badge</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="products-tbody">
-                <tr><td colspan="6" class="loading"><div class="spinner"></div>Chargement...</td></tr>
+                <tr><td colspan="7" class="loading"><div class="spinner"></div>Chargement...</td></tr>
               </tbody>
             </table>
           </div>
@@ -378,14 +466,14 @@
             <h1><em>Commandes</em></h1>
           </div>
           <div class="table-wrap">
-            <table id="orders-table">
+            <table>
               <thead>
                 <tr>
                   <th>#</th>
                   <th>Client</th>
                   <th>Produit</th>
                   <th>Montant</th>
-                  <th>Paiement</th>
+                  <th>Adresse</th>
                   <th>Statut</th>
                   <th>Actions</th>
                 </tr>
@@ -408,6 +496,8 @@
   <script src="/js/products.js"></script>
   <script src="/js/nav.js"></script>
   <script>
+    let currentColors = [];
+
     document.addEventListener('DOMContentLoaded', async () => {
       renderNav();
       const admin = await isAdmin();
@@ -441,26 +531,37 @@
 
     async function loadAdminProducts() {
       const tbody = document.getElementById('products-tbody');
-      tbody.innerHTML = '<tr><td colspan="6" class="loading"><div class="spinner"></div>Chargement...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="loading"><div class="spinner"></div>Chargement...</td></tr>';
       try {
         const products = await fetchAllProducts();
         if (!products.length) {
-          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-dim);padding:32px;">Aucun produit</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);padding:32px;">Aucun produit</td></tr>';
           return;
         }
-        tbody.innerHTML = products.map(p => `
+        tbody.innerHTML = products.map(p => {
+          const colors = p.colors ? JSON.parse(p.colors) : [];
+          const colorDots = colors.slice(0,4).map(c => `<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${c.hex};border:1px solid rgba(255,255,255,0.15);margin-right:3px;" title="${c.name}"></span>`).join('');
+          return `
           <tr>
-            <td style="max-width:200px;">${p.title}</td>
-            <td>${p.category || '—'}</td>
+            <td>
+              <div class="prod-thumb">
+                ${p.image_url 
+                  ? `<img src="${p.image_url}" alt="" onerror="this.style.display='none'">`
+                  : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>`
+                }
+              </div>
+            </td>
+            <td style="max-width:180px; font-size:13px;">${p.title}</td>
+            <td style="font-size:12px; color:var(--ink-dim);">${p.category || '—'}</td>
             <td style="color:var(--ink)">${p.price} TND</td>
+            <td>${colorDots || '<span style="color:var(--text-faint);font-size:11px;">—</span>'}</td>
             <td>
               <span class="status-badge ${p.in_stock ? 'status-confirmed' : 'status-cancelled'}">
                 ${p.in_stock ? 'Oui' : 'Non'}
               </span>
             </td>
-            <td>${p.badge || '—'}</td>
             <td style="display:flex; gap:4px;">
-              <button class="action-btn edit" onclick="editProduct(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+              <button class="action-btn edit" onclick='editProduct(${JSON.stringify(JSON.stringify(p))})'>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               </button>
               <button class="action-btn delete" onclick="confirmDelete(${p.id})">
@@ -468,9 +569,9 @@
               </button>
             </td>
           </tr>
-        `).join('');
+        `}).join('');
       } catch (e) {
-        tbody.innerHTML = '<tr><td colspan="6" style="color:var(--danger);text-align:center;padding:20px;">Erreur de chargement</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="color:var(--danger);text-align:center;padding:20px;">Erreur de chargement</td></tr>';
       }
     }
 
@@ -490,10 +591,11 @@
             <td>
               <div style="font-size:14px;">${o.customer_name || 'Client'}</div>
               <div style="font-size:11px;color:var(--text-dim);">${o.customer_phone || ''}</div>
+              <div style="font-size:11px;color:var(--text-faint);">${o.customer_email || ''}</div>
             </td>
             <td style="max-width:160px; font-size:13px;">${o.product_title}</td>
             <td style="color:var(--ink)">${o.amount?.toFixed(3)} TND</td>
-            <td style="font-size:12px;color:var(--text-dim);">${o.payment_method || 'cod'}</td>
+            <td style="font-size:12px;color:var(--text-dim);max-width:140px;">${o.address || '—'}</td>
             <td>
               <select class="status-select" onchange="updateOrderStatus(${o.id}, this.value)">
                 <option value="pending" ${o.status==='pending'?'selected':''}>En attente</option>
@@ -515,8 +617,44 @@
       }
     }
 
-    function showProductForm(title = 'Nouveau produit') {
-      document.getElementById('form-title').textContent = title;
+    function previewImage(url) {
+      const preview = document.getElementById('img-preview');
+      if (url) {
+        preview.innerHTML = `<img src="${url}" alt="preview" onerror="this.parentElement.innerHTML='<span class=img-preview-placeholder>Image introuvable</span>'">`;
+      } else {
+        preview.innerHTML = '<span class="img-preview-placeholder">Aperçu de l\'image</span>';
+      }
+    }
+
+    function addColor() {
+      const name = document.getElementById('color-name-input').value.trim();
+      const hex = document.getElementById('color-picker').value;
+      if (!name) return;
+      currentColors.push({ name, hex });
+      document.getElementById('p-colors').value = JSON.stringify(currentColors);
+      document.getElementById('color-name-input').value = '';
+      renderColorTags();
+    }
+
+    function removeColor(idx) {
+      currentColors.splice(idx, 1);
+      document.getElementById('p-colors').value = JSON.stringify(currentColors);
+      renderColorTags();
+    }
+
+    function renderColorTags() {
+      const wrap = document.getElementById('colors-wrap');
+      wrap.innerHTML = currentColors.map((c, i) => `
+        <div class="color-tag">
+          <span class="color-swatch" style="background:${c.hex}"></span>
+          <span>${c.name}</span>
+          <button onclick="removeColor(${i})">×</button>
+        </div>
+      `).join('');
+    }
+
+    function showProductForm() {
+      document.getElementById('form-title').textContent = 'Nouveau produit';
       document.getElementById('product-form').style.display = 'block';
       document.getElementById('product-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -524,23 +662,35 @@
     function cancelProductForm() {
       document.getElementById('product-form').style.display = 'none';
       document.getElementById('edit-product-id').value = '';
-      ['p-title','p-category','p-price','p-old-price','p-badge','p-region','p-description'].forEach(id => {
+      currentColors = [];
+      renderColorTags();
+      ['p-title','p-category','p-price','p-old-price','p-badge','p-description','p-image-url','p-img-class'].forEach(id => {
         document.getElementById(id).value = '';
       });
       document.getElementById('p-stock').value = 'true';
+      document.getElementById('p-colors').value = '[]';
+      previewImage('');
     }
 
-    function editProduct(p) {
+    function editProduct(pJson) {
+      const p = JSON.parse(pJson);
       document.getElementById('edit-product-id').value = p.id;
       document.getElementById('p-title').value = p.title || '';
       document.getElementById('p-category').value = p.category || '';
       document.getElementById('p-price').value = p.price || '';
       document.getElementById('p-old-price').value = p.old_price || '';
       document.getElementById('p-badge').value = p.badge || '';
-      document.getElementById('p-region').value = p.region || '';
+      document.getElementById('p-img-class').value = p.img_class || '';
       document.getElementById('p-stock').value = p.in_stock ? 'true' : 'false';
       document.getElementById('p-description').value = p.description || '';
-      showProductForm('Modifier le produit');
+      document.getElementById('p-image-url').value = p.image_url || '';
+      previewImage(p.image_url || '');
+      currentColors = p.colors ? JSON.parse(p.colors) : [];
+      document.getElementById('p-colors').value = p.colors || '[]';
+      renderColorTags();
+      document.getElementById('form-title').textContent = 'Modifier le produit';
+      document.getElementById('product-form').style.display = 'block';
+      document.getElementById('product-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     async function saveProduct() {
@@ -550,9 +700,11 @@
       const price = parseFloat(document.getElementById('p-price').value);
       const old_price = parseFloat(document.getElementById('p-old-price').value) || null;
       const badge = document.getElementById('p-badge').value.trim() || null;
-      const region = document.getElementById('p-region').value.trim() || null;
+      const img_class = document.getElementById('p-img-class').value.trim() || null;
       const in_stock = document.getElementById('p-stock').value === 'true';
       const description = document.getElementById('p-description').value.trim() || null;
+      const image_url = document.getElementById('p-image-url').value.trim() || null;
+      const colors = document.getElementById('p-colors').value || '[]';
       const errEl = document.getElementById('product-form-error');
       const sucEl = document.getElementById('product-form-success');
 
@@ -563,7 +715,7 @@
         errEl.classList.add('show'); return;
       }
 
-      const data = { title, category, price, old_price, badge, region, in_stock, description };
+      const data = { title, category, price, old_price, badge, img_class, in_stock, description, image_url, colors };
 
       try {
         if (id) {
