@@ -356,10 +356,18 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
       renderNav();
-      const admin = await isAdmin();
-      if (!admin) { window.location.href = '/login.html?redirect=/admin/index.html'; return; }
-      loadStats();
-      loadRecentOrders();
+      try {
+        const admin = await isAdmin();
+        if (!admin) {
+          window.location.href = '/login.html?redirect=/admin/index.html';
+          return;
+        }
+        loadStats();
+        loadRecentOrders();
+      } catch(e) {
+        console.error('Auth error:', e);
+        window.location.href = '/login.html?redirect=/admin/index.html';
+      }
     });
 
     /* ── PANELS ── */
@@ -408,11 +416,25 @@
     /* ── PRODUCTS TABLE ── */
     async function loadAdminProducts() {
       const tbody = document.getElementById('products-tbody');
-      tbody.innerHTML = '<tr><td colspan="6" class="loading" style="padding:40px;"><div class="spinner"></div></td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="loading" style="padding:40px;"><div class="spinner"></div>Chargement...</td></tr>';
       try {
-        const products = await fetchAllProducts();
-        if (!products.length) {
-          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--ink-faint);padding:40px;">Aucun produit</td></tr>';
+        // Query direct — bypass fetchAllProducts pour avoir le message d'erreur exact
+        const { data: products, error } = await sb
+          .from('products')
+          .select('*')
+          .order('id', { ascending: false });
+
+        if (error) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;">
+            <div style="color:var(--danger);font-size:13px;margin-bottom:8px;">Erreur Supabase: ${error.message}</div>
+            <div style="color:var(--ink-faint);font-size:11px;font-family:Cairo,sans-serif;">Code: ${error.code || 'N/A'} · Vérifiez les politiques RLS dans Supabase.</div>
+          </td></tr>`;
+          console.error('Supabase error:', error);
+          return;
+        }
+
+        if (!products || !products.length) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--ink-faint);padding:40px;font-size:14px;">Aucun produit — Ajoutez votre premier produit.</td></tr>';
           return;
         }
         tbody.innerHTML = products.map(p => {

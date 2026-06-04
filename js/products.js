@@ -16,8 +16,15 @@ async function fetchProductById(id) {
 }
 
 async function fetchAllProducts() {
-  const { data, error } = await sb.from('products').select('*').order('id', { ascending: false });
-  if (error) throw error;
+  // Admin query — no in_stock filter, all products
+  const { data, error } = await sb
+    .from('products')
+    .select('*')
+    .order('id', { ascending: false });
+  if (error) {
+    console.error('fetchAllProducts error:', error);
+    throw error;
+  }
   return data || [];
 }
 

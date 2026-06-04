@@ -3,13 +3,21 @@
 const ADMIN_EMAIL = 'admin@7ebr.com';
 
 async function getUser() {
-  const { data: { user } } = await sb.auth.getUser();
-  return user;
+  try {
+    const { data: { user } } = await sb.auth.getUser();
+    return user;
+  } catch(e) {
+    return null;
+  }
 }
 
 async function isAdmin() {
-  const user = await getUser();
-  return user && user.email === ADMIN_EMAIL;
+  try {
+    const user = await getUser();
+    return !!(user && user.email === ADMIN_EMAIL);
+  } catch(e) {
+    return false;
+  }
 }
 
 async function login(email, password) {
