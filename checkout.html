@@ -6,74 +6,203 @@
   <title>Commander — 7EBR</title>
   <link rel="stylesheet" href="/css/style.css"/>
   <style>
+    /* ── LAYOUT ── */
     .checkout-page {
       max-width: 980px; margin: 0 auto;
-      padding: 50px 24px 100px;
+      padding: 40px 24px 120px;
       display: grid;
       grid-template-columns: 1.4fr 1fr;
-      gap: 44px; align-items: start;
+      gap: 40px; align-items: start;
+    }
+
+    /* ── MOBILE: single column, summary on top ── */
+    @media(max-width:768px){
+      .checkout-page {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 20px 14px 100px;
+      }
+      .order-summary { order: -1; }
+      /* Summary NOT sticky on mobile */
+      .order-summary { position: static !important; }
+    }
+
+    /* ── HEADINGS ── */
+    .checkout-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px; font-weight: 400;
+      margin-bottom: 24px; color: var(--ink);
+    }
+    .checkout-title em { font-style:italic; color:var(--accent-deep); }
+
+    /* ── SECTIONS ── */
+    .checkout-section {
+      background: var(--cream-card);
+      border: 1px solid var(--cream-dark);
+      padding: 22px 20px;
+      margin-bottom: 14px;
+      position: relative;
+    }
+    .checkout-section::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg,transparent,var(--accent),transparent);
+    }
+    .checkout-section-title {
+      font-size: 10px; letter-spacing:3px; text-transform:uppercase;
+      color: var(--accent-deep); margin-bottom:16px;
+      font-family: 'Cairo',sans-serif;
+      display:flex; align-items:center; gap:8px;
+    }
+    .checkout-section-title svg { width:14px; height:14px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media(max-width:480px){ .form-row { grid-template-columns:1fr; } }
+
+    /* ── SUMMARY ── */
+    .order-summary { position: sticky; top: calc(var(--nav-h) + 20px); }
+    .summary-card {
+      background: var(--cream-card);
+      border: 1px solid var(--cream-dark);
+      padding: 22px 20px; position: relative;
+    }
+    .summary-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg,transparent,var(--accent),transparent);
+    }
+    .summary-title {
+      font-family: 'Playfair Display',serif;
+      font-size: 16px; font-weight:400;
+      margin-bottom: 18px; color: var(--ink);
+    }
+    .summary-item {
+      display:flex; justify-content:space-between;
+      align-items:flex-start; padding:10px 0;
+      border-bottom:1px solid var(--cream-dark); gap:10px;
+    }
+    .summary-item:last-of-type { border-bottom: none; }
+    .summary-item-info { flex:1; }
+    .summary-item-name  { font-size:14px; color:var(--ink-mid); }
+    .summary-item-meta  { font-size:10px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+    .summary-item-price { font-size:14px; color:var(--accent-deep); white-space:nowrap; }
+    .summary-sep { height:1px; background:var(--cream-dark); margin:12px 0; }
+    .summary-line {
+      display:flex; justify-content:space-between;
+      font-size:13px; color:var(--ink-soft); margin-bottom:7px;
+    }
+    .summary-line.total {
+      font-family:'Playfair Display',serif;
+      font-size:15px; color:var(--ink); margin-bottom:0;
+    }
+    .summary-line.total .total-price {
+      font-family:'Cormorant Garamond',serif;
+      font-size:22px; color:var(--ink);
+    }
+
+    /* ── CONFIRM BUTTON — always visible ── */
+    /* Desktop: inside summary card */
+    .place-order-btn {
+      width: 100%; background: var(--ink); color: var(--cream);
+      border: none; padding: 15px;
+      font-family: 'Cormorant Garamond',serif;
+      font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; margin-top: 16px;
+      transition: all var(--transition); border-radius: 4px;
+      display: block;
+    }
+    .place-order-btn:hover  { background: var(--ink-mid); }
+    .place-order-btn:disabled { opacity:0.5; cursor:not-allowed; }
+
+    /* Mobile: fixed bottom bar */
+    .mobile-confirm-bar {
+      display: none;
     }
     @media(max-width:768px){
-      .checkout-page{grid-template-columns:1fr;gap:28px;padding:28px 16px 80px;}
-      .order-summary{order:-1;}
+      /* Hide button inside card on mobile */
+      .place-order-btn { display: none; }
+
+      /* Show fixed bar */
+      .mobile-confirm-bar {
+        display: block;
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        z-index: 500;
+        background: var(--cream-card);
+        border-top: 1px solid var(--cream-dark);
+        padding: 12px 16px;
+        box-shadow: 0 -4px 20px rgba(26,20,16,0.10);
+      }
+      .mobile-confirm-inner {
+        display: flex; align-items: center;
+        justify-content: space-between; gap: 12px;
+        max-width: 500px; margin: 0 auto;
+      }
+      .mobile-confirm-total {
+        font-family: 'Cormorant Garamond',serif;
+        font-size: 20px; color: var(--ink); font-weight:500;
+      }
+      .mobile-confirm-label {
+        font-size: 10px; color: var(--ink-faint);
+        font-family: 'Cairo',sans-serif; letter-spacing:1px;
+        text-transform: uppercase;
+      }
+      .mobile-confirm-btn {
+        flex: 1; background: var(--ink); color: var(--cream);
+        border: none; height: 50px; border-radius: 6px;
+        font-family: 'Cormorant Garamond',serif;
+        font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+        cursor: pointer; transition: all var(--transition);
+        max-width: 220px;
+      }
+      .mobile-confirm-btn:hover   { background: var(--ink-mid); }
+      .mobile-confirm-btn:disabled { opacity:0.5; cursor:not-allowed; }
     }
-    .checkout-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;margin-bottom:28px;color:var(--ink);}
-    .checkout-title em{font-style:italic;color:var(--accent-deep);}
-    .checkout-section{background:var(--cream-card);border:1px solid var(--cream-dark);padding:26px;margin-bottom:18px;position:relative;}
-    .checkout-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
-    .checkout-section-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-deep);margin-bottom:18px;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:9px;}
-    .checkout-section-title svg{width:15px;height:15px;}
-    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-    @media(max-width:480px){.form-row{grid-template-columns:1fr;}}
 
-    /* SUMMARY */
-    .order-summary{position:sticky;top:calc(var(--nav-h) + 24px);}
-    .summary-card{background:var(--cream-card);border:1px solid var(--cream-dark);padding:26px;position:relative;}
-    .summary-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
-    .summary-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:400;margin-bottom:20px;color:var(--ink);}
-    .summary-item{display:flex;justify-content:space-between;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--cream-dark);gap:10px;}
-    .summary-item-info{flex:1;}
-    .summary-item-name{font-size:14px;color:var(--ink-mid);}
-    .summary-item-size{font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
-    .summary-item-qty{font-size:11px;color:var(--ink-faint);margin-top:2px;}
-    .summary-item-price{font-size:14px;color:var(--accent-deep);white-space:nowrap;}
-    .summary-line{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-soft);margin-top:10px;}
-    .summary-line.delivery{color:var(--ink-mid);font-weight:500;}
-    .summary-total{display:flex;justify-content:space-between;padding-top:14px;border-top:1px solid var(--cream-dark);margin-top:10px;}
-    .summary-total-label{font-family:'Playfair Display',serif;font-size:15px;color:var(--ink);}
-    .summary-total-price{font-size:22px;color:var(--ink);font-family:'Cormorant Garamond',serif;}
-    .place-order-btn{width:100%;background:var(--ink);color:var(--cream);border:none;padding:16px;font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-top:18px;transition:all var(--transition);border-radius:4px;}
-    .place-order-btn:hover{background:var(--ink-mid);}
-    .place-order-btn:disabled{opacity:0.5;cursor:not-allowed;}
+    /* ── COD BOX ── */
+    .cod-box {
+      display:flex; align-items:center; gap:13px;
+      padding:14px; background:var(--parchment);
+      border:1px solid var(--cream-dark); border-radius:4px;
+    }
+    .cod-icon { width:40px; height:40px; background:var(--cream-deep); border:1px solid var(--cream-dark); border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .cod-icon svg { width:18px; height:18px; color:var(--accent-deep); }
+    .cod-label { font-size:14px; color:var(--ink); font-family:'Cormorant Garamond',serif; }
+    .cod-desc  { font-size:11px; color:var(--ink-faint); margin-top:1px; font-family:'Cairo',sans-serif; }
 
-    /* SUCCESS */
-    .order-success{text-align:center;padding:80px 24px;max-width:500px;margin:0 auto;}
-    .order-success-icon{width:64px;height:64px;background:rgba(58,107,74,0.1);border:1px solid rgba(58,107,74,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;}
-    .order-success-icon svg{width:32px;height:32px;color:var(--success);}
-    .order-success h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;margin-bottom:10px;color:var(--ink);}
-    .order-success p{color:var(--ink-soft);font-size:15px;margin-bottom:28px;line-height:1.7;}
-    .continue-btn{display:inline-block;border:1px solid var(--ink);color:var(--ink);padding:13px 36px;font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all var(--transition);}
-    .continue-btn:hover{background:var(--ink);color:var(--cream);}
-
-    /* COD BOX */
-    .cod-box{display:flex;align-items:center;gap:14px;padding:16px;background:var(--parchment);border:1px solid var(--cream-dark);border-radius:4px;}
-    .cod-icon{width:42px;height:42px;background:var(--cream-deep);border:1px solid var(--cream-dark);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .cod-icon svg{width:20px;height:20px;color:var(--accent-deep);}
-    .cod-label{font-size:14px;color:var(--ink);font-family:'Cormorant Garamond',serif;}
-    .cod-desc{font-size:11px;color:var(--ink-faint);margin-top:2px;font-family:'Cairo',sans-serif;}
+    /* ── SUCCESS ── */
+    .order-success { text-align:center; padding:80px 24px; max-width:480px; margin:0 auto; }
+    .order-success-icon { width:60px; height:60px; background:rgba(58,107,74,0.1); border:1px solid rgba(58,107,74,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 22px; }
+    .order-success-icon svg { width:28px; height:28px; color:var(--success); }
+    .order-success h2 { font-family:'Playfair Display',serif; font-size:24px; font-weight:400; margin-bottom:10px; color:var(--ink); }
+    .order-success p  { color:var(--ink-soft); font-size:15px; margin-bottom:26px; line-height:1.7; }
+    .continue-btn { display:inline-block; border:1px solid var(--ink); color:var(--ink); padding:12px 34px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:3px; text-transform:uppercase; text-decoration:none; transition:all var(--transition); }
+    .continue-btn:hover { background:var(--ink); color:var(--cream); }
   </style>
 </head>
 <body>
   <div id="main-nav"></div>
+
+  <!-- MOBILE FIXED BOTTOM BAR -->
+  <div class="mobile-confirm-bar" id="mobile-bar">
+    <div class="mobile-confirm-inner">
+      <div>
+        <div class="mobile-confirm-label">Total</div>
+        <div class="mobile-confirm-total" id="mobile-total">0 TND</div>
+      </div>
+      <button class="mobile-confirm-btn" id="mobile-confirm-btn" onclick="placeOrder()">
+        Confirmer
+      </button>
+    </div>
+  </div>
+
   <main class="page">
     <div id="checkout-root">
       <div class="checkout-page">
-        <!-- FORM -->
+
+        <!-- ── FORM ── -->
         <div class="checkout-form">
           <h1 class="checkout-title">Finaliser la <em>commande</em></h1>
           <div class="form-error" id="checkout-error"></div>
 
-          <!-- LIVRAISON INFO -->
+          <!-- Livraison -->
           <div class="checkout-section">
             <div class="checkout-section-title">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
@@ -82,24 +211,24 @@
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">Prénom *</label>
-                <input type="text" class="form-input" id="first-name" placeholder="Prénom"/>
+                <input type="text" class="form-input" id="first-name" placeholder="Prénom" autocomplete="given-name"/>
               </div>
               <div class="form-group">
                 <label class="form-label">Nom *</label>
-                <input type="text" class="form-input" id="last-name" placeholder="Nom"/>
+                <input type="text" class="form-input" id="last-name" placeholder="Nom" autocomplete="family-name"/>
               </div>
             </div>
             <div class="form-group">
               <label class="form-label">Email *</label>
-              <input type="email" class="form-input" id="checkout-email" placeholder="votre@email.com"/>
+              <input type="email" class="form-input" id="checkout-email" placeholder="votre@email.com" autocomplete="email"/>
             </div>
             <div class="form-group">
               <label class="form-label">Téléphone *</label>
-              <input type="tel" class="form-input" id="checkout-phone" placeholder="+216 XX XXX XXX"/>
+              <input type="tel" class="form-input" id="checkout-phone" placeholder="+216 XX XXX XXX" autocomplete="tel"/>
             </div>
             <div class="form-group">
               <label class="form-label">Adresse *</label>
-              <input type="text" class="form-input" id="checkout-address" placeholder="Rue, numéro, ville..."/>
+              <input type="text" class="form-input" id="checkout-address" placeholder="Rue, numéro, ville..." autocomplete="street-address"/>
             </div>
             <div class="form-group">
               <label class="form-label">Gouvernorat *</label>
@@ -117,7 +246,7 @@
             </div>
           </div>
 
-          <!-- PAYMENT -->
+          <!-- Paiement -->
           <div class="checkout-section">
             <div class="checkout-section-title">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
@@ -135,33 +264,36 @@
           </div>
         </div>
 
-        <!-- ORDER SUMMARY -->
+        <!-- ── ORDER SUMMARY ── -->
         <div class="order-summary">
           <div class="summary-card">
             <div class="summary-title">Résumé de commande</div>
             <div id="summary-items"></div>
+            <div class="summary-sep"></div>
             <div class="summary-line">
               <span>Sous-total</span>
               <span id="subtotal-val">0 TND</span>
             </div>
-            <div class="summary-line delivery">
+            <div class="summary-line">
               <span>Livraison</span>
               <span>8,000 TND</span>
             </div>
-            <div class="summary-total">
-              <span class="summary-total-label">Total</span>
-              <span class="summary-total-price" id="total-val">0 TND</span>
+            <div class="summary-line total" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--cream-dark);">
+              <span>Total</span>
+              <span class="total-price" id="total-val">0 TND</span>
             </div>
+            <!-- Desktop confirm button (inside card) -->
             <button class="place-order-btn" id="place-order-btn" onclick="placeOrder()">
               Confirmer la commande
             </button>
           </div>
         </div>
-      </div>
-    </div>
 
-    <footer class="footer">
-      <div class="footer-bottom" style="max-width:980px;margin:0 auto;padding:22px 24px;">
+      </div><!-- end checkout-page -->
+    </div><!-- end checkout-root -->
+
+    <footer class="footer" style="margin-bottom:0;">
+      <div class="footer-bottom" style="max-width:980px;margin:0 auto;padding:20px 24px;">
         <span>© 2025 7EBR. Paiement sécurisé à la livraison.</span>
       </div>
     </footer>
@@ -175,96 +307,106 @@
   <script src="/js/cart.js"></script>
   <script src="/js/nav.js"></script>
   <script>
-    const DELIVERY = 8;
+    var DELIVERY = 8;
 
-    document.addEventListener('DOMContentLoaded', async () => {
+    document.addEventListener('DOMContentLoaded', async function() {
       renderNav();
-      const cart = getCart();
-      if (!cart.length) { window.location.href='/index.html'; return; }
+      var cart = getCart();
+      if (!cart.length) { window.location.href = '/index.html'; return; }
       renderSummary();
-      const user = await getUser();
+      var user = await getUser();
       if (user) document.getElementById('checkout-email').value = user.email;
     });
 
     function renderSummary() {
-      const cart = getCart();
-      const sub = cartTotal();
-      document.getElementById('summary-items').innerHTML = cart.map(item => `
-        <div class="summary-item">
-          <div class="summary-item-info">
-            <div class="summary-item-name">${item.title}</div>
-            ${item.size  ? `<div class="summary-item-size">Taille: ${item.size}</div>` : ''}
-            ${item.color ? `<div class="summary-item-size">Couleur: ${item.color}</div>` : ''}
-            <div class="summary-item-qty">× ${item.qty}</div>
-          </div>
-          <div class="summary-item-price">${(item.price*item.qty).toFixed(3)} TND</div>
-        </div>`).join('');
+      var cart = getCart();
+      var sub  = cartTotal();
+      var html = '';
+      cart.forEach(function(item) {
+        var meta = [];
+        if (item.size)  meta.push('Taille: ' + item.size);
+        if (item.color) meta.push('Couleur: ' + item.color);
+        html += '<div class="summary-item">' +
+          '<div class="summary-item-info">' +
+            '<div class="summary-item-name">' + item.title + '</div>' +
+            (meta.length ? '<div class="summary-item-meta">' + meta.join(' · ') + '</div>' : '') +
+            '<div class="summary-item-meta">× ' + item.qty + '</div>' +
+          '</div>' +
+          '<div class="summary-item-price">' + (item.price * item.qty).toFixed(3) + ' TND</div>' +
+        '</div>';
+      });
+      document.getElementById('summary-items').innerHTML = html;
       document.getElementById('subtotal-val').textContent = sub.toFixed(3) + ' TND';
-      document.getElementById('total-val').textContent = (sub + DELIVERY).toFixed(3) + ' TND';
+      var total = (sub + DELIVERY).toFixed(3) + ' TND';
+      document.getElementById('total-val').textContent = total;
+      // Update mobile bar
+      var mobileTotal = document.getElementById('mobile-total');
+      if (mobileTotal) mobileTotal.textContent = total;
     }
 
     async function placeOrder() {
-      const fn  = document.getElementById('first-name').value.trim();
-      const ln  = document.getElementById('last-name').value.trim();
-      const em  = document.getElementById('checkout-email').value.trim();
-      const ph  = document.getElementById('checkout-phone').value.trim();
-      const ad  = document.getElementById('checkout-address').value.trim();
-      const gv  = document.getElementById('checkout-gov').value;
-      const err = document.getElementById('checkout-error');
+      var fn  = document.getElementById('first-name').value.trim();
+      var ln  = document.getElementById('last-name').value.trim();
+      var em  = document.getElementById('checkout-email').value.trim();
+      var ph  = document.getElementById('checkout-phone').value.trim();
+      var ad  = document.getElementById('checkout-address').value.trim();
+      var gv  = document.getElementById('checkout-gov').value;
+      var err = document.getElementById('checkout-error');
       err.classList.remove('show');
 
-      if (!fn||!ln||!em||!ph||!ad||!gv) {
+      if (!fn || !ln || !em || !ph || !ad || !gv) {
         err.textContent = 'Veuillez remplir tous les champs obligatoires.';
         err.classList.add('show');
-        err.scrollIntoView({behavior:'smooth',block:'center'});
+        err.scrollIntoView({ behavior:'smooth', block:'center' });
         return;
       }
 
-      // Validate color for each cart item that has colors
-      const cart = getCart();
-      const missingColor = cart.find(item => item.color === undefined || item.color === '');
-      // Note: color validation happens at product level, but we check here as safety
+      // Disable both buttons
+      var desktopBtn = document.getElementById('place-order-btn');
+      var mobileBtn  = document.getElementById('mobile-confirm-btn');
+      if (desktopBtn) { desktopBtn.disabled = true; desktopBtn.textContent = 'Traitement...'; }
+      if (mobileBtn)  { mobileBtn.disabled  = true; mobileBtn.textContent  = 'Traitement...'; }
 
-      const btn = document.getElementById('place-order-btn');
-      btn.disabled = true; btn.textContent = 'Traitement...';
-
-      const customerName = fn + ' ' + ln;
-      const fullAddress  = ad + ', ' + gv;
+      var cart         = getCart();
+      var customerName = fn + ' ' + ln;
+      var fullAddress  = ad + ', ' + gv;
 
       try {
-        const user = await getUser();
+        var user = await getUser();
 
-        // 1. Save each item as order in Supabase
-        const orders = cart.map(item => ({
-          user_id:        user?.id || null,
-          product_id:     item.id,
-          product_title:  item.title + (item.size ? ` — ${item.size}` : '') + (item.color ? ` — ${item.color}` : ''),
-          amount:         item.price * item.qty,
-          status:         'pending',
-          customer_name:  customerName,
-          customer_email: em,
-          customer_phone: ph,
-          address:        fullAddress,
-          payment_method: 'cod'
-        }));
-        const { error } = await sb.from('orders').insert(orders);
-        if (error) throw error;
+        // 1. Save to Supabase
+        var orders = cart.map(function(item) {
+          return {
+            user_id:        user ? user.id : null,
+            product_id:     item.id,
+            product_title:  item.title +
+                            (item.size  ? ' — ' + item.size  : '') +
+                            (item.color ? ' — ' + item.color : ''),
+            amount:         item.price * item.qty,
+            status:         'pending',
+            customer_name:  customerName,
+            customer_email: em,
+            customer_phone: ph,
+            address:        fullAddress,
+            payment_method: 'cod'
+          };
+        });
+        var res = await sb.from('orders').insert(orders);
+        if (res.error) throw res.error;
 
-        // 2. Send email via EmailJS
-        const productsList = cart.map(item =>
-          `• ${item.title} | Taille: ${item.size || '—'} | Couleur: ${item.color || '—'} | Qté: ${item.qty} | ${(item.price * item.qty).toFixed(3)} TND`
-        ).join('\n');
-
+        // 2. Send EmailJS
         await emailjs.send('service_lixuoem', 'template_y0aocqa', {
           customer_name:    customerName,
           customer_phone:   ph,
           customer_email:   em,
           customer_city:    gv,
           customer_address: ad,
-          product_name:     cart.length === 1 ? cart[0].title : `${cart.length} articles`,
+          product_name:     cart.length === 1
+                              ? cart[0].title
+                              : cart.length + ' articles',
           product_price:    (cartTotal() + DELIVERY).toFixed(3) + ' TND (livraison incluse)',
-          product_size:     cart.map(i => i.size || '—').join(', '),
-          product_color:    cart.map(i => i.color || '—').join(', '),
+          product_size:     cart.map(function(i){ return i.size  || '—'; }).join(', '),
+          product_color:    cart.map(function(i){ return i.color || '—'; }).join(', '),
           to_email:         'admin@7ebr.com'
         });
 
@@ -274,23 +416,31 @@
         console.error(e);
         err.textContent = 'Erreur lors de la commande. Réessayez ou contactez-nous.';
         err.classList.add('show');
-        btn.disabled = false; btn.textContent = 'Confirmer la commande';
+        err.scrollIntoView({ behavior:'smooth', block:'center' });
+        if (desktopBtn) { desktopBtn.disabled = false; desktopBtn.textContent = 'Confirmer la commande'; }
+        if (mobileBtn)  { mobileBtn.disabled  = false; mobileBtn.textContent  = 'Confirmer'; }
       }
     }
 
     function showSuccess(name) {
-      document.getElementById('checkout-root').innerHTML = `
-        <div class="order-success">
-          <div class="order-success-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-          </div>
-          <h2>Merci ${name} !</h2>
-          <p>Votre commande a bien été enregistrée.<br>Nous vous contacterons bientôt pour confirmer la livraison.<br><br>Frais de livraison: <strong>8 DT</strong></p>
-          <a href="/index.html" class="continue-btn">Continuer les achats</a>
-        </div>`;
+      // Hide mobile bar
+      var bar = document.getElementById('mobile-bar');
+      if (bar) bar.style.display = 'none';
+
+      document.getElementById('checkout-root').innerHTML =
+        '<div class="order-success">' +
+          '<div class="order-success-icon">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
+              '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>' +
+              '<polyline points="22 4 12 14.01 9 11.01"/>' +
+            '</svg>' +
+          '</div>' +
+          '<h2>Merci ' + name + ' !</h2>' +
+          '<p>Votre commande a bien été enregistrée.<br>' +
+          'Nous vous contacterons bientôt pour confirmer la livraison.<br><br>' +
+          'Frais de livraison: <strong>8 DT</strong></p>' +
+          '<a href="/index.html" class="continue-btn">Continuer les achats</a>' +
+        '</div>';
     }
   </script>
 </body>
