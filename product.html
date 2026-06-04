@@ -211,17 +211,6 @@
     .add-cart-btn:hover { background: var(--ink-mid); }
     .add-cart-btn svg { width: 16px; height: 16px; }
 
-    .buy-now-btn {
-      width: 100%; background: var(--ink); color: var(--cream);
-      border: none; border-radius: 8px;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
-      cursor: pointer; transition: all var(--transition);
-      height: 52px; display: flex; align-items: center;
-      justify-content: center; gap: 8px;
-      text-decoration: none; margin-bottom: 10px;
-    }
-    .buy-now-btn:hover { background: var(--ink-mid); }
 
     .quick-btn {
       width: 100%; background: none; color: var(--ink);
@@ -385,6 +374,16 @@
     .modal-status { padding: 11px; font-size: 13px; text-align: center; margin-top: 12px; display: none; border-radius: 3px; }
     .modal-status.success { background: rgba(58,107,74,0.08); border: 1px solid rgba(58,107,74,0.25); color: var(--success); display: block; }
     .modal-status.error   { background: rgba(139,58,42,0.08); border: 1px solid rgba(139,58,42,0.25); color: var(--danger); display: block; }
+
+    /* Shake animation for missing selection */
+    @keyframes shake {
+      0%,100%{transform:translateX(0);}
+      20%{transform:translateX(-6px);}
+      40%{transform:translateX(6px);}
+      60%{transform:translateX(-4px);}
+      80%{transform:translateX(4px);}
+    }
+    .shake { animation: shake 0.5s ease; }
   </style>
 </head>
 <body>
@@ -441,7 +440,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">Couleur *</label>
-          <input type="text" class="form-input" id="o-color" placeholder="Noir, Blanc"/>
+          <input type="text" class="form-input" id="o-color" placeholder="Noir, Blanc, Beige..."/>
         </div>
       </div>
       <button class="form-btn" id="send-order-btn" onclick="sendOrder()">
@@ -585,7 +584,6 @@
               </button>
             </div>
 
-            <button class="buy-now-btn" onclick="handleBuyNow()">Buy it now</button>
 
             <button class="quick-btn" onclick="openModal()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -704,17 +702,48 @@
       if (el) el.textContent = qty;
     }
 
+    /* ── Validation ── */
+    function validateSelection() {
+      const hasColors = currentProduct?.colors && currentProduct.colors.length > 0;
+      if (!selectedSize) {
+        showSelectionError('Veuillez choisir une taille.');
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.add('shake'));
+        setTimeout(() => document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('shake')), 600);
+        return false;
+      }
+      if (hasColors && !selectedColor) {
+        showSelectionError('Veuillez choisir une couleur.');
+        document.querySelectorAll('.color-btn').forEach(b => b.classList.add('shake'));
+        setTimeout(() => document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('shake')), 600);
+        return false;
+      }
+      clearSelectionError();
+      return true;
+    }
+    function showSelectionError(msg) {
+      let el = document.getElementById('selection-error');
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'selection-error';
+        el.style.cssText = 'background:rgba(139,58,42,0.08);border:1px solid rgba(139,58,42,0.25);color:var(--danger);padding:10px 13px;font-size:12px;border-radius:3px;margin-bottom:12px;font-family:Cairo,sans-serif;letter-spacing:0.5px;';
+        const sizeGrid = document.querySelector('.size-grid');
+        if (sizeGrid) sizeGrid.parentNode.insertBefore(el, sizeGrid);
+      }
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+    function clearSelectionError() {
+      const el = document.getElementById('selection-error');
+      if (el) el.style.display = 'none';
+    }
+
     /* ── Cart actions ── */
     function handleAddToCart() {
-      if (!selectedSize) { alert('Veuillez choisir une taille.'); return; }
-      for (let i = 0; i < qty; i++) addToCart(currentProduct, selectedSize);
+      if (!validateSelection()) return;
+      for (let i = 0; i < qty; i++) addToCart(currentProduct, selectedSize, selectedColor);
       openCart();
     }
-    function handleBuyNow() {
-      if (!selectedSize) { alert('Veuillez choisir une taille.'); return; }
-      addToCart(currentProduct, selectedSize);
-      window.location.href = '/checkout.html';
-    }
+
 
     /* ── WhatsApp ── */
     function buildWA(p) {
@@ -726,9 +755,10 @@
 
     /* ── Modal ── */
     function openModal() {
+      if (!validateSelection()) return;
       document.getElementById('modal-prod-name').textContent = currentProduct?.title || '';
-      if (selectedSize)  document.getElementById('o-size').value  = selectedSize;
-      if (selectedColor) document.getElementById('o-color').value = selectedColor;
+      document.getElementById('o-size').value  = selectedSize  || '';
+      document.getElementById('o-color').value = selectedColor || '';
       document.getElementById('quick-modal').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -742,7 +772,7 @@
       });
     });
 
-    /* ── Send order via EmailJS ── */
+    /* ── Send order via EmailJS + Supabase ── */
     async function sendOrder() {
       const first   = document.getElementById('o-first').value.trim();
       const last    = document.getElementById('o-last').value.trim();
@@ -753,36 +783,70 @@
       const size    = document.getElementById('o-size').value;
       const color   = document.getElementById('o-color').value.trim();
       const status  = document.getElementById('modal-status');
+      const hasColors = currentProduct?.colors && currentProduct.colors.length > 0;
+
       status.className = 'modal-status';
 
-      if (!first||!last||!phone||!email||!gov||!size) {
+      if (!first || !last || !phone || !email || !gov || !address) {
         status.className = 'modal-status error';
         status.textContent = 'Veuillez remplir tous les champs obligatoires.';
         return;
       }
+      if (!size) {
+        status.className = 'modal-status error';
+        status.textContent = 'Veuillez choisir une taille.';
+        return;
+      }
+      if (hasColors && !color) {
+        status.className = 'modal-status error';
+        status.textContent = 'Veuillez choisir une couleur.';
+        return;
+      }
+
       const btn = document.getElementById('send-order-btn');
       btn.disabled = true; btn.textContent = 'Envoi en cours...';
+
+      const customerName = first + ' ' + last;
+      const fullAddress  = address + ', ' + gov;
+
       try {
+        // 1. Save to Supabase dashboard
+        const user = await getUser();
+        await sb.from('orders').insert([{
+          user_id:       user?.id || null,
+          product_id:    currentProduct?.id || null,
+          product_title: currentProduct?.title || '',
+          amount:        currentProduct?.price || 0,
+          status:        'pending',
+          customer_name:  customerName,
+          customer_email: email,
+          customer_phone: phone,
+          address:        fullAddress,
+          payment_method: 'cod'
+        }]);
+
+        // 2. Send EmailJS
         await emailjs.send('service_lixuoem', 'template_y0aocqa', {
-          customer_name:    first + ' ' + last,
+          customer_name:    customerName,
           customer_phone:   phone,
           customer_email:   email,
           customer_city:    gov,
           customer_address: address,
           product_name:     currentProduct?.title || '',
-          product_price:    currentProduct?.price + ' TND' || '',
+          product_price:    (currentProduct?.price || 0) + ' TND',
           product_size:     size,
           product_color:    color || 'Non spécifié',
           to_email:         'admin@7ebr.com'
         });
+
         status.className = 'modal-status success';
         status.textContent = 'Commande envoyée! Nous vous contacterons bientôt.';
         ['o-first','o-last','o-phone','o-email','o-gov','o-address','o-size','o-color']
           .forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
       } catch(err) {
+        console.error('Order error:', err);
         status.className = 'modal-status error';
-        status.textContent = 'Erreur. Contactez-nous sur WhatsApp.';
-        console.error(err);
+        status.textContent = 'Erreur d'envoi. Contactez-nous sur WhatsApp.';
       } finally {
         btn.disabled = false; btn.textContent = 'Envoyer la commande';
       }
