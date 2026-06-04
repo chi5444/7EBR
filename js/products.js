@@ -1,9 +1,9 @@
-// products.js — Gestion des produits 7EBR
+// products.js — 7EBR
 
 async function fetchProducts(filters = {}) {
   let query = sb.from('products').select('*').eq('in_stock', true);
   if (filters.category) query = query.eq('category', filters.category);
-  if (filters.search) query = query.ilike('title', `%${filters.search}%`);
+  if (filters.search)   query = query.ilike('title', `%${filters.search}%`);
   const { data, error } = await query;
   if (error) throw error;
   return data || [];
@@ -38,27 +38,36 @@ async function deleteProduct(id) {
   if (error) throw error;
 }
 
+/* ── Card placeholder SVG (parchment style) ── */
+function placeholderSVG() {
+  return `<svg viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+    <rect width="300" height="400" fill="#E8DECE"/>
+    <path d="M90 280 L150 120 L210 280 Z" stroke="#B5956A" stroke-width="1" fill="none" opacity="0.4"/>
+    <circle cx="150" cy="115" r="8" fill="none" stroke="#B5956A" stroke-width="1" opacity="0.4"/>
+    <text x="150" y="370" font-family="Georgia,serif" font-size="14" fill="#B5956A" text-anchor="middle" opacity="0.35" letter-spacing="4">7EBR</text>
+  </svg>`;
+}
+
 function renderProductCard(p) {
-  const badge = p.badge ? `<span class="badge">${p.badge}</span>` : '';
+  const badge    = p.badge    ? `<span class="badge">${p.badge}</span>` : '';
   const oldPrice = p.old_price ? `<span class="old-price">${p.old_price} TND</span>` : '';
+  /* first image from images array OR fallback */
+  let imgHtml;
+  if (p.images && p.images.length > 0) {
+    imgHtml = `<img src="${p.images[0]}" alt="${p.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+               <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;">${placeholderSVG()}</div>`;
+  } else {
+    imgHtml = placeholderSVG();
+  }
   return `
-    <article class="product-card" onclick="window.location.href='product.html?id=${p.id}'">
+    <article class="product-card" onclick="window.location.href='/product.html?id=${p.id}'">
       <div class="card-img-wrap">
         ${badge}
-        <div class="card-img-placeholder ${p.img_class || ''}">
-          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="80" height="80" fill="#1a1a1a"/>
-            <path d="M20 55 L40 25 L60 55 Z" stroke="#C4A882" stroke-width="1.5" fill="none"/>
-            <circle cx="40" cy="22" r="3" fill="#C4A882" opacity="0.5"/>
-          </svg>
-        </div>
+        <div class="card-img-placeholder">${imgHtml}</div>
       </div>
       <div class="card-info">
         <h3 class="card-title">${p.title}</h3>
-        <div class="card-price">
-          ${oldPrice}
-          <span class="price">${p.price} TND</span>
-        </div>
+        <div class="card-price">${oldPrice}<span class="price">${p.price} TND</span></div>
       </div>
     </article>`;
 }

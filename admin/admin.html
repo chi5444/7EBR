@@ -6,183 +6,154 @@
   <title>Admin — 7EBR</title>
   <link rel="stylesheet" href="/css/style.css"/>
   <style>
-    /* ── ADMIN LAYOUT ── */
     .admin-wrap { display:flex; min-height:calc(100vh - var(--nav-h)); }
 
     /* ── SIDEBAR ── */
     .admin-sidebar {
-      width: 230px; flex-shrink: 0;
-      background: var(--ink);
-      display: flex; flex-direction: column;
-      position: sticky; top: var(--nav-h);
-      height: calc(100vh - var(--nav-h));
-      overflow-y: auto;
+      width:230px; flex-shrink:0;
+      background:var(--ink);
+      display:flex; flex-direction:column;
+      position:sticky; top:var(--nav-h);
+      height:calc(100vh - var(--nav-h));
+      overflow-y:auto;
     }
-    @media(max-width:768px){ .admin-sidebar{ width:200px; } }
     @media(max-width:640px){ .admin-sidebar{ display:none; } }
-
-    .sidebar-brand {
-      padding: 24px 20px 20px;
-      border-bottom: 1px solid rgba(237,229,216,0.08);
-      display: flex; align-items: center; gap: 12px;
-    }
-    .sidebar-brand img { height: 36px; filter: brightness(0) invert(1); }
-    .sidebar-brand-text { font-family: 'Playfair Display', serif; font-size: 14px; color: var(--cream); letter-spacing: 2px; }
-
-    .sidebar-section { padding: 16px 0 8px; }
-    .sidebar-section-label {
-      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-      color: rgba(237,229,216,0.3); padding: 0 18px 8px;
-      font-family: 'Cairo', sans-serif;
-    }
-    .sidebar-link {
-      display: flex; align-items: center; gap: 10px;
-      padding: 11px 18px; color: rgba(237,229,216,0.55);
-      text-decoration: none; font-size: 14px;
-      transition: all var(--transition); cursor: pointer;
-      border: none; background: none; width: 100%; text-align: left;
-      border-left: 3px solid transparent;
-      font-family: 'Cormorant Garamond', serif;
-    }
-    .sidebar-link svg { width: 16px; height: 16px; flex-shrink: 0; }
-    .sidebar-link:hover { color: var(--cream); background: rgba(237,229,216,0.06); }
-    .sidebar-link.active { color: var(--accent-light); border-left-color: var(--accent); background: rgba(237,229,216,0.07); }
-    .sidebar-link.danger { color: rgba(220,100,80,0.7); }
-    .sidebar-link.danger:hover { color: #dc6450; background: rgba(220,100,80,0.06); }
-    .sidebar-sep { height: 1px; background: rgba(237,229,216,0.07); margin: 8px 18px; }
+    .sidebar-brand { padding:22px 20px 18px; border-bottom:1px solid rgba(237,229,216,0.08); display:flex; align-items:center; gap:12px; }
+    .sidebar-brand img { height:34px; filter:brightness(0) invert(1); }
+    .sidebar-brand span { font-family:'Playfair Display',serif; font-size:14px; color:var(--cream); letter-spacing:2px; }
+    .sidebar-section { padding:14px 0 6px; }
+    .sidebar-section-label { font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(237,229,216,0.3);padding:0 18px 8px;font-family:'Cairo',sans-serif; }
+    .sidebar-link { display:flex;align-items:center;gap:10px;padding:11px 18px;color:rgba(237,229,216,0.55);text-decoration:none;font-size:14px;transition:all var(--transition);cursor:pointer;border:none;background:none;width:100%;text-align:left;border-left:3px solid transparent;font-family:'Cormorant Garamond',serif; }
+    .sidebar-link svg { width:16px;height:16px;flex-shrink:0; }
+    .sidebar-link:hover { color:var(--cream);background:rgba(237,229,216,0.06); }
+    .sidebar-link.active { color:var(--accent-light);border-left-color:var(--accent);background:rgba(237,229,216,0.07); }
+    .sidebar-link.danger { color:rgba(220,100,80,0.7); }
+    .sidebar-link.danger:hover { color:#dc6450;background:rgba(220,100,80,0.06); }
+    .sidebar-sep { height:1px;background:rgba(237,229,216,0.07);margin:8px 18px; }
 
     /* ── MAIN ── */
-    .admin-main { flex: 1; padding: 36px 32px; overflow-x: hidden; }
-    @media(max-width:768px){ .admin-main { padding: 24px 16px; } }
+    .admin-main { flex:1;padding:32px 28px;overflow-x:hidden; }
+    @media(max-width:768px){ .admin-main { padding:20px 14px; } }
 
-    .admin-page-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px; font-weight: 400; color: var(--ink);
-      margin-bottom: 28px;
+    /* ── STATS ── */
+    .stats-row { display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:32px; }
+    .stat-card { background:var(--cream-card);border:1px solid var(--cream-dark);border-radius:5px;padding:18px 16px;position:relative;overflow:hidden; }
+    .stat-card::after { content:'';position:absolute;bottom:0;left:0;right:0;height:3px; }
+    .stat-card.c1::after { background:linear-gradient(90deg,var(--accent),var(--accent-light)); }
+    .stat-card.c2::after { background:linear-gradient(90deg,#6B9E7A,#3A6B4A); }
+    .stat-card.c3::after { background:linear-gradient(90deg,#7A8F9E,#3A5B6A); }
+    .stat-card.c4::after { background:linear-gradient(90deg,#9E7A6B,#6B3A2A); }
+    .stat-icon { width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;margin-bottom:10px; }
+    .stat-icon.s1{background:rgba(181,149,106,0.15);color:var(--accent-deep);}
+    .stat-icon.s2{background:rgba(58,107,74,0.12);color:var(--success);}
+    .stat-icon.s3{background:rgba(58,90,106,0.12);color:#3A5A6A;}
+    .stat-icon.s4{background:rgba(107,58,42,0.12);color:#6B3A2A;}
+    .stat-icon svg{width:17px;height:17px;}
+    .stat-value{font-family:'Playfair Display',serif;font-size:28px;color:var(--ink);margin-bottom:3px;}
+    .stat-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);font-family:'Cairo',sans-serif;}
+
+    /* ── WELCOME ── */
+    .welcome-card { background:var(--ink);border-radius:6px;padding:24px 28px;margin-bottom:28px;display:flex;align-items:center;gap:20px;overflow:hidden;position:relative; }
+    .welcome-card::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border:1px solid rgba(237,229,216,0.05);border-radius:50%;}
+    .welcome-logo{height:46px;filter:brightness(0) invert(1);opacity:0.88;flex-shrink:0;}
+    .welcome-text h2{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;color:var(--cream);margin-bottom:3px;}
+    .welcome-text p{font-size:11px;color:rgba(237,229,216,0.45);letter-spacing:1px;font-family:'Cairo',sans-serif;}
+
+    /* ── TABLE CARD ── */
+    .table-card{background:var(--cream-card);border:1px solid var(--cream-dark);border-radius:5px;overflow:hidden;}
+    .table-card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--cream-dark);}
+    .table-card-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:400;color:var(--ink);}
+    .table-wrap{overflow-x:auto;}
+    table{width:100%;border-collapse:collapse;font-size:14px;}
+    thead th{text-align:left;padding:9px 14px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--cream-dark);font-family:'Cairo',sans-serif;white-space:nowrap;background:var(--parchment);}
+    tbody td{padding:12px 14px;border-bottom:1px solid var(--cream-dark);color:var(--ink-mid);vertical-align:middle;}
+    tbody tr:last-child td{border-bottom:none;}
+    tbody tr:hover td{background:rgba(181,149,106,0.04);}
+
+    .product-thumb{width:42px;height:54px;background:var(--cream-deep);border:1px solid var(--cream-dark);display:flex;align-items:center;justify-content:center;border-radius:3px;flex-shrink:0;overflow:hidden;}
+    .product-thumb img{width:100%;height:100%;object-fit:cover;}
+    .product-thumb svg{width:18px;height:18px;color:var(--ink-ghost);}
+    .product-cell{display:flex;align-items:center;gap:10px;}
+    .product-cell-name{font-size:13px;color:var(--ink);max-width:150px;}
+    .product-cell-cat{font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:1px;margin-top:2px;font-family:'Cairo',sans-serif;}
+
+    .action-btn{background:none;border:none;cursor:pointer;padding:5px;transition:color var(--transition);color:var(--ink-faint);border-radius:3px;}
+    .action-btn.edit:hover{color:var(--accent-deep);background:rgba(181,149,106,0.1);}
+    .action-btn.delete:hover{color:var(--danger);background:rgba(139,58,42,0.08);}
+    .action-btn svg{width:15px;height:15px;display:block;}
+    .actions-cell{display:flex;gap:2px;}
+
+    /* ── FORM PANEL ── */
+    .form-panel{background:var(--cream-card);border:1px solid var(--cream-dark);border-radius:5px;padding:24px;margin-bottom:22px;position:relative;}
+    .form-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+    .form-panel-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:400;color:var(--ink);margin-bottom:18px;}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .form-grid-3{grid-template-columns:1fr 1fr 1fr;}
+    @media(max-width:640px){.form-grid,.form-grid-3{grid-template-columns:1fr;}}
+    .form-span-2{grid-column:1/-1;}
+    .form-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+    .btn-save{background:var(--ink);color:var(--cream);border:none;padding:10px 24px;font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all var(--transition);border-radius:3px;}
+    .btn-save:hover{background:var(--ink-mid);}
+    .btn-cancel{background:none;color:var(--ink-soft);border:1px solid var(--cream-dark);padding:10px 24px;font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all var(--transition);border-radius:3px;}
+    .btn-cancel:hover{border-color:var(--ink-soft);color:var(--ink);}
+
+    .add-btn{background:var(--ink);color:var(--cream);border:none;padding:9px 20px;font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all var(--transition);display:flex;align-items:center;gap:7px;border-radius:3px;}
+    .add-btn:hover{background:var(--ink-mid);}
+    .add-btn svg{width:14px;height:14px;}
+
+    /* ── IMAGES UPLOAD SECTION ── */
+    .images-section { grid-column:1/-1; }
+    .images-section-label {
+      font-size:10px;letter-spacing:2.5px;text-transform:uppercase;
+      color:var(--ink-soft);margin-bottom:10px;font-family:'Cairo',sans-serif;display:block;
     }
-    .admin-page-title em { font-style: italic; color: var(--accent-deep); }
-
-    /* ── STATS CARDS ── */
-    .stats-row { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 14px; margin-bottom: 36px; }
-    .stat-card {
-      background: var(--cream-card);
-      border: 1px solid var(--cream-dark);
-      border-radius: 4px; padding: 20px 18px;
-      position: relative; overflow: hidden;
+    .images-grid {
+      display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;min-height:60px;
+      padding:10px;background:var(--parchment);border:1px dashed var(--cream-dark);
+      border-radius:4px;
     }
-    .stat-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; }
-    .stat-card.c1::after { background: linear-gradient(90deg, var(--accent), var(--accent-light)); }
-    .stat-card.c2::after { background: linear-gradient(90deg, #6B9E7A, #3A6B4A); }
-    .stat-card.c3::after { background: linear-gradient(90deg, #7A8F9E, #3A5B6A); }
-    .stat-card.c4::after { background: linear-gradient(90deg, #9E7A6B, #6B3A2A); }
-    .stat-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
-    .stat-icon.s1 { background: rgba(181,149,106,0.15); color: var(--accent-deep); }
-    .stat-icon.s2 { background: rgba(58,107,74,0.12); color: var(--success); }
-    .stat-icon.s3 { background: rgba(58,90,106,0.12); color: #3A5A6A; }
-    .stat-icon.s4 { background: rgba(107,58,42,0.12); color: #6B3A2A; }
-    .stat-icon svg { width: 18px; height: 18px; }
-    .stat-value { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--ink); margin-bottom: 4px; }
-    .stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-faint); font-family: 'Cairo', sans-serif; }
-
-    /* ── TABLE ── */
-    .table-card { background: var(--cream-card); border: 1px solid var(--cream-dark); border-radius: 4px; overflow: hidden; }
-    .table-card-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 22px; border-bottom: 1px solid var(--cream-dark);
+    .img-preview-item {
+      position:relative;width:80px;height:80px;
+      border:1px solid var(--cream-dark);border-radius:3px;overflow:hidden;
+      background:var(--cream-deep);flex-shrink:0;
     }
-    .table-card-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 400; color: var(--ink); }
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    thead th {
-      text-align: left; padding: 10px 16px;
-      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--ink-faint); border-bottom: 1px solid var(--cream-dark);
-      font-family: 'Cairo', sans-serif; white-space: nowrap;
-      background: var(--parchment);
+    .img-preview-item img{width:100%;height:100%;object-fit:cover;display:block;}
+    .img-preview-remove {
+      position:absolute;top:2px;right:2px;
+      background:rgba(26,20,16,0.7);border:none;
+      color:#fff;width:18px;height:18px;border-radius:50%;
+      font-size:11px;cursor:pointer;display:flex;
+      align-items:center;justify-content:center;line-height:1;
     }
-    tbody td { padding: 13px 16px; border-bottom: 1px solid var(--cream-dark); color: var(--ink-mid); vertical-align: middle; }
-    tbody tr:last-child td { border-bottom: none; }
-    tbody tr:hover td { background: rgba(181,149,106,0.04); }
+    .img-url-row { display:flex;gap:8px;align-items:center; }
+    .img-url-input { flex:1;background:var(--parchment);border:1px solid var(--cream-dark);color:var(--ink-mid);padding:9px 12px;font-family:'Cormorant Garamond',serif;font-size:14px;border-radius:3px;outline:none;transition:border-color var(--transition); }
+    .img-url-input:focus{border-color:var(--ink-soft);}
+    .img-add-btn{background:var(--ink);color:var(--cream);border:none;padding:9px 16px;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:3px;white-space:nowrap;font-family:'Cairo',sans-serif;transition:all var(--transition);}
+    .img-add-btn:hover{background:var(--ink-mid);}
+    .img-hint{font-size:11px;color:var(--ink-faint);margin-top:6px;font-family:'Cairo',sans-serif;}
 
-    /* ── PRODUCT IMAGE CELL ── */
-    .product-thumb {
-      width: 44px; height: 58px;
-      background: var(--cream-deep);
-      border: 1px solid var(--cream-dark);
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 2px; flex-shrink: 0;
-      overflow: hidden;
+    /* ── COLORS SECTION ── */
+    .colors-section { grid-column:1/-1; }
+    .color-tags { display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px; }
+    .color-tag {
+      display:flex;align-items:center;gap:5px;
+      background:var(--cream-deep);border:1px solid var(--cream-dark);
+      padding:4px 10px;border-radius:4px;font-size:12px;color:var(--ink-mid);
+      font-family:'Cairo',sans-serif;
     }
-    .product-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .product-thumb svg { width: 20px; height: 20px; color: var(--ink-ghost); }
-    .product-cell { display: flex; align-items: center; gap: 12px; }
-    .product-cell-name { font-size: 13px; color: var(--ink); max-width: 160px; }
-    .product-cell-cat { font-size: 10px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; font-family:'Cairo',sans-serif; }
+    .color-tag button{background:none;border:none;cursor:pointer;color:var(--ink-faint);font-size:14px;line-height:1;padding:0 0 0 4px;transition:color var(--transition);}
+    .color-tag button:hover{color:var(--danger);}
+    .color-input-row{display:flex;gap:8px;}
+    .color-input{flex:1;background:var(--parchment);border:1px solid var(--cream-dark);color:var(--ink-mid);padding:9px 12px;font-family:'Cormorant Garamond',serif;font-size:14px;border-radius:3px;outline:none;transition:border-color var(--transition);}
+    .color-input:focus{border-color:var(--ink-soft);}
 
-    .action-btn { background: none; border: none; cursor: pointer; padding: 5px; transition: color var(--transition); color: var(--ink-faint); border-radius: 3px; }
-    .action-btn.edit:hover { color: var(--accent-deep); background: rgba(181,149,106,0.1); }
-    .action-btn.delete:hover { color: var(--danger); background: rgba(139,58,42,0.08); }
-    .action-btn svg { width: 15px; height: 15px; display: block; }
-    .actions-cell { display: flex; gap: 2px; }
+    /* STATUS */
+    .status-select{background:var(--parchment);border:1px solid var(--cream-dark);color:var(--ink-mid);padding:4px 8px;font-family:'Cormorant Garamond',serif;font-size:13px;cursor:pointer;border-radius:3px;}
 
-    /* ── FORM ── */
-    .form-panel {
-      background: var(--cream-card); border: 1px solid var(--cream-dark);
-      border-radius: 4px; padding: 26px; margin-bottom: 24px;
-      position: relative;
-    }
-    .form-panel::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--accent),transparent); }
-    .form-panel-title { font-family:'Playfair Display',serif; font-size:17px; font-weight:400; color:var(--ink); margin-bottom:20px; }
-    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-    .form-grid-3 { grid-template-columns:1fr 1fr 1fr; }
-    @media(max-width:640px){ .form-grid,.form-grid-3 { grid-template-columns:1fr; } }
-    .form-actions { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
-    .btn-save { background:var(--ink); color:var(--cream); border:none; padding:11px 26px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all var(--transition); border-radius:3px; }
-    .btn-save:hover { background:var(--ink-mid); }
-    .btn-cancel { background:none; color:var(--ink-soft); border:1px solid var(--cream-dark); padding:11px 26px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all var(--transition); border-radius:3px; }
-    .btn-cancel:hover { border-color:var(--ink-soft); color:var(--ink); }
-
-    /* ── ADD BUTTON ── */
-    .add-btn { background:var(--ink); color:var(--cream); border:none; padding:10px 22px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all var(--transition); display:flex; align-items:center; gap:7px; border-radius:3px; }
-    .add-btn:hover { background:var(--ink-mid); }
-    .add-btn svg { width:15px; height:15px; }
-
-    /* ── ORDER STATUS ── */
-    .status-select { background:var(--parchment); border:1px solid var(--cream-dark); color:var(--ink-mid); padding:4px 8px; font-family:'Cormorant Garamond',serif; font-size:13px; cursor:pointer; border-radius:3px; }
-
-    /* ── PANEL TOGGLE ── */
-    .panel { display:none; }
-    .panel.active { display:block; }
-
-    /* ── WELCOME CARD ── */
-    .welcome-card {
-      background: var(--ink);
-      border-radius: 6px;
-      padding: 28px 32px;
-      margin-bottom: 28px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-    .welcome-card::before {
-      content:'';
-      position:absolute; right:-40px; top:-40px;
-      width:200px; height:200px;
-      border:1px solid rgba(237,229,216,0.05);
-      border-radius:50%;
-    }
-    .welcome-card::after {
-      content:'';
-      position:absolute; right:20px; bottom:-60px;
-      width:160px; height:160px;
-      border:1px solid rgba(237,229,216,0.04);
-      border-radius:50%;
-    }
-    .welcome-logo { height:52px; filter:brightness(0) invert(1); opacity:0.9; flex-shrink:0; }
-    .welcome-text h2 { font-family:'Playfair Display',serif; font-size:20px; font-weight:400; color:var(--cream); margin-bottom:4px; }
-    .welcome-text p { font-size:12px; color:rgba(237,229,216,0.5); letter-spacing:1px; font-family:'Cairo',sans-serif; }
+    /* PANEL */
+    .panel{display:none;} .panel.active{display:block;}
+    .admin-page-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:400;color:var(--ink);margin-bottom:22px;}
+    .admin-page-title em{font-style:italic;color:var(--accent-deep);}
   </style>
 </head>
 <body>
@@ -194,44 +165,39 @@
       <aside class="admin-sidebar">
         <div class="sidebar-brand">
           <img src="/logo.jpeg" alt="7EBR" onerror="this.style.display='none'">
-          <span class="sidebar-brand-text">Admin</span>
+          <span>Admin</span>
         </div>
         <div class="sidebar-section">
-          <div class="sidebar-section-label">Tableau de bord</div>
+          <div class="sidebar-section-label">Dashboard</div>
           <button class="sidebar-link active" onclick="showPanel('overview',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            Aperçu
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Aperçu
           </button>
         </div>
         <div class="sidebar-sep"></div>
         <div class="sidebar-section">
           <div class="sidebar-section-label">Catalogue</div>
           <button class="sidebar-link" onclick="showPanel('products',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 3H8v4h8V3z"/></svg>
-            Produits
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 3H8v4h8V3z"/></svg>Produits
           </button>
         </div>
         <div class="sidebar-sep"></div>
         <div class="sidebar-section">
           <div class="sidebar-section-label">Ventes</div>
           <button class="sidebar-link" onclick="showPanel('orders',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-            Commandes
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Commandes
           </button>
         </div>
         <div class="sidebar-sep"></div>
         <button class="sidebar-link danger" onclick="logout()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Déconnexion
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Déconnexion
         </button>
       </aside>
 
       <!-- MAIN -->
       <main class="admin-main">
 
-        <!-- OVERVIEW PANEL -->
+        <!-- ── OVERVIEW ── -->
         <div class="panel active" id="panel-overview">
-          <!-- Welcome -->
           <div class="welcome-card">
             <img src="/logo.jpeg" class="welcome-logo" alt="7EBR" onerror="this.style.display='none'">
             <div class="welcome-text">
@@ -239,47 +205,23 @@
               <p>7EBR · TABLEAU DE BORD ADMINISTRATEUR</p>
             </div>
           </div>
-
           <div class="stats-row">
-            <div class="stat-card c1">
-              <div class="stat-icon s1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 3H8v4h8V3z"/></svg></div>
-              <div class="stat-value" id="stat-p">—</div>
-              <div class="stat-label">Produits</div>
-            </div>
-            <div class="stat-card c2">
-              <div class="stat-icon s2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div>
-              <div class="stat-value" id="stat-o">—</div>
-              <div class="stat-label">Commandes</div>
-            </div>
-            <div class="stat-card c3">
-              <div class="stat-icon s3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-              <div class="stat-value" id="stat-pend">—</div>
-              <div class="stat-label">En attente</div>
-            </div>
-            <div class="stat-card c4">
-              <div class="stat-icon s4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-              <div class="stat-value" id="stat-rev">—</div>
-              <div class="stat-label">Revenu TND</div>
-            </div>
+            <div class="stat-card c1"><div class="stat-icon s1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 3H8v4h8V3z"/></svg></div><div class="stat-value" id="stat-p">—</div><div class="stat-label">Produits</div></div>
+            <div class="stat-card c2"><div class="stat-icon s2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><div class="stat-value" id="stat-o">—</div><div class="stat-label">Commandes</div></div>
+            <div class="stat-card c3"><div class="stat-icon s3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="stat-value" id="stat-pend">—</div><div class="stat-label">En attente</div></div>
+            <div class="stat-card c4"><div class="stat-icon s4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="stat-value" id="stat-rev">—</div><div class="stat-label">Revenu TND</div></div>
           </div>
-
-          <!-- Recent orders preview -->
           <div class="table-card">
             <div class="table-card-header">
               <div class="table-card-title">Commandes récentes</div>
-              <button class="add-btn" style="background:none;color:var(--accent-deep);border:1px solid var(--cream-dark);font-size:12px;padding:7px 16px;" onclick="showPanel('orders',document.querySelector('.sidebar-link:nth-child(3)'))">
-                Voir tout
-              </button>
             </div>
-            <div class="table-wrap" id="recent-orders-wrap">
-              <div class="loading" style="padding:40px;"><div class="spinner"></div></div>
-            </div>
+            <div class="table-wrap" id="recent-wrap"><div class="loading" style="padding:36px;"><div class="spinner"></div></div></div>
           </div>
         </div>
 
-        <!-- PRODUCTS PANEL -->
+        <!-- ── PRODUCTS ── -->
         <div class="panel" id="panel-products">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px;">
             <div class="admin-page-title" style="margin:0;">Gestion des <em>Produits</em></div>
             <button class="add-btn" onclick="showProductForm()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -287,15 +229,18 @@
             </button>
           </div>
 
-          <!-- PRODUCT FORM -->
+          <!-- FORM -->
           <div class="form-panel" id="product-form" style="display:none;">
-            <div class="form-panel-title" id="form-panel-title">Nouveau produit</div>
+            <div class="form-panel-title" id="form-title">Nouveau produit</div>
             <input type="hidden" id="edit-id"/>
+
             <div class="form-grid">
-              <div class="form-group" style="grid-column:1/-1;">
+              <!-- Titre -->
+              <div class="form-group form-span-2">
                 <label class="form-label">Titre *</label>
                 <input type="text" class="form-input" id="p-title" placeholder="Nom du produit"/>
               </div>
+              <!-- Category + Stock -->
               <div class="form-group">
                 <label class="form-label">Catégorie *</label>
                 <select class="form-input" id="p-cat">
@@ -308,6 +253,14 @@
                 </select>
               </div>
               <div class="form-group">
+                <label class="form-label">En stock</label>
+                <select class="form-input" id="p-stock">
+                  <option value="true">Oui</option>
+                  <option value="false">Non</option>
+                </select>
+              </div>
+              <!-- Prix -->
+              <div class="form-group">
                 <label class="form-label">Prix (TND) *</label>
                 <input type="number" class="form-input" id="p-price" placeholder="65.000" step="0.001"/>
               </div>
@@ -315,68 +268,69 @@
                 <label class="form-label">Ancien prix (TND)</label>
                 <input type="number" class="form-input" id="p-old-price" placeholder="Optionnel" step="0.001"/>
               </div>
+              <!-- Badge -->
               <div class="form-group">
                 <label class="form-label">Badge</label>
                 <input type="text" class="form-input" id="p-badge" placeholder="Nouveau, Promo..."/>
               </div>
-              <div class="form-group">
-                <label class="form-label">En stock</label>
-                <select class="form-input" id="p-stock">
-                  <option value="true">Oui</option>
-                  <option value="false">Non</option>
-                </select>
+              <div class="form-group"><!-- spacer --></div>
+
+              <!-- ── COLORS ── -->
+              <div class="form-group colors-section">
+                <label class="form-label">Couleurs disponibles</label>
+                <div class="color-tags" id="color-tags"></div>
+                <div class="color-input-row">
+                  <input type="text" class="color-input" id="color-input" placeholder="Ex: Noir, Blanc, Beige..." onkeydown="if(event.key==='Enter'){event.preventDefault();addColor();}"/>
+                  <button class="img-add-btn" onclick="addColor()">Ajouter</button>
+                </div>
               </div>
-              <div class="form-group" style="grid-column:1/-1;">
+
+              <!-- ── IMAGES ── -->
+              <div class="form-group images-section">
+                <label class="images-section-label">Photos du produit</label>
+                <div class="images-grid" id="images-preview"></div>
+                <div class="img-url-row">
+                  <input type="url" class="img-url-input" id="img-url-input" placeholder="Coller l'URL de l'image..." onkeydown="if(event.key==='Enter'){event.preventDefault();addImage();}"/>
+                  <button class="img-add-btn" onclick="addImage()">Ajouter</button>
+                </div>
+                <div class="img-hint">Coller des URLs d'images (Supabase Storage, imgbb, etc.)</div>
+              </div>
+
+              <!-- Description -->
+              <div class="form-group form-span-2">
                 <label class="form-label">Description</label>
                 <textarea class="form-input" id="p-desc" rows="3" placeholder="Description du produit..."></textarea>
               </div>
             </div>
+
             <div class="form-actions">
               <button class="btn-save" onclick="saveProduct()">Enregistrer</button>
               <button class="btn-cancel" onclick="cancelForm()">Annuler</button>
             </div>
-            <div class="form-error" id="pf-error" style="margin-top:12px;"></div>
-            <div class="form-success" id="pf-success" style="margin-top:12px;"></div>
+            <div class="form-error"   id="pf-err" style="margin-top:12px;"></div>
+            <div class="form-success" id="pf-ok"  style="margin-top:12px;"></div>
           </div>
 
-          <!-- PRODUCTS TABLE -->
+          <!-- TABLE -->
           <div class="table-card">
             <div class="table-wrap">
               <table>
-                <thead>
-                  <tr>
-                    <th>Produit</th>
-                    <th>Prix</th>
-                    <th>Stock</th>
-                    <th>Badge</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
+                <thead><tr><th>Produit</th><th>Prix</th><th>Couleurs</th><th>Photos</th><th>Stock</th><th>Actions</th></tr></thead>
                 <tbody id="products-tbody">
-                  <tr><td colspan="5" class="loading" style="padding:40px;"><div class="spinner"></div></td></tr>
+                  <tr><td colspan="6" class="loading" style="padding:40px;"><div class="spinner"></div></td></tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- ORDERS PANEL -->
+        <!-- ── ORDERS ── -->
         <div class="panel" id="panel-orders">
           <div class="admin-page-title"><em>Commandes</em></div>
           <div class="table-card">
             <div class="table-wrap">
               <table>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Client</th>
-                    <th>Produit</th>
-                    <th>Montant</th>
-                    <th>Gouvernorat</th>
-                    <th>Statut</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
+                <thead><tr><th>#</th><th>Client</th><th>Produit</th><th>Montant</th><th>Adresse</th><th>Statut</th><th></th></tr></thead>
                 <tbody id="orders-tbody">
                   <tr><td colspan="7" class="loading" style="padding:40px;"><div class="spinner"></div></td></tr>
                 </tbody>
@@ -396,6 +350,10 @@
   <script src="/js/products.js"></script>
   <script src="/js/nav.js"></script>
   <script>
+    /* ── State ── */
+    let productImages = []; // array of URL strings
+    let productColors = []; // array of color strings
+
     document.addEventListener('DOMContentLoaded', async () => {
       renderNav();
       const admin = await isAdmin();
@@ -404,6 +362,7 @@
       loadRecentOrders();
     });
 
+    /* ── PANELS ── */
     function showPanel(name, btn) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
@@ -413,55 +372,60 @@
       if (name === 'orders')   loadAdminOrders();
     }
 
+    /* ── STATS ── */
     async function loadStats() {
       try {
         const [{ count: pc }, { count: oc }, { data: orders }] = await Promise.all([
           sb.from('products').select('*', { count:'exact', head:true }),
-          sb.from('orders').select('*', { count:'exact', head:true }),
+          sb.from('orders').select('*',  { count:'exact', head:true }),
           sb.from('orders').select('amount,status')
         ]);
         document.getElementById('stat-p').textContent    = pc || 0;
         document.getElementById('stat-o').textContent    = oc || 0;
-        document.getElementById('stat-pend').textContent = orders?.filter(o=>o.status==='pending').length || 0;
-        const rev = (orders||[]).reduce((s,o)=>s+(o.amount||0),0);
-        document.getElementById('stat-rev').textContent  = rev.toFixed(0);
+        document.getElementById('stat-pend').textContent = (orders||[]).filter(o=>o.status==='pending').length;
+        document.getElementById('stat-rev').textContent  = (orders||[]).reduce((s,o)=>s+(o.amount||0),0).toFixed(0);
       } catch(e){ console.error(e); }
     }
 
+    /* ── RECENT ORDERS ── */
     async function loadRecentOrders() {
-      const wrap = document.getElementById('recent-orders-wrap');
+      const wrap = document.getElementById('recent-wrap');
       try {
-        const { data: orders } = await sb.from('orders').select('*').order('id',{ascending:false}).limit(5);
-        if (!orders?.length) { wrap.innerHTML = '<p style="padding:20px;color:var(--ink-faint);font-size:13px;">Aucune commande.</p>'; return; }
+        const { data } = await sb.from('orders').select('*').order('id',{ascending:false}).limit(6);
+        if (!data?.length) { wrap.innerHTML='<p style="padding:20px;color:var(--ink-faint);font-size:13px;">Aucune commande.</p>'; return; }
         wrap.innerHTML = `<table>
           <thead><tr><th>#</th><th>Client</th><th>Produit</th><th>Montant</th><th>Statut</th></tr></thead>
-          <tbody>${orders.map(o => `
-            <tr>
-              <td style="color:var(--ink-faint);font-size:11px;">#${o.id}</td>
-              <td><div style="font-size:13px;">${o.customer_name||'—'}</div><div style="font-size:10px;color:var(--ink-faint);">${o.customer_phone||''}</div></td>
-              <td style="font-size:13px;max-width:140px;">${o.product_title}</td>
-              <td style="color:var(--accent-deep);">${o.amount?.toFixed(3)} TND</td>
-              <td><span class="status-badge status-${o.status}">${statusLabel(o.status)}</span></td>
-            </tr>`).join('')}
-          </tbody></table>`;
-      } catch(e){ wrap.innerHTML = '<p style="padding:20px;color:var(--danger);font-size:13px;">Erreur de chargement.</p>'; }
+          <tbody>${data.map(o=>`<tr>
+            <td style="color:var(--ink-faint);font-size:11px;">#${o.id}</td>
+            <td><div style="font-size:13px;">${o.customer_name||'—'}</div><div style="font-size:10px;color:var(--ink-faint);">${o.customer_phone||''}</div></td>
+            <td style="font-size:13px;max-width:140px;">${o.product_title}</td>
+            <td style="color:var(--accent-deep);">${o.amount?.toFixed(3)} TND</td>
+            <td><span class="status-badge status-${o.status}">${statusLabel(o.status)}</span></td>
+          </tr>`).join('')}</tbody></table>`;
+      } catch(e){ wrap.innerHTML='<p style="padding:20px;color:var(--danger);font-size:13px;">Erreur.</p>'; }
     }
 
+    /* ── PRODUCTS TABLE ── */
     async function loadAdminProducts() {
       const tbody = document.getElementById('products-tbody');
-      tbody.innerHTML = '<tr><td colspan="5" class="loading" style="padding:40px;"><div class="spinner"></div></td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="loading" style="padding:40px;"><div class="spinner"></div></td></tr>';
       try {
         const products = await fetchAllProducts();
         if (!products.length) {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--ink-faint);padding:40px;font-size:14px;">Aucun produit</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--ink-faint);padding:40px;">Aucun produit</td></tr>';
           return;
         }
-        tbody.innerHTML = products.map(p => `
-          <tr>
+        tbody.innerHTML = products.map(p => {
+          const firstImg = p.images?.[0] || '';
+          const colorsList = (p.colors||[]).join(', ') || '—';
+          const imgCount = (p.images||[]).length;
+          return `<tr>
             <td>
               <div class="product-cell">
                 <div class="product-thumb">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 3H8v4h8V3z"/></svg>
+                  ${firstImg
+                    ? `<img src="${firstImg}" alt="" onerror="this.parentElement.innerHTML='<svg viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1&quot; style=&quot;width:18px;height:18px;color:#C4B8AC&quot;><rect x=&quot;3&quot; y=&quot;3&quot; width=&quot;18&quot; height=&quot;18&quot;/></svg>'">`
+                    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="width:18px;height:18px;color:#C4B8AC"><rect x="3" y="3" width="18" height="18"/></svg>'}
                 </div>
                 <div>
                   <div class="product-cell-name">${p.title}</div>
@@ -470,8 +434,11 @@
               </div>
             </td>
             <td style="color:var(--accent-deep);font-weight:500;">${p.price} TND</td>
+            <td style="font-size:12px;color:var(--ink-soft);max-width:120px;">${colorsList}</td>
+            <td>
+              <span style="font-size:12px;color:var(--ink-faint);">${imgCount} photo${imgCount!==1?'s':''}</span>
+            </td>
             <td><span class="status-badge ${p.in_stock?'status-confirmed':'status-cancelled'}">${p.in_stock?'En stock':'Épuisé'}</span></td>
-            <td style="font-size:12px;color:var(--ink-faint);">${p.badge||'—'}</td>
             <td><div class="actions-cell">
               <button class="action-btn edit" onclick='editProduct(${JSON.stringify(p).replace(/'/g,"&#39;")})' title="Modifier">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -480,100 +447,166 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
               </button>
             </div></td>
-          </tr>`).join('');
-      } catch(e){ tbody.innerHTML = '<tr><td colspan="5" style="color:var(--danger);text-align:center;padding:20px;">Erreur</td></tr>'; }
+          </tr>`;
+        }).join('');
+      } catch(e){ tbody.innerHTML='<tr><td colspan="6" style="color:var(--danger);text-align:center;padding:20px;">Erreur</td></tr>'; }
     }
 
+    /* ── ORDERS TABLE ── */
     async function loadAdminOrders() {
       const tbody = document.getElementById('orders-tbody');
-      tbody.innerHTML = '<tr><td colspan="7" class="loading" style="padding:40px;"><div class="spinner"></div></td></tr>';
+      tbody.innerHTML='<tr><td colspan="7" class="loading" style="padding:40px;"><div class="spinner"></div></td></tr>';
       try {
-        const { data: orders } = await sb.from('orders').select('*').order('id',{ascending:false});
-        if (!orders?.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--ink-faint);padding:40px;">Aucune commande</td></tr>'; return; }
-        tbody.innerHTML = orders.map(o => `
-          <tr>
-            <td style="color:var(--ink-faint);font-size:11px;">#${o.id}</td>
-            <td>
-              <div style="font-size:13px;font-weight:500;">${o.customer_name||'—'}</div>
-              <div style="font-size:11px;color:var(--ink-faint);">${o.customer_phone||''}</div>
-              <div style="font-size:11px;color:var(--ink-faint);">${o.customer_email||''}</div>
-            </td>
-            <td style="max-width:160px;font-size:13px;">${o.product_title}</td>
-            <td style="color:var(--accent-deep);font-weight:500;">${o.amount?.toFixed(3)} TND</td>
-            <td style="font-size:12px;">${o.address?.split(',').slice(-1)[0]?.trim()||'—'}</td>
-            <td>
-              <select class="status-select" onchange="updateStatus(${o.id},this.value)">
-                <option value="pending"   ${o.status==='pending'  ?'selected':''}>En attente</option>
-                <option value="confirmed" ${o.status==='confirmed'?'selected':''}>Confirmée</option>
-                <option value="shipped"   ${o.status==='shipped'  ?'selected':''}>Expédiée</option>
-                <option value="delivered" ${o.status==='delivered'?'selected':''}>Livrée</option>
-                <option value="cancelled" ${o.status==='cancelled'?'selected':''}>Annulée</option>
-              </select>
-            </td>
-            <td>
-              <button class="action-btn delete" onclick="deleteO(${o.id})">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
-              </button>
-            </td>
-          </tr>`).join('');
-      } catch(e){ tbody.innerHTML = '<tr><td colspan="7" style="color:var(--danger);text-align:center;padding:20px;">Erreur</td></tr>'; }
+        const { data } = await sb.from('orders').select('*').order('id',{ascending:false});
+        if (!data?.length){ tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--ink-faint);padding:40px;">Aucune commande</td></tr>'; return; }
+        tbody.innerHTML = data.map(o=>`<tr>
+          <td style="color:var(--ink-faint);font-size:11px;">#${o.id}</td>
+          <td><div style="font-size:13px;font-weight:500;">${o.customer_name||'—'}</div><div style="font-size:10px;color:var(--ink-faint);">${o.customer_phone||''}</div></td>
+          <td style="max-width:160px;font-size:13px;">${o.product_title}</td>
+          <td style="color:var(--accent-deep);font-weight:500;">${o.amount?.toFixed(3)} TND</td>
+          <td style="font-size:12px;color:var(--ink-soft);max-width:140px;">${o.address||'—'}</td>
+          <td>
+            <select class="status-select" onchange="updateStatus(${o.id},this.value)">
+              <option value="pending"   ${o.status==='pending'  ?'selected':''}>En attente</option>
+              <option value="confirmed" ${o.status==='confirmed'?'selected':''}>Confirmée</option>
+              <option value="shipped"   ${o.status==='shipped'  ?'selected':''}>Expédiée</option>
+              <option value="delivered" ${o.status==='delivered'?'selected':''}>Livrée</option>
+              <option value="cancelled" ${o.status==='cancelled'?'selected':''}>Annulée</option>
+            </select>
+          </td>
+          <td><button class="action-btn delete" onclick="deleteO(${o.id})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+          </button></td>
+        </tr>`).join('');
+      } catch(e){ tbody.innerHTML='<tr><td colspan="7" style="color:var(--danger);text-align:center;padding:20px;">Erreur</td></tr>'; }
     }
 
-    function statusLabel(s) {
-      return {pending:'En attente',confirmed:'Confirmée',shipped:'Expédiée',delivered:'Livrée',cancelled:'Annulée'}[s]||s;
-    }
-
+    /* ── FORM: show/hide ── */
     function showProductForm() {
+      resetForm();
+      document.getElementById('form-title').textContent = 'Nouveau produit';
       document.getElementById('product-form').style.display = 'block';
-      document.getElementById('form-panel-title').textContent = 'Nouveau produit';
       document.getElementById('product-form').scrollIntoView({behavior:'smooth',block:'start'});
     }
     function cancelForm() {
       document.getElementById('product-form').style.display = 'none';
+      resetForm();
+    }
+    function resetForm() {
       document.getElementById('edit-id').value = '';
       ['p-title','p-cat','p-price','p-old-price','p-badge','p-desc'].forEach(id=>{
         const el=document.getElementById(id); if(el) el.value='';
       });
       document.getElementById('p-stock').value = 'true';
+      productImages = []; productColors = [];
+      renderImagesPreview(); renderColorTags();
     }
+
+    /* ── EDIT ── */
     function editProduct(p) {
-      document.getElementById('edit-id').value = p.id;
-      document.getElementById('p-title').value = p.title||'';
-      document.getElementById('p-cat').value = p.category||'';
-      document.getElementById('p-price').value = p.price||'';
-      document.getElementById('p-old-price').value = p.old_price||'';
-      document.getElementById('p-badge').value = p.badge||'';
-      document.getElementById('p-stock').value = p.in_stock?'true':'false';
-      document.getElementById('p-desc').value = p.description||'';
-      document.getElementById('form-panel-title').textContent = 'Modifier le produit';
+      document.getElementById('edit-id').value          = p.id;
+      document.getElementById('p-title').value          = p.title   || '';
+      document.getElementById('p-cat').value            = p.category|| '';
+      document.getElementById('p-price').value          = p.price   || '';
+      document.getElementById('p-old-price').value      = p.old_price|| '';
+      document.getElementById('p-badge').value          = p.badge   || '';
+      document.getElementById('p-stock').value          = p.in_stock ? 'true' : 'false';
+      document.getElementById('p-desc').value           = p.description || '';
+      productImages = Array.isArray(p.images) ? [...p.images] : [];
+      productColors = Array.isArray(p.colors) ? [...p.colors] : [];
+      renderImagesPreview(); renderColorTags();
+      document.getElementById('form-title').textContent = 'Modifier le produit';
       document.getElementById('product-form').style.display = 'block';
       document.getElementById('product-form').scrollIntoView({behavior:'smooth',block:'start'});
     }
+
+    /* ── IMAGES ── */
+    function addImage() {
+      const input = document.getElementById('img-url-input');
+      const url   = input.value.trim();
+      if (!url) return;
+      if (!url.startsWith('http')) { alert('URL invalide — doit commencer par http'); return; }
+      productImages.push(url);
+      renderImagesPreview();
+      input.value = '';
+    }
+    function removeImage(idx) {
+      productImages.splice(idx, 1);
+      renderImagesPreview();
+    }
+    function renderImagesPreview() {
+      const grid = document.getElementById('images-preview');
+      if (!grid) return;
+      grid.innerHTML = productImages.map((url, i) => `
+        <div class="img-preview-item">
+          <img src="${url}" alt="" onerror="this.src=''">
+          <button class="img-preview-remove" onclick="removeImage(${i})" title="Supprimer">×</button>
+        </div>`).join('');
+      if (!productImages.length) {
+        grid.innerHTML = '<span style="color:var(--ink-ghost);font-size:12px;padding:4px;font-family:Cairo,sans-serif;">Aucune photo ajoutée</span>';
+      }
+    }
+
+    /* ── COLORS ── */
+    function addColor() {
+      const input = document.getElementById('color-input');
+      const val   = input.value.trim();
+      if (!val) return;
+      val.split(',').map(s=>s.trim()).filter(Boolean).forEach(c => {
+        if (!productColors.includes(c)) productColors.push(c);
+      });
+      renderColorTags();
+      input.value = '';
+    }
+    function removeColor(idx) {
+      productColors.splice(idx, 1);
+      renderColorTags();
+    }
+    function renderColorTags() {
+      const wrap = document.getElementById('color-tags');
+      if (!wrap) return;
+      wrap.innerHTML = productColors.map((c, i) => `
+        <div class="color-tag">${c}<button onclick="removeColor(${i})" title="Supprimer">×</button></div>
+      `).join('');
+    }
+
+    /* ── SAVE ── */
     async function saveProduct() {
       const id      = document.getElementById('edit-id').value;
       const title   = document.getElementById('p-title').value.trim();
       const cat     = document.getElementById('p-cat').value;
       const price   = parseFloat(document.getElementById('p-price').value);
-      const old_p   = parseFloat(document.getElementById('p-old-price').value)||null;
-      const badge   = document.getElementById('p-badge').value.trim()||null;
-      const stock   = document.getElementById('p-stock').value==='true';
-      const desc    = document.getElementById('p-desc').value.trim()||null;
-      const errEl   = document.getElementById('pf-error');
-      const sucEl   = document.getElementById('pf-success');
+      const old_p   = parseFloat(document.getElementById('p-old-price').value) || null;
+      const badge   = document.getElementById('p-badge').value.trim() || null;
+      const stock   = document.getElementById('p-stock').value === 'true';
+      const desc    = document.getElementById('p-desc').value.trim() || null;
+      const errEl   = document.getElementById('pf-err');
+      const sucEl   = document.getElementById('pf-ok');
       errEl.classList.remove('show'); sucEl.classList.remove('show');
 
-      if (!title||!cat||isNaN(price)) {
-        errEl.textContent='Titre, catégorie et prix sont obligatoires.';
+      if (!title || !cat || isNaN(price)) {
+        errEl.textContent = 'Titre, catégorie et prix sont obligatoires.';
         errEl.classList.add('show'); return;
       }
-      const data = { title, category:cat, price, old_price:old_p, badge, in_stock:stock, description:desc };
+      const data = {
+        title, category: cat, price,
+        old_price: old_p, badge,
+        in_stock: stock, description: desc,
+        images: productImages,
+        colors: productColors
+      };
       try {
-        if (id) { await updateProduct(parseInt(id),data); sucEl.textContent='Produit modifié.'; }
-        else     { await createProduct(data);             sucEl.textContent='Produit créé.'; }
+        if (id) { await updateProduct(parseInt(id), data); sucEl.textContent = 'Produit modifié avec succès.'; }
+        else    { await createProduct(data);               sucEl.textContent = 'Produit créé avec succès.'; }
         sucEl.classList.add('show');
-        setTimeout(()=>{ cancelForm(); loadAdminProducts(); loadStats(); }, 1000);
-      } catch(e){ errEl.textContent='Erreur: '+(e.message||'Réessayez.'); errEl.classList.add('show'); }
+        setTimeout(() => { cancelForm(); loadAdminProducts(); loadStats(); }, 1100);
+      } catch(e){
+        errEl.textContent = 'Erreur: ' + (e.message || 'Réessayez.');
+        errEl.classList.add('show');
+      }
     }
+
+    /* ── DELETE ── */
     async function deleteP(id) {
       if (!confirm('Supprimer ce produit définitivement?')) return;
       try { await deleteProduct(id); loadAdminProducts(); loadStats(); }
@@ -587,6 +620,10 @@
       if (!confirm('Supprimer cette commande?')) return;
       try { await sb.from('orders').delete().eq('id',id); loadAdminOrders(); loadStats(); loadRecentOrders(); }
       catch(e){ alert('Erreur.'); }
+    }
+
+    function statusLabel(s) {
+      return {pending:'En attente',confirmed:'Confirmée',shipped:'Expédiée',delivered:'Livrée',cancelled:'Annulée'}[s]||s;
     }
   </script>
 </body>
