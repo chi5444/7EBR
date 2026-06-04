@@ -15,13 +15,30 @@
     .back-link svg { width:14px; height:14px; }
 
     /* LAYOUT */
-    .product-body { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; align-items:start; }
-    @media(max-width:768px){ .product-body { grid-template-columns:1fr; } }
+    .product-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;   /* KEY: lets sticky work */
+    }
+    @media(max-width:768px){
+      .product-body { grid-template-columns: 1fr; }
+    }
 
-    /* GALLERY */
-    .product-gallery { position:sticky; top:var(--nav-h); }
+    /* GALLERY — sticky on desktop, normal on mobile */
+    .product-gallery {
+      position: sticky;
+      top: calc(var(--nav-h) + 40px); /* nav + announce bar */
+      align-self: start;              /* must be start for sticky in grid */
+    }
+    @media(max-width:768px){
+      .product-gallery {
+        position: static; /* normal flow on mobile */
+      }
+    }
     .gallery-main { width:100%; aspect-ratio:1/1; background:var(--cream-deep); overflow:hidden; position:relative; }
-    .gallery-main img { width:100%; height:100%; object-fit:cover; display:block; }
+    .gallery-main img { width:100%; height:100%; object-fit:cover; display:block; transition: opacity 0.25s ease; }
     .gallery-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:var(--cream-deep); }
     .img-badge { position:absolute; top:14px; left:14px; background:var(--ink); color:var(--cream); font-size:9px; letter-spacing:2px; text-transform:uppercase; padding:5px 11px; font-family:'Cairo',sans-serif; font-weight:600; z-index:2; }
     .gallery-thumbs { display:flex; gap:3px; padding:3px; background:var(--cream-deep); overflow-x:auto; scrollbar-width:none; }
@@ -439,7 +456,16 @@
     function switchImg(idx) {
       var images = currentProduct && currentProduct.images ? currentProduct.images : [];
       var mainImg = document.getElementById('main-img');
-      if (mainImg && images[idx]) mainImg.src = images[idx];
+      if (mainImg && images[idx]) {
+        // Smooth fade
+        mainImg.style.opacity = '0';
+        setTimeout(function() {
+          mainImg.src = images[idx];
+          mainImg.onload = function() {
+            mainImg.style.opacity = '1';
+          };
+        }, 150);
+      }
       document.querySelectorAll('.gallery-thumb').forEach(function(t) {
         t.classList.toggle('active', parseInt(t.dataset.idx) === idx);
       });
