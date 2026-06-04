@@ -9,22 +9,31 @@ function saveCart(cart) {
   updateCartCount();
 }
 
-function addToCart(product, size = '') {
+// color is now stored alongside size
+function addToCart(product, size = '', color = '') {
   const cart = getCart();
-  const key = `${product.id}_${size}`;
+  const key  = `${product.id}_${size}_${color}`;
   const existing = cart.find(i => i.key === key);
   if (existing) {
     existing.qty += 1;
   } else {
-    cart.push({ key, id: product.id, title: product.title, price: product.price, size, qty: 1, img_class: product.img_class });
+    cart.push({
+      key,
+      id:    product.id,
+      title: product.title,
+      price: product.price,
+      size,
+      color,
+      qty:   1,
+      images: product.images || []
+    });
   }
   saveCart(cart);
   showCartToast(product.title);
 }
 
 function removeFromCart(key) {
-  const cart = getCart().filter(i => i.key !== key);
-  saveCart(cart);
+  saveCart(getCart().filter(i => i.key !== key));
 }
 
 function updateQty(key, qty) {
