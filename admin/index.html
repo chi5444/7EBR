@@ -296,6 +296,13 @@
                 <div class="img-hint">Coller des URLs d'images (Supabase Storage, imgbb, etc.)</div>
               </div>
 
+              <!-- ── PHOTOS PAR COULEUR ── -->
+              <div class="form-group form-span-2" id="color-images-section" style="display:none;">
+                <label class="images-section-label">Photos par couleur</label>
+                <div id="color-img-tabs" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;"></div>
+                <div id="color-img-panel" style="background:var(--parchment);border:1px solid var(--cream-dark);border-radius:4px;padding:14px;"></div>
+              </div>
+
               <!-- Description -->
               <div class="form-group form-span-2">
                 <label class="form-label">Description</label>
@@ -353,6 +360,8 @@
     /* ── State ── */
     let productImages = []; // array of URL strings
     let productColors = []; // array of color strings
+    let colorImages   = {}; // { "Noir": ["url1","url2"], "Blanc": ["url3"] }
+    let activeColorTab = ''; // which color tab is open in the images section
 
     document.addEventListener('DOMContentLoaded', async () => {
       renderNav();
@@ -539,8 +548,8 @@
         const el=document.getElementById(id); if(el) el.value='';
       });
       document.getElementById('p-stock').value = 'true';
-      productImages = []; productColors = [];
-      renderImagesPreview(); renderColorTags();
+      productImages = []; productColors = []; colorImages = {}; activeColorTab = '';
+      renderImagesPreview(); renderColorTags(); renderColorImageTabs();
     }
 
     /* ── EDIT ── */
@@ -555,7 +564,9 @@
       document.getElementById('p-desc').value           = p.description || '';
       productImages = Array.isArray(p.images) ? [...p.images] : [];
       productColors = Array.isArray(p.colors) ? [...p.colors] : [];
-      renderImagesPreview(); renderColorTags();
+      colorImages   = (p.color_images && typeof p.color_images === 'object') ? JSON.parse(JSON.stringify(p.color_images)) : {};
+      activeColorTab = productColors.length ? productColors[0] : '';
+      renderImagesPreview(); renderColorTags(); renderColorImageTabs();
       document.getElementById('form-title').textContent = 'Modifier le produit';
       document.getElementById('product-form').style.display = 'block';
       document.getElementById('product-form').scrollIntoView({behavior:'smooth',block:'start'});
@@ -609,6 +620,81 @@
       wrap.innerHTML = productColors.map((c, i) => `
         <div class="color-tag">${c}<button onclick="removeColor(${i})" title="Supprimer">×</button></div>
       `).join('');
+      // Always update color image tabs when colors change
+      renderColorImageTabs();
+    }
+
+    /* ── COLOR IMAGES TABS ── */
+    function renderColorImageTabs() {
+      const section = document.getElementById('color-images-section');
+      const tabs    = document.getElementById('color-img-tabs');
+      if (!section || !tabs) return;
+
+      if (!productColors.length) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+
+      if (!activeColorTab || !productColors.includes(activeColorTab)) {
+        activeColorTab = productColors[0];
+      }
+
+      tabs.innerHTML = productColors.map(c => `
+        <button onclick="setActiveColorTab('${c}')" style="
+          padding:7px 16px; border-radius:4px; border:1.5px solid ${activeColorTab===c?'var(--ink)':'var(--cream-dark)'};
+          background:${activeColorTab===c?'var(--ink)':'var(--cream-card)'};
+          color:${activeColorTab===c?'var(--cream)':'var(--ink-soft)'};
+          font-family:Cairo,sans-serif; font-size:11px; letter-spacing:1px;
+          text-transform:uppercase; cursor:pointer; transition:all 0.2s;
+        ">${c}</button>
+      `).join('');
+
+      renderColorImgPanel();
+    }
+
+    function setActiveColorTab(color) {
+      activeColorTab = color;
+      renderColorImageTabs();
+    }
+
+    function renderColorImgPanel() {
+      const panel = document.getElementById('color-img-panel');
+      if (!panel || !activeColorTab) return;
+      const imgs = colorImages[activeColorTab] || [];
+
+      panel.innerHTML = `
+        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;font-family:Cairo,sans-serif;">
+          Photos pour: <strong style="color:var(--accent-deep);">${activeColorTab}</strong>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;min-height:50px;" id="color-img-preview-${activeColorTab}">
+          ${imgs.map((url, i) => `
+            <div style="position:relative;width:72px;height:72px;border:1px solid var(--cream-dark);border-radius:3px;overflow:hidden;background:var(--cream-deep);">
+              <img src="${url}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.opacity=0.2">
+              <button onclick="removeColorImg('${activeColorTab}', ${i})" style="position:absolute;top:2px;right:2px;background:rgba(26,20,16,0.75);border:none;color:#fff;width:18px;height:18px;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
+            </div>
+          `).join('')}
+          ${!imgs.length ? '<span style="color:var(--ink-ghost);font-size:11px;font-family:Cairo,sans-serif;">Aucune photo</span>' : ''}
+        </div>
+        <div style="display:flex;gap:8px;">
+          <input type="url" id="color-img-url-input" class="form-input" placeholder="Coller URL de l'image..." style="flex:1;"/>
+          <button onclick="addColorImg('${activeColorTab}')" class="img-add-btn">Ajouter</button>
+        </div>
+      `;
+    }
+
+    function addColorImg(color) {
+      const input = document.getElementById('color-img-url-input');
+      const url   = input ? input.value.trim() : '';
+      if (!url || !url.startsWith('http')) { alert('URL invalide'); return; }
+      if (!colorImages[color]) colorImages[color] = [];
+      colorImages[color].push(url);
+      input.value = '';
+      renderColorImgPanel();
+    }
+
+    function removeColorImg(color, idx) {
+      if (colorImages[color]) {
+        colorImages[color].splice(idx, 1);
+        renderColorImgPanel();
+      }
     }
 
     /* ── SAVE ── */
@@ -629,7 +715,7 @@
         errEl.textContent = 'Titre, catégorie et prix sont obligatoires.';
         errEl.classList.add('show'); return;
       }
-      // Build data object — only include columns that exist
+      // Build data object
       const data = {
         title,
         category: cat,
@@ -640,9 +726,10 @@
         description: desc
       };
 
-      // Add images/colors only if they have values (avoids schema cache errors)
       if (productImages.length > 0) data.images = productImages;
       if (productColors.length > 0) data.colors = productColors;
+      // color_images: { "Noir": ["url1","url2"], ... }
+      if (Object.keys(colorImages).length > 0) data.color_images = colorImages;
 
       try {
         if (id) {
