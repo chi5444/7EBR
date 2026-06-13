@@ -33,14 +33,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
   <meta name="apple-mobile-web-app-title" content="7EBR"/>
   <link rel="stylesheet" href="/css/style.css"/>
-<meta  property="og:image" content="https://ik.imagekit.io/598oq8jpn/WhatsApp%20Image%202026-06-02%20at%203.19.18%20PM.jpeg">
-<meta property="og:description" content="Pièce exclusive 7EBR حبر inspirée de la calligraphie islamique. Tissu 100% coton organique, coupe moderne. Livraison 48h partout en Tunisie.">
-<meta name="keywords" content="7ebr produit, vêtement calligraphie, t-shirt islamique, hoodie tunisie, sweatshirt arabe, acheter 7ebr">
-<link rel="icon" type="image/png" href="https://ik.imagekit.io/598oq8jpn/WhatsApp%20Image%202026-06-02%20at%203.19.18%20PM.jpeg">
-<meta  property="og:image" content="https://ik.imagekit.io/598oq8jpn/WhatsApp%20Image%202026-06-02%20at%203.19.18%20PM.jpeg">
-<meta property="og:description" content="Finalisez votre commande 7EBR حبر. Paiement à la livraison, livraison en 48h partout en Tunisie pour seulement 8 DT.">
-<meta name="keywords" content="commander 7ebr, livraison tunisie, paiement livraison, checkout 7ebr">
-<link rel="icon" type="image/png" href="https://ik.imagekit.io/598oq8jpn/WhatsApp%20Image%202026-06-02%20at%203.19.18%20PM.jpeg">
   <style>
     .product-page { background: var(--parchment); }
 
@@ -113,19 +105,70 @@
 
     /* QTY + ADD */
     .add-row { display:flex; gap:10px; margin-bottom:10px; }
-    .qty-ctrl { display:flex; align-items:center; border:1.5px solid var(--cream-dark); border-radius:7px; overflow:hidden; background:var(--cream-card); }
-    .qty-ctrl button { background:none; border:none; width:42px; height:50px; cursor:pointer; color:var(--ink-soft); font-size:17px; transition:color var(--transition); display:flex; align-items:center; justify-content:center; }
-    .qty-ctrl button:hover { color:var(--ink); }
-    .qty-ctrl span { font-size:15px; min-width:34px; text-align:center; color:var(--ink); font-family:'Cormorant Garamond',serif; }
-    .add-btn  { flex:1; background:var(--ink); color:var(--cream); border:none; border-radius:7px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all var(--transition); display:flex; align-items:center; justify-content:center; gap:8px; height:50px; }
-    .add-btn:hover { background:var(--ink-mid); }
-    .add-btn svg { width:16px; height:16px; }
+    .qty-ctrl { display:flex; align-items:center; border:1.5px solid var(--cream-dark); border-radius:7px; overflow:hidden; background:var(--cream-card); height:50px; }
+    .qty-ctrl button {
+      background: none; border: none;
+      width: 46px; height: 50px;
+      cursor: pointer; color: var(--ink);
+      font-size: 22px; font-weight: 300;
+      line-height: 1;
+      transition: background var(--transition);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-family: 'Cormorant Garamond', serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .qty-ctrl button:hover { background: rgba(26,20,16,0.06); }
+    .qty-ctrl button:active { background: rgba(26,20,16,0.12); }
+    .qty-ctrl span {
+      font-size: 16px; min-width: 38px;
+      text-align: center; color: var(--ink);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500; line-height: 1;
+      border-left: 1px solid var(--cream-dark);
+      border-right: 1px solid var(--cream-dark);
+      height: 100%; display: flex; align-items: center; justify-content: center;
+    }
+    .add-btn {
+      flex: 1;
+      background: var(--ink); color: var(--cream);
+      border: none; border-radius: 7px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px; letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer; transition: all var(--transition);
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; height: 50px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .add-btn:hover  { background: var(--ink-mid); }
+    .add-btn:active { background: var(--ink-mid); transform: scale(0.98); }
+    .add-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
 
     /* QUICK / WA */
-    .quick-btn { width:100%; background:none; color:var(--ink); border:1.5px solid var(--cream-dark); border-radius:7px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all var(--transition); height:50px; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:9px; }
+    .quick-btn {
+      width: 100%; background: none; color: var(--ink);
+      border: 1.5px solid var(--cream-dark); border-radius: 7px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: all var(--transition);
+      height: 50px; display: flex; align-items: center;
+      justify-content: center; gap: 8px; margin-bottom: 9px;
+      -webkit-font-smoothing: antialiased;
+    }
     .quick-btn:hover { border-color:var(--ink); background:rgba(26,20,16,0.03); }
     .quick-btn svg { width:15px; height:15px; }
-    .wa-btn { width:100%; background:none; color:#2E7D45; border:1.5px solid rgba(46,125,69,0.3); border-radius:7px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all var(--transition); height:50px; display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; margin-bottom:9px; }
+    .wa-btn {
+      width: 100%; background: none; color: #2E7D45;
+      border: 1.5px solid rgba(46,125,69,0.3); border-radius: 7px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: all var(--transition);
+      height: 50px; display: flex; align-items: center;
+      justify-content: center; gap: 8px; text-decoration: none;
+      margin-bottom: 9px;
+      -webkit-font-smoothing: antialiased;
+    }
     .wa-btn:hover { border-color:#2E7D45; background:rgba(46,125,69,0.04); }
     .wa-btn svg { width:17px; height:17px; }
 
@@ -421,11 +464,13 @@
 
         var qtyCtrl = document.createElement('div'); qtyCtrl.className = 'qty-ctrl';
         var qMinus = document.createElement('button');
-        qMinus.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        qMinus.textContent = '−';
+        qMinus.setAttribute('aria-label', 'Diminuer');
         qMinus.onclick = function() { changeQty(-1); };
         var qNum = document.createElement('span'); qNum.id = 'qty-num'; qNum.textContent = '1';
         var qPlus = document.createElement('button');
-        qPlus.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        qPlus.textContent = '+';
+        qPlus.setAttribute('aria-label', 'Augmenter');
         qPlus.onclick = function() { changeQty(1); };
         qtyCtrl.appendChild(qMinus); qtyCtrl.appendChild(qNum); qtyCtrl.appendChild(qPlus);
 
@@ -456,7 +501,7 @@
         /* HIGHLIGHTS */
         var hl = document.createElement('div'); hl.className = 'highlights-box';
         hl.innerHTML = '<div class="highlights-title">Highlights</div>' +
-          ['Oversized T-shirt','100% Organic Cotton','Pre-shrunk Fabric','Machine Washable','Eco-Production'].map(function(t){
+          ['100% Organic Cotton','Pre-shrunk Fabric','Machine Washable','Eco-Production'].map(function(t){
             return '<div class="highlight-item"><span class="highlight-dot"></span>' + t + '</div>';
           }).join('');
         info.appendChild(hl);
@@ -484,7 +529,7 @@
       /* FOOTER */
       var footer = document.createElement('footer');
       footer.className = 'footer';
-      footer.innerHTML = '<div class="footer-inner"><div class="footer-brand"><h3>7EBR — حبر</h3><p>نكتب الأثر، نلبس المعنى</p><div class="footer-social" style="margin-top:14px;"><a href="https://wa.me/96672771" target="_blank" title="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.167L2 22l4.985-1.399A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.962 7.962 0 0 1-4.064-1.112l-.292-.173-3.017.847.857-2.94-.191-.302A7.947 7.947 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.588 8-8 8z"/></svg></a><a href="https://instagram.com/7ebrstore" target="_blank" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://facebook.com/7ebrstore" target="_blank" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a><a href="https://tiktok.com/@7ebr.store" target="_blank" title="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg></a></div></div><div class="footer-col"><h4>Collection</h4><a href="/index.html?cat=t-shirt">T-Shirts</a><a href="/index.html?cat=sweatshirt">Sweatshirts</a><a href="/index.html?cat=hoodie">Hoodies</a><a href="/index.html?cat=pantalon">Pantalons</a></div><div class="footer-col"><h4>Compte</h4><a href="/login.html">Connexion</a><a href="/register.html">Créer un compte</a><a href="/checkout.html">Commander</a></div></div><div class="footer-bottom"><span>© 2025 7EBR حبر. Tous droits réservés.</span><span>Fait avec passion en Tunisie</span></div>';
+      footer.innerHTML = '<div class="footer-inner"><div class="footer-brand"><h3>7EBR — حبر</h3><p>نكتب الأثر، نلبس المعنى</p><div class="footer-social" style="margin-top:14px;"><a href="https://wa.me/96672771" target="_blank" title="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.167L2 22l4.985-1.399A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2zm.001 18a7.962 7.962 0 0 1-4.064-1.112l-.292-.173-3.017.847.857-2.94-.191-.302A7.947 7.947 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.588 8-8 8z"/></svg></a><a href="https://instagram.com/7ebr.store" target="_blank" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://facebook.com/hebrstore" target="_blank" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a><a href="https://tiktok.com/@7ebr.store" target="_blank" title="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg></a></div></div><div class="footer-col"><h4>Collection</h4><a href="/index.html?cat=t-shirt">T-Shirts</a><a href="/index.html?cat=sweatshirt">Sweatshirts</a><a href="/index.html?cat=hoodie">Hoodies</a><a href="/index.html?cat=pantalon">Pantalons</a></div><div class="footer-col"><h4>Compte</h4><a href="/login.html">Connexion</a><a href="/register.html">Créer un compte</a><a href="/checkout.html">Commander</a></div></div><div class="footer-bottom"><span>© 2025 7EBR حبر. Tous droits réservés.</span><span>Fait avec passion en Tunisie</span></div>';
       root.appendChild(footer);
     }
 
