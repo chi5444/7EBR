@@ -3,7 +3,35 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Commander — 7EBR</title>
+  <title>Commander — 7EBR حبر</title>
+  <!-- ═══ SEO ═══ -->
+  <meta name="description" content="Finalisez votre commande 7EBR. Paiement à la livraison, livraison partout en Tunisie en 48h."/>
+  <meta name="keywords" content="commander 7ebr, livraison tunisie, paiement livraison"/>
+  <meta name="author" content="7EBR حبر"/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://7ebr.store/checkout.html"/>
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website"/>
+  <meta property="og:site_name"   content="7EBR حبر"/>
+  <meta property="og:title"       content="Commander — 7EBR حبر"/>
+  <meta property="og:description" content="Finalisez votre commande 7EBR. Paiement à la livraison, livraison partout en Tunisie en 48h."/>
+  <meta property="og:url"         content="https://7ebr.store/checkout.html"/>
+  <meta property="og:image"       content="https://7ebr.store/logo.jpeg"/>
+  <meta property="og:locale"      content="fr_TN"/>
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image"/>
+  <meta name="twitter:title"       content="Commander — 7EBR حبر"/>
+  <meta name="twitter:description" content="Finalisez votre commande 7EBR. Paiement à la livraison, livraison partout en Tunisie en 48h."/>
+  <meta name="twitter:image"       content="https://7ebr.store/logo.jpeg"/>
+
+  <!-- Mobile -->
+  <meta name="theme-color" content="#EDE5D8"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="7EBR"/>
   <link rel="stylesheet" href="/css/style.css"/>
   <style>
     /* ── LAYOUT ── */
@@ -401,12 +429,11 @@
           customer_email:   em,
           customer_city:    gv,
           customer_address: ad,
-          product_name:     cart.length === 1
-                              ? cart[0].title
-                              : cart.length + ' articles',
+          product_name:     cart.map(function(i){ return i.title; }).join(', '),
           product_price:    (cartTotal() + DELIVERY).toFixed(3) + ' TND (livraison incluse)',
           product_size:     cart.map(function(i){ return i.size  || '—'; }).join(', '),
           product_color:    cart.map(function(i){ return i.color || '—'; }).join(', '),
+          product_qty:      cart.map(function(i){ return i.qty; }).join(', '),
           to_email:         'admin@7ebr.com'
         });
 
