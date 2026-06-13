@@ -501,7 +501,7 @@
         /* HIGHLIGHTS */
         var hl = document.createElement('div'); hl.className = 'highlights-box';
         hl.innerHTML = '<div class="highlights-title">Highlights</div>' +
-          ['Oversized','100% Organic Cotton','Pre-shrunk Fabric','Machine Washable','Eco-Production'].map(function(t){
+          ['100% Organic Cotton','Pre-shrunk Fabric','Machine Washable','Eco-Production'].map(function(t){
             return '<div class="highlight-item"><span class="highlight-dot"></span>' + t + '</div>';
           }).join('');
         info.appendChild(hl);
@@ -771,6 +771,7 @@
           product_price:    (currentProduct ? currentProduct.price : 0) + ' TND',
           product_size:     size,
           product_color:    color || 'Non spécifié',
+          product_qty:      String(qty),
           to_email:         'admin@7ebr.com'
         });
 
