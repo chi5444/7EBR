@@ -246,10 +246,7 @@
                 <input type="text" class="form-input" id="last-name" placeholder="Nom" autocomplete="family-name"/>
               </div>
             </div>
-            <div class="form-group">
-              <label class="form-label">Email *</label>
-              <input type="email" class="form-input" id="checkout-email" placeholder="votre@email.com" autocomplete="email"/>
-            </div>
+
             <div class="form-group">
               <label class="form-label">Téléphone *</label>
               <input type="tel" class="form-input" id="checkout-phone" placeholder="+216 XX XXX XXX" autocomplete="tel"/>
@@ -342,8 +339,7 @@
       var cart = getCart();
       if (!cart.length) { window.location.href = '/index.html'; return; }
       renderSummary();
-      var user = await getUser();
-      if (user) document.getElementById('checkout-email').value = user.email;
+      // no email field
     });
 
     function renderSummary() {
@@ -375,14 +371,14 @@
     async function placeOrder() {
       var fn  = document.getElementById('first-name').value.trim();
       var ln  = document.getElementById('last-name').value.trim();
-      var em  = document.getElementById('checkout-email').value.trim();
+      var em  = ''; // email removed
       var ph  = document.getElementById('checkout-phone').value.trim();
       var ad  = document.getElementById('checkout-address').value.trim();
       var gv  = document.getElementById('checkout-gov').value;
       var err = document.getElementById('checkout-error');
       err.classList.remove('show');
 
-      if (!fn || !ln || !em || !ph || !ad || !gv) {
+      if (!fn || !ln || !ph || !ad || !gv) {
         err.textContent = 'Veuillez remplir tous les champs obligatoires.';
         err.classList.add('show');
         err.scrollIntoView({ behavior:'smooth', block:'center' });
@@ -426,7 +422,7 @@
         await emailjs.send('service_lixuoem', 'template_y0aocqa', {
           customer_name:    customerName,
           customer_phone:   ph,
-          customer_email:   em,
+          customer_email:   '—',
           customer_city:    gv,
           customer_address: ad,
           product_name:     cart.map(function(i){ return i.title; }).join(', '),
